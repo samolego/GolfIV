@@ -1,12 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.fabricmc.example.mixin",
+  "package": "org.samo_lego.golfiv.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-  ],
-  "client": [
-    "ExampleMixin"
+    "ServerPlayNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
