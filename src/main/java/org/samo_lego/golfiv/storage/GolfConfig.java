@@ -6,6 +6,8 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.samo_lego.golfiv.utils.BallLogger.logError;
 
@@ -14,12 +16,27 @@ public class GolfConfig {
 
     public static class Main {
         public boolean preventStrangeCreativeItems = true;
+        public boolean yesFall = true;
+        public boolean noFly = true;
     }
 
     public static class Logging {
         public boolean toConsole = true;
         public boolean toOps = true;
     }
+
+    public ArrayList<String> kickMessages = new ArrayList<>(Arrays.asList(
+            "Only who dares wins!",
+            "Bad Liar ...",
+            "Script kiddo?",
+            "No risk it, no biscuit!",
+            "Playing God? How about no?",
+            "Who flies high falls low",
+            "If you cheat, you only cheat yourself.",
+            "I'm not upset that you lied to me,\n I'm upset that from now on I can't believe you.",
+            "Hax bad.",
+            "You better check your client. It seems to be lying."
+    ));
 
     public final GolfConfig.Main main = new Main();
     public final GolfConfig.Logging logging = new Logging();
