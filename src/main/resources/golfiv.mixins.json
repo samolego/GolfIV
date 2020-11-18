@@ -7,7 +7,7 @@
     "PlayerEntityMixinCast_golfer",
     "PlayerMoveC2SPacketAccessor",
     "ServerPlayNetworkHandlerMixin_creative",
-    "ServerPlayNetworkHandlerMixin_collisionChecks"
+    "ServerPlayNetworkHandlerMixin_movementChecks"
   ],
   "injectors": {
     "defaultRequire": 1

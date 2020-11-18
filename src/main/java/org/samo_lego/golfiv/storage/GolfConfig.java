@@ -18,6 +18,8 @@ public class GolfConfig {
         public boolean preventStrangeCreativeItems = true;
         public boolean yesFall = true;
         public boolean noFly = true;
+        public boolean antiTimer = true;
+        public boolean noSpeed = true;
     }
 
     public static class Logging {

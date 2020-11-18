@@ -43,14 +43,15 @@ public class PlayerEntityMixinCast_golfer implements Golfer {
         return entityCollisions;
     }
 
+
     @Inject(method = "collideWithEntity(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"))
     private void updateCollision(Entity entity, CallbackInfo ci) {
         if(entity instanceof BoatEntity) {
-            if(!this.entityCollisions) {
-                this.setEntityCollisions(true);
-            }
-            else if(this.player.hasVehicle() && entity.equals(this.player.getVehicle())) {
+            if(entity.equals(this.player.getVehicle())) {
                 this.setEntityCollisions(false);
+            }
+            else if(!this.entityCollisions && !this.player.hasVehicle()) {
+                this.setEntityCollisions(true);
             }
         }
     }

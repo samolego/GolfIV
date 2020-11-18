@@ -6,6 +6,7 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import org.samo_lego.golfiv.utils.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,14 +23,14 @@ import java.util.stream.Stream;
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin_collisionChecks {
+public class ServerPlayNetworkHandlerMixin_movementChecks {
 
     @Shadow public ServerPlayerEntity player;
     @Unique
     private boolean lastOnGround, lLastOnGround;
 
     @Unique
-    private double lastDist;
+    private Vec3d lastMovement;
 
     @Unique
     private double flyAttempts;
@@ -54,9 +55,28 @@ public class ServerPlayNetworkHandlerMixin_collisionChecks {
             )
     )
     private void checkMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        double packetDist = packet.getY(this.player.getY()) - this.player.getY();
-        updateNearGround(packetDist);
+        //double packetDist = packet.getY(this.player.getY()) - this.player.getY();
+        Vec3d packetMovement = new Vec3d(
+                packet.getX(this.player.getX()) - this.player.getX(),
+                packet.getY(this.player.getY()) - this.player.getY(),
+                packet.getZ(this.player.getZ()) - this.player.getZ()
+        );
+
+        Box bBox = player.getBoundingBox().expand(0, 0.25005, 0).offset(0, packetMovement.y - 0.25005, 0);
+
+        Stream<VoxelShape> vs = player.getEntityWorld().getBlockCollisions(player, bBox);
+        long blockCollisions = vs.count();
+        if(blockCollisions != 0 && ((Golfer) player).hasEntityCollisions()) {
+            ((Golfer) player).setEntityCollisions(false);
+        }
+        ((Golfer) player).setBlockCollisions(blockCollisions != 0);
+
         boolean onGround = ((Golfer) player).isNearGround();
+
+        if(this.lastMovement == null) {
+            this.lastMovement = packetMovement;
+            return;
+        }
 
         if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
             if(packet.isOnGround() && golfConfig.main.yesFall) {
@@ -75,21 +95,21 @@ public class ServerPlayNetworkHandlerMixin_collisionChecks {
             }
             if(golfConfig.main.noFly && !player.abilities.allowFlying) {
                 // LivingEntity#travel
-                double predictedDist;
+                double predictedDeltaY;
                 double d = 0.08D;
-                boolean bl = this.player.getVelocity().y <= 0.0D;
+                boolean notLevitating = this.player.getVelocity().y <= 0.0D;
 
-                if (bl && this.player.hasStatusEffect(StatusEffects.SLOW_FALLING)) {
+                if (notLevitating && this.player.hasStatusEffect(StatusEffects.SLOW_FALLING)) {
                     d = 0.01D;
                 }
 
 
                 if (this.player.hasStatusEffect(StatusEffects.LEVITATION))
-                    predictedDist = this.lastDist + (0.05D * (double)(this.player.getStatusEffect(StatusEffects.LEVITATION).getAmplifier() + 1) - this.lastDist) * 0.2D;
+                    predictedDeltaY = this.lastMovement.y + (0.05D * (double)(this.player.getStatusEffect(StatusEffects.LEVITATION).getAmplifier() + 1) - this.lastMovement.y) * 0.2D;
                 else
-                    predictedDist = (this.lastDist - d) * 0.9800000190734863D;
+                    predictedDeltaY = (this.lastMovement.y - d) * 0.9800000190734863D;
 
-                if(Math.abs(predictedDist) >= 0.005D && Math.abs(predictedDist - packetDist) > 0.003) {
+                if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - packetMovement.y) > 0.003) {
                     if(flyAttempts > 4) {
                         flyAttempts = 0;
                         player.sendMessage(
@@ -108,23 +128,11 @@ public class ServerPlayNetworkHandlerMixin_collisionChecks {
                 }
                 else
                     flyAttempts = flyAttempts > 0 ? -1 : 0;
-                this.lastDist = packetDist;
+                this.lastMovement = packetMovement;
             }
         }
 
         this.lLastOnGround = this.lastOnGround;
         this.lastOnGround = onGround;
-    }
-
-    @Unique
-    private void updateNearGround(double offset) {
-        Box bBox = player.getBoundingBox().expand(0, 0.25005, 0).offset(0, offset - 0.25005, 0);
-
-        Stream<VoxelShape> vs = player.getEntityWorld().getBlockCollisions(player, bBox);
-        long blockCollisions = vs.count();
-        if(blockCollisions != 0 && ((Golfer) player).hasEntityCollisions()) {
-            ((Golfer) player).setEntityCollisions(false);
-        }
-        ((Golfer) player).setBlockCollisions(blockCollisions != 0);
     }
 }
