@@ -4,10 +4,10 @@
   "package": "org.samo_lego.golfiv.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "PlayerEntityMixin",
+    "PlayerEntityMixinCast_golfer",
     "PlayerMoveC2SPacketAccessor",
-    "ServerPlayNetworkHandlerMixin",
-    "ServerPlayNetworkHandlerMixin_noFall"
+    "ServerPlayNetworkHandlerMixin_creative",
+    "ServerPlayNetworkHandlerMixin_collisionChecks"
   ],
   "injectors": {
     "defaultRequire": 1

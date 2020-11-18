@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin {
+public class ServerPlayNetworkHandlerMixin_creative {
     @Shadow public ServerPlayerEntity player;
 
     @ModifyVariable(
