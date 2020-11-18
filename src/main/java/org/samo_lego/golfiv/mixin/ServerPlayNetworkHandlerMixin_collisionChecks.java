@@ -1,5 +1,6 @@
 package org.samo_lego.golfiv.mixin;
 
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -74,31 +75,34 @@ public class ServerPlayNetworkHandlerMixin_collisionChecks {
             }
             if(golfConfig.main.noFly && !player.abilities.allowFlying) {
                 // LivingEntity#travel
+                double predictedDist;
                 double d = 0.08D;
-                /*boolean bl = this.player.getVelocity().y <= 0.0D;
+                boolean bl = this.player.getVelocity().y <= 0.0D;
+
                 if (bl && this.player.hasStatusEffect(StatusEffects.SLOW_FALLING)) {
                     d = 0.01D;
                 }
 
+
                 if (this.player.hasStatusEffect(StatusEffects.LEVITATION))
-                    this.lastYDist += (0.05D * (double)(this.player.getStatusEffect(StatusEffects.LEVITATION).getAmplifier() + 1) - this.lastYDist) * 0.2D;
-                */
-                double predictedDist = (this.lastDist - d) * 0.9800000190734863D;
+                    predictedDist = this.lastDist + (0.05D * (double)(this.player.getStatusEffect(StatusEffects.LEVITATION).getAmplifier() + 1) - this.lastDist) * 0.2D;
+                else
+                    predictedDist = (this.lastDist - d) * 0.9800000190734863D;
 
                 if(Math.abs(predictedDist) >= 0.005D && Math.abs(predictedDist - packetDist) > 0.003) {
                     if(flyAttempts > 4) {
                         flyAttempts = 0;
-                        /*player.sendMessage(
+                        player.sendMessage(
                                 new LiteralText(
                                         "§3[GolfIV]\n§a" +
                                                 golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size())
                                                 )), false
-                        );*/
-                        player.networkHandler.disconnect(new LiteralText(
+                        );
+                        /*player.networkHandler.disconnect(new LiteralText(
                                 "§3[GolfIV]\n§a" +
                                         golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
                                         ))
-                        ));
+                        ));*/
                     }
                     ++flyAttempts;
                 }
