@@ -5,12 +5,11 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
+import org.samo_lego.golfiv.utils.CheatType;
 import org.samo_lego.golfiv.utils.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
@@ -36,10 +34,15 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
     private Vec3d lastMovement;
 
     @Unique
-    private int flyAttempts, speedAttempts;
+    private int flyAttempts = 0;
+    @Unique
+    private int jumpFP = 0;
+    @Unique
+    private int speedFP = 0;
 
     @Unique
     private double lastDist;
+
 
     @ModifyVariable(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
@@ -84,14 +87,49 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
             return;
         }
 
+        Entity entity = player.getVehicle();
+
+        if(entity == null) {
+            entity = player;
+        }
+
+        boolean notLevitating = entity.getVelocity().y <= 0.0D;
+
+        BlockPos blockPos = new BlockPos(entity.getX(), entity.getBoundingBox().minY - 0.5001D, entity.getZ());
+        float slipperiness = this.player.getEntityWorld().getBlockState(blockPos).getBlock().getSlipperiness();
+        float friction = !this.lastOnGround && !onGround ? 0.91F : slipperiness * 0.91F;
+
+        double predictedDist = this.lastDist * friction;
+        double packetDist = packetMovement.x * packetMovement.x + packetMovement.z * packetMovement.z;
+
+        if(!this.lastOnGround && !this.lLastOnGround && !onGround) {
+            if((packetDist - predictedDist) > 0.00750716D) {
+                if(this.speedFP > 10) {
+                    this.speedFP = 0;
+                    ((Golfer) player).report(CheatType.SPEED_HACK);
+                }
+                ++this.speedFP;
+                //((Golfer) player).report(CheatType.SPEED_HACK);
+                //System.out.println(this.speedFP);
+            }
+        }
+        else if(this.lLastOnGround && this.lastOnGround && onGround && (packetDist - predictedDist) > 0.0372247D && !((Golfer) player).hasEntityCollisions()) {
+            ++this.jumpFP;
+            if(this.jumpFP > 10){
+                this.jumpFP = 0;
+                ((Golfer) player).report(CheatType.SPEED_HACK);
+            }
+            //System.out.println(this.jumpFP);
+        }
+
         if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
             if(packet.isOnGround() && golfConfig.main.yesFall) {
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
-                ((Golfer) player).punish();
+                ((Golfer) player).report(CheatType.NO_FALL);
             }
+
             if(golfConfig.main.noFly && !player.abilities.allowFlying && !player.isClimbing()) {
                 double d = 0.08D;
-                boolean notLevitating = this.player.getVelocity().y <= 0.0D;
 
                 if (notLevitating && this.player.hasStatusEffect(StatusEffects.SLOW_FALLING)) {
                     d = 0.01D;
@@ -115,64 +153,23 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                     if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - packetMovement.y) > 0.003) {
                         if(flyAttempts > 2) {
                             flyAttempts = 0;
-                            ((Golfer) player).punish();
+                            ((Golfer) player).report(CheatType.FLY_HACK);
                         }
                         ++flyAttempts;
                     }
                     else
                         flyAttempts = flyAttempts > 0 ? -1 : 0;
                 }
-
             }
         }
 
-        Entity entity = player.getVehicle();
-
-        if(entity == null) {
-            entity = player;
-        }
-        BlockPos blockPos = new BlockPos(entity.getX(), entity.getBoundingBox().minY - 0.5001D, entity.getZ());
-        float slipperiness = this.player.getEntityWorld().getBlockState(blockPos).getBlock().getSlipperiness();
-        float friction = !this.lastOnGround && !onGround ? 0.91F : slipperiness * 0.91F;
-
-        double predictedDist = this.lastDist * friction;
-        double packetDist = packetMovement.x * packetMovement.x + packetMovement.z * packetMovement.z;
-
-        if(!this.lLastOnGround  && !this.lastOnGround && !onGround) {
-            if((packetDist - predictedDist) > 0.00750716D) {
-                ((Golfer) player).punish();
-                System.out.println(packetDist - predictedDist);
-            }
-        }
-        else if(this.lLastOnGround && this.lastOnGround && onGround &&packet.isOnGround() && (packetDist - predictedDist) > 0.0372247D) {
-            int ca = ((Golfer) player).getCheatAttepmts();
-            if(ca > 25) {
-                ((Golfer) player).punish();
-            }
-            ((Golfer) player).setCheatAttepmts(ca + 10);
+        if (entity.isOnGround() && !packet.isOnGround() && notLevitating) {
+            this.jumpFP = 0;
         }
 
         this.lastDist = packetDist;
-
-
-
-
         this.lastMovement = packetMovement;
         this.lLastOnGround = this.lastOnGround;
         this.lastOnGround = onGround;
-    }
-
-
-    @Unique
-    private static Vec3d movementInputToVelocity(Vec3d movementInput, float speed, float yaw) {
-        double d = movementInput.lengthSquared();
-        if (d < 1.0E-7D) {
-            return Vec3d.ZERO;
-        } else {
-            Vec3d vec3d = (d > 1.0D ? movementInput.normalize() : movementInput).multiply((double)speed);
-            float f = MathHelper.sin(yaw * 0.017453292F);
-            float g = MathHelper.cos(yaw * 0.017453292F);
-            return new Vec3d(vec3d.x * (double)g - vec3d.z * (double)f, vec3d.y, vec3d.z * (double)g + vec3d.x * (double)f);
-        }
     }
 }

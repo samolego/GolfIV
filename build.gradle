@@ -24,7 +24,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Well ... things have to be tested :)
-	modRuntime 'com.github.Wurst-Imperium:Wurst7:v7.6.2'
+	modImplementation "com.github.gnembon:fabric-carpet:master-SNAPSHOT"
 }
 
 processResources {

@@ -4,8 +4,11 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
+import net.minecraft.server.OperatorEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
+import org.samo_lego.golfiv.utils.BallLogger;
+import org.samo_lego.golfiv.utils.CheatType;
 import org.samo_lego.golfiv.utils.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,9 +28,6 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
 
     @Unique
     private boolean blockCollisions, entityCollisions;
-
-    @Unique
-    private int cheatAttempts = 0;
 
     @Override
     public boolean isNearGround() {
@@ -55,31 +55,28 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
     }
 
     @Override
-    public void punish() {
+    public void report(CheatType cheatType) {
         if(player instanceof ServerPlayerEntity) {
+            final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
+            if(golfConfig.logging.toConsole) {
+                BallLogger.logInfo(player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
+            }
+        }
+
+        /*if(player instanceof ServerPlayerEntity) {
             ((ServerPlayerEntity) player).networkHandler.disconnect(new LiteralText(
                     "§3[GolfIV]\n§a" +
                             golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
                             ))
             ));
-        }
+        }*/
 
-        /*player.sendMessage(
+        player.sendMessage(
                 new LiteralText(
                         "§3[GolfIV]\n§a" +
                                 golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size())
                                 )), false
-        );*/
-    }
-
-    @Override
-    public void setCheatAttepmts(int cheatAttempts) {
-        this.cheatAttempts = cheatAttempts;
-    }
-
-    @Override
-    public int getCheatAttepmts() {
-        return this.cheatAttempts;
+        );
     }
 
     @Inject(method = "collideWithEntity(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"))
@@ -92,11 +89,5 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
                 this.setEntityCollisions(true);
             }
         }
-    }
-
-
-    @Inject(method = "Lnet/minecraft/entity/player/PlayerEntity;tick()V", at = @At("TAIL"))
-    private void lowerCheatAttempts(CallbackInfo ci) {
-        this.cheatAttempts = this.cheatAttempts > 0 ? this.cheatAttempts - 1 : 0;
     }
 }

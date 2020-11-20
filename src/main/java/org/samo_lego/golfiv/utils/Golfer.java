@@ -12,8 +12,5 @@ public interface Golfer {
     void setEntityCollisions(boolean entityCollision);
     boolean hasEntityCollisions();
 
-    void punish();
-
-    void setCheatAttepmts(int cheatAttempts);
-    int getCheatAttepmts();
+    void report(CheatType cheatType);
 }
