@@ -1,17 +1,14 @@
 package org.samo_lego.golfiv.mixin;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
-import net.minecraft.server.OperatorEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import org.samo_lego.golfiv.utils.BallLogger;
 import org.samo_lego.golfiv.utils.CheatType;
-import org.samo_lego.golfiv.utils.Golfer;
+import org.samo_lego.golfiv.utils.casts.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -70,13 +67,17 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
                             ))
             ));
         }*/
-
-        player.sendMessage(
-                new LiteralText(
-                        "§3[GolfIV]\n§a" +
-                                golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size())
-                                )), false
-        );
+        int meesages = golfConfig.kickMessages.size();
+        if(meesages > 0)
+            player.sendMessage(
+                    new LiteralText(
+                            "§3[GolfIV]\n§a" +
+                                    golfConfig.kickMessages.get(
+                                            new Random().nextInt(meesages)
+                                    )
+                    ),
+                    false
+            );
     }
 
     @Inject(method = "collideWithEntity(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"))

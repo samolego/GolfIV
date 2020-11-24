@@ -23,8 +23,8 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Well ... things have to be tested :)
 	modImplementation "com.github.gnembon:fabric-carpet:master-SNAPSHOT"
+	//modImplementation 'com.github.jellysquid3:cadmium-fabric:-SNAPSHOT'
 }
 
 processResources {

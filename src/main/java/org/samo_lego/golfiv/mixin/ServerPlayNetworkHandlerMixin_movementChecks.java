@@ -1,7 +1,6 @@
 package org.samo_lego.golfiv.mixin;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -11,13 +10,13 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import org.samo_lego.golfiv.utils.CheatType;
-import org.samo_lego.golfiv.utils.Golfer;
+import org.samo_lego.golfiv.utils.casts.Golfer;
+import org.samo_lego.golfiv.utils.casts.TPSTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.stream.Stream;
@@ -26,6 +25,8 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin_movementChecks {
+
+    private final ServerPlayNetworkHandler serverPlayNetworkHandler = (ServerPlayNetworkHandler) (Object) this;
 
     @Shadow public ServerPlayerEntity player;
     @Unique
@@ -44,18 +45,6 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
     @Unique
     private double lastDist;
 
-
-    @ModifyVariable(
-            method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayerEntity;getBoundingBox()Lnet/minecraft/util/math/Box;"
-            )
-    )
-    private PlayerMoveC2SPacket checkOnGround(PlayerMoveC2SPacket packet) {
-        return packet;
-    }
-
     @Inject(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(
@@ -65,6 +54,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
             )
     )
     private void checkMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
+        //System.out.println(((TPSTracker) serverPlayNetworkHandler).getAverageTPS());
         //double packetDist = packet.getY(this.player.getY()) - this.player.getY();
         Vec3d packetMovement = new Vec3d(
                 packet.getX(this.player.getX()) - this.player.getX(),
@@ -105,7 +95,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
 
 
         if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
-            if((packetDist - predictedDist) > 0.00750716D) {
+            if((packetDist - predictedDist) > 0.00750716D  && !player.isFallFlying()) {
                 if(this.speedFP > 10) {
                     this.speedFP = 0;
                     ((Golfer) player).report(CheatType.SPEED_HACK);
@@ -120,7 +110,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                     ((Golfer) player).report(CheatType.NO_FALL);
             }
 
-            if(golfConfig.main.noFly && !player.abilities.allowFlying && !player.isClimbing()) {
+            if(golfConfig.main.noFly && !player.abilities.allowFlying && !player.isClimbing() && !player.isFallFlying()) {
                 double d = 0.08D;
 
                 if (notLevitating && this.player.hasStatusEffect(StatusEffects.SLOW_FALLING)) {
@@ -156,15 +146,18 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
         }
         else if(notLevitating && onGround) {
             if(this.lLastOnGround && this.lastOnGround) {
+                // Hopefully fixes some lag issues
+                double distDelta = (packetDist - predictedDist) * ((TPSTracker) serverPlayNetworkHandler).getAverageTPS() / 20;
+
                 if(player.hasStatusEffect(StatusEffects.SPEED)) {
-                    if(packet.isOnGround() && (packetDist - predictedDist) > (0.35  + player.getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.4)) {
+                    if(packet.isOnGround() && distDelta > (0.35  + player.getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.4)) {
                         if(this.jumpFP > 10){
                             this.jumpFP = 0;
                             ((Golfer) player).report(CheatType.SPEED_HACK);
                         }
                         ++this.jumpFP;
                     }
-                    else if((packetDist - predictedDist) > (0.05394  + player.getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.02)) {
+                    else if(distDelta > (0.05394  + player.getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.02)) {
                         if(this.jumpFP > 10){
                             this.jumpFP = 0;
                             ((Golfer) player).report(CheatType.SPEED_HACK);
@@ -172,7 +165,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                         ++this.jumpFP;
                     }
                 }
-                else if((packetDist - predictedDist) > 0.0372247D && !((Golfer) player).hasEntityCollisions()) {
+                else if(distDelta > 0.0372247D && !((Golfer) player).hasEntityCollisions()) {
                     if(this.jumpFP > 10){
                         this.jumpFP = 0;
                         ((Golfer) player).report(CheatType.SPEED_HACK);

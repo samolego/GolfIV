@@ -1,4 +1,6 @@
-package org.samo_lego.golfiv.utils;
+package org.samo_lego.golfiv.utils.casts;
+
+import org.samo_lego.golfiv.utils.CheatType;
 
 public interface Golfer {
     /*void setLies(int newLies);

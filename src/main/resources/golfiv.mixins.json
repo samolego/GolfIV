@@ -6,8 +6,9 @@
   "mixins": [
     "PlayerEntityMixinCast_golfer",
     "PlayerMoveC2SPacketAccessor",
-    "ServerPlayNetworkHandlerMixin_creative",
-    "ServerPlayNetworkHandlerMixin_movementChecks"
+    "ServerPlayNetworkHandlerMixin_creativeItemsCheck",
+    "ServerPlayNetworkHandlerMixin_movementChecks",
+    "ServerPlayNetworkHandlerMixinCast_TPSTracker"
   ],
   "injectors": {
     "defaultRequire": 1
