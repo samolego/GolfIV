@@ -1,8 +1,13 @@
 package org.samo_lego.golfiv.mixin;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.passive.PigEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -11,7 +16,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import org.samo_lego.golfiv.utils.CheatType;
 import org.samo_lego.golfiv.utils.casts.Golfer;
-import org.samo_lego.golfiv.utils.casts.TPSTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -41,9 +45,14 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
     private int jumpFP = 0;
     @Unique
     private int speedFP = 0;
+    @Unique
+    private int elytraFP = 0;
 
     @Unique
     private double lastDist;
+
+    public ServerPlayNetworkHandlerMixin_movementChecks() {
+    }
 
     @Inject(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
@@ -51,11 +60,14 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                     value = "INVOKE",
                     target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/server/world/ServerWorld;)V",
                     shift = At.Shift.AFTER
-            )
+            ),
+            cancellable = true
     )
     private void checkMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
+        /*System.out.println("Playermove");
         //System.out.println(((TPSTracker) serverPlayNetworkHandler).getAverageTPS());
         //double packetDist = packet.getY(this.player.getY()) - this.player.getY();
+        boolean shouldCancel = false;
         Vec3d packetMovement = new Vec3d(
                 packet.getX(this.player.getX()) - this.player.getX(),
                 packet.getY(this.player.getY()) - this.player.getY(),
@@ -69,6 +81,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
         if(blockCollisions != 0 && ((Golfer) player).hasEntityCollisions()) {
             ((Golfer) player).setEntityCollisions(false);
         }
+
         ((Golfer) player).setBlockCollisions(blockCollisions != 0);
 
         boolean onGround = ((Golfer) player).isNearGround();
@@ -78,97 +91,106 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
             return;
         }
 
-        Entity entity = player.getVehicle();
+        boolean notLevitating = player.getVelocity().y <= 0.0D;
 
-        if(entity == null) {
-            entity = player;
-        }
-
-        boolean notLevitating = entity.getVelocity().y <= 0.0D;
-
-        BlockPos blockPos = new BlockPos(entity.getX(), entity.getBoundingBox().minY - 0.5001D, entity.getZ());
+        BlockPos blockPos = new BlockPos(player.getX(), bBox.minY, player.getZ());
         float slipperiness = this.player.getEntityWorld().getBlockState(blockPos).getBlock().getSlipperiness();
         float friction = !this.lastOnGround && !onGround ? 0.91F : slipperiness * 0.91F;
 
         double predictedDist = this.lastDist * friction;
         double packetDist = packetMovement.x * packetMovement.x + packetMovement.z * packetMovement.z;
-
+        double distDelta = packetDist - predictedDist;
 
         if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
-            if((packetDist - predictedDist) > 0.00750716D  && !player.isFallFlying()) {
-                if(this.speedFP > 10) {
-                    this.speedFP = 0;
-                    ((Golfer) player).report(CheatType.SPEED_HACK);
-                }
-                ++this.speedFP;
-                //System.out.println(this.speedFP);
-            }
-
             if(packet.isOnGround() && golfConfig.main.yesFall) {
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
                 if(notLevitating)
-                    ((Golfer) player).report(CheatType.NO_FALL);
+                    ((Golfer) this.player).report(CheatType.NO_FALL);
             }
-
-            if(golfConfig.main.noFly && !player.abilities.allowFlying && !player.isClimbing() && !player.isFallFlying()) {
-                double d = 0.08D;
-
-                if (notLevitating && this.player.hasStatusEffect(StatusEffects.SLOW_FALLING)) {
-                    d = 0.01D;
-                }
-
-                if(player.isInLava()) {
-
-                }
-                else if(player.isTouchingWater()) {
-
-                }
-                else {
-                    // LivingEntity#travel
-                    double predictedDeltaY;
-
-                    if (this.player.hasStatusEffect(StatusEffects.LEVITATION))
-                        predictedDeltaY = this.lastMovement.y + (0.05D * (double)(this.player.getStatusEffect(StatusEffects.LEVITATION).getAmplifier() + 1) - this.lastMovement.y) * 0.2D;
-                    else
-                        predictedDeltaY = (this.lastMovement.y - d) * 0.9800000190734863D;
-
-                    if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - packetMovement.y) > 0.003) {
-                        if(flyAttempts > 2) {
-                            flyAttempts = 0;
-                            ((Golfer) player).report(CheatType.FLY_HACK);
-                        }
-                        ++flyAttempts;
+            if(this.player.isFallFlying()) {
+                if(packetMovement.equals(this.lastMovement) || packetMovement.length() == 0 || this.player.getVelocity().length() == 0) {
+                    ++this.elytraFP;
+                    if(this.elytraFP > 4) {
+                        this.elytraFP = 0;
+                        ((Golfer) this.player).report(CheatType.ELYTRA_HACK);
                     }
-                    else
-                        flyAttempts = 0;
+                }
+                else
+                    this.elytraFP = 0;
+            }
+            else {
+                if(distDelta > 0.00750716D) {
+                    if(this.speedFP > 10) {
+                        this.speedFP = 0;
+                        shouldCancel = true;
+                        ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                    }
+                    ++this.speedFP;
+                    //System.out.println(this.speedFP);
+                }
+
+                if(golfConfig.main.noFly && !this.player.abilities.allowFlying && !this.player.isClimbing()) {
+                    double d = 0.08D;
+
+                    if (notLevitating && this.player.hasStatusEffect(StatusEffects.SLOW_FALLING)) {
+                        d = 0.01D;
+                    }
+
+                    if(this.player.isInLava()) {
+
+                    }
+                    else if(this.player.isTouchingWater()) {
+
+                    }
+                    else {
+                        // LivingEntity#travel
+                        double predictedDeltaY;
+
+                        if (this.player.hasStatusEffect(StatusEffects.LEVITATION))
+                            predictedDeltaY = this.lastMovement.y + (0.05D * (double)(this.player.getStatusEffect(StatusEffects.LEVITATION).getAmplifier() + 1) - this.lastMovement.y) * 0.2D;
+                        else
+                            predictedDeltaY = (this.lastMovement.y - d) * 0.9800000190734863D;
+
+                        if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - packetMovement.y) > 0.003) {
+                            if(flyAttempts > 2) {
+                                flyAttempts = 0;
+                                shouldCancel = true;
+                                ((Golfer) this.player).report(CheatType.FLY_HACK);
+                            }
+                            ++flyAttempts;
+                        }
+                        else
+                            flyAttempts = 0;
+                    }
                 }
             }
+
         }
         else if(notLevitating && onGround) {
             if(this.lLastOnGround && this.lastOnGround) {
-                // Hopefully fixes some lag issues
-                double distDelta = (packetDist - predictedDist) * ((TPSTracker) serverPlayNetworkHandler).getAverageTPS() / 20;
-
-                if(player.hasStatusEffect(StatusEffects.SPEED)) {
-                    if(packet.isOnGround() && distDelta > (0.35  + player.getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.4)) {
+                if(this.player.hasStatusEffect(StatusEffects.SPEED)) {
+                    if(packet.isOnGround() && distDelta > (0.35  + this.player.getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.4)) {
                         if(this.jumpFP > 10){
                             this.jumpFP = 0;
-                            ((Golfer) player).report(CheatType.SPEED_HACK);
+                            shouldCancel = true;
+                            ((Golfer) this.player).report(CheatType.SPEED_HACK);
                         }
                         ++this.jumpFP;
                     }
-                    else if(distDelta > (0.05394  + player.getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.02)) {
+                    else if(distDelta > (0.05394  + this.player.getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.02)) {
                         if(this.jumpFP > 10){
                             this.jumpFP = 0;
-                            ((Golfer) player).report(CheatType.SPEED_HACK);
+                            shouldCancel = true;
+                            ((Golfer) this.player).report(CheatType.SPEED_HACK);
                         }
                         ++this.jumpFP;
                     }
                 }
-                else if(distDelta > 0.0372247D && !((Golfer) player).hasEntityCollisions()) {
+                else if(distDelta > 0.0372247D && !((Golfer) this.player).hasEntityCollisions()) {
                     if(this.jumpFP > 10){
                         this.jumpFP = 0;
-                        ((Golfer) player).report(CheatType.SPEED_HACK);
+                        shouldCancel = true;
+                        ((Golfer) this.player).report(CheatType.SPEED_HACK);
                     }
                     ++this.jumpFP;
                 }
@@ -184,5 +206,280 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
         this.lastMovement = packetMovement;
         this.lLastOnGround = this.lastOnGround;
         this.lastOnGround = onGround;
+
+        if(shouldCancel) {
+            this.player.requestTeleport(lastTickX, lastTickY, lastTickZ);
+            ci.cancel();
+        }*/
+
+        if(!player.hasVehicle()) {
+            Vec3d packetMovement = new Vec3d(
+                    packet.getX(this.player.getX()) - this.player.getX(),
+                    packet.getY(this.player.getY()) - this.player.getY(),
+                    packet.getZ(this.player.getZ()) - this.player.getZ()
+            );
+
+            if(!this.player.isFallFlying() && checkMove(player, packetMovement, packet.isOnGround())) {
+                ci.cancel();
+                return;
+            }
+
+            boolean onGround = ((Golfer) player).isNearGround();
+
+            if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
+                if(packet.isOnGround() && golfConfig.main.yesFall) {
+                    ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
+                    if(player.getVelocity().y <= 0.0D)
+                        ((Golfer) this.player).report(CheatType.NO_FALL);
+                }
+                if(this.player.isFallFlying()) {
+                    System.out.println(packetMovement);
+                    if(packetMovement.equals(this.lastMovement) || packetMovement.length() == 0 || this.player.getVelocity().length() == 0) {
+                        ++this.elytraFP;
+                        if(this.elytraFP > 4) {
+                            this.elytraFP = 0;
+                            ((Golfer) this.player).report(CheatType.ELYTRA_HACK);
+                            ci.cancel();
+                        }
+                    }
+                    else
+                        this.elytraFP = 0;
+                }
+            }
+
+            this.lastMovement = packetMovement;
+            this.lLastOnGround = this.lastOnGround;
+            this.lastOnGround = onGround;
+        }
+    }
+
+
+    @Inject(
+            method = "onVehicleMove(Lnet/minecraft/network/packet/c2s/play/VehicleMoveC2SPacket;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/server/world/ServerWorld;)V",
+                    shift = At.Shift.AFTER
+            ),
+            cancellable = true
+    )
+    private void checkVehicleMovement(VehicleMoveC2SPacket packet, CallbackInfo ci) {
+        Entity vehicle = player.getRootVehicle();
+        Vec3d packetMovement = new Vec3d(
+                packet.getX() - vehicle.getX(),
+                packet.getY() - vehicle.getY(),
+                packet.getZ() - vehicle.getZ()
+        );
+
+        if(checkMove(vehicle, packetMovement, vehicle.isOnGround()))
+            ci.cancel();
+
+        /*Box bBox = vehicle.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packetMovement.y - 0.25005D, 0);
+
+        Stream<VoxelShape> vs = vehicle.getEntityWorld().getBlockCollisions(vehicle, bBox);
+        long blockCollisions = vs.count();
+        if(blockCollisions != 0 && ((Golfer) player).hasEntityCollisions()) {
+            ((Golfer) player).setEntityCollisions(false);
+        }
+        ((Golfer) player).setBlockCollisions(blockCollisions != 0);
+
+        if(this.lastMovement == null) {
+            this.lastMovement = packetMovement;
+            return;
+        }
+        boolean onGround = ((Golfer) player).isNearGround();
+        boolean notLevitating = player.getVelocity().y <= 0.0D;
+
+        BlockPos blockPos = new BlockPos(vehicle.getX(), bBox.minY, vehicle.getZ());
+        float slipperiness = this.player.getEntityWorld().getBlockState(blockPos).getBlock().getSlipperiness();
+        float friction = !this.lastOnGround && !onGround ? 0.91F : slipperiness * 0.91F;
+
+        double predictedDist = this.lastDist * friction;
+        double packetDist = packetMovement.x * packetMovement.x + packetMovement.z * packetMovement.z;
+        double distDelta = packetDist - predictedDist;
+
+        if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
+
+            if(distDelta > 0.00750716D) {
+                if(this.speedFP > 10) {
+                    this.speedFP = 0;
+                    shouldCancel = true;
+                    ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                }
+                ++this.speedFP;
+                //System.out.println(this.speedFP);
+            }
+
+            if(golfConfig.main.noFly && !this.player.abilities.allowFlying && !this.player.isClimbing()) {
+                double d = 0.08D;
+
+                if (notLevitating && this.player.hasStatusEffect(StatusEffects.SLOW_FALLING)) {
+                    d = 0.01D;
+                }
+
+                if(vehicle.isInLava()) {
+
+                }
+                else if(vehicle.isTouchingWater()) {
+
+                }
+                else {
+                    // LivingEntity#travel
+                    double predictedDeltaY = (this.lastMovement.y - d) * 0.9800000190734863D;
+
+                    if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - packetMovement.y) > 0.003) {
+                        if(flyAttempts > 2) {
+                            flyAttempts = 0;
+                            shouldCancel = true;
+                            ((Golfer) this.player).report(CheatType.FLY_HACK);
+                        }
+                        ++flyAttempts;
+                    }
+                    else
+                        flyAttempts = 0;
+                }
+            }
+        }
+        else if(notLevitating && onGround) {
+            if(this.lLastOnGround && this.lastOnGround) {
+                if(distDelta > 0.0372247D && !((Golfer) this.player).hasEntityCollisions()) {
+                    if(this.jumpFP > 10){
+                        this.jumpFP = 0;
+                        shouldCancel = true;
+                        ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                    }
+                    ++this.jumpFP;
+                }
+                flyAttempts = 0;
+            }
+        }*/
+    }
+
+
+    private boolean checkMove(Entity entity, Vec3d packetMovement, boolean packetOnGround) {
+        boolean shouldCancel = false;
+
+        if(this.lastMovement == null) {
+            this.lastMovement = packetMovement;
+            return false;
+        }
+
+        final Box bBox = entity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packetMovement.y - 0.25005D, 0);
+
+        Stream<VoxelShape> vs = entity.getEntityWorld().getBlockCollisions(entity, bBox);
+        long blockCollisions = vs.count();
+
+        if(blockCollisions != 0 && ((Golfer) player).hasEntityCollisions()) {
+            ((Golfer) player).setEntityCollisions(false);
+        }
+        ((Golfer) player).setBlockCollisions(blockCollisions != 0);
+
+        boolean onGround = ((Golfer) player).isNearGround();
+        boolean notLevitating = entity.getVelocity().y <= 0.0D;
+
+        BlockPos blockPos = new BlockPos(entity.getX(), bBox.minY, entity.getZ());
+        float slipperiness = entity.getEntityWorld().getBlockState(blockPos).getBlock().getSlipperiness();
+        float friction = !this.lastOnGround && !onGround ? 0.91F : slipperiness * 0.91F;
+
+        double predictedDist = this.lastDist * friction;
+        double packetDist = packetMovement.x * packetMovement.x + packetMovement.z * packetMovement.z;
+        double distDelta = packetDist - predictedDist;
+
+        if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
+
+            if(distDelta > 0.00750716D) {
+                if(this.speedFP > 10) {
+                    this.speedFP = 0;
+                    shouldCancel = true;
+                    ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                }
+                ++this.speedFP;
+            }
+
+            if(golfConfig.main.noFly && !this.player.abilities.allowFlying && (entity instanceof LivingEntity && !((LivingEntity) entity).isClimbing() || entity instanceof BoatEntity)) {
+                double d = 0.08D;
+
+                if (notLevitating && entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(StatusEffects.SLOW_FALLING)) {
+                    d = 0.01D;
+                }
+
+                if(entity.isInLava()) {
+
+                }
+                else if(entity.isTouchingWater()) {
+
+                }
+                else {
+                    // LivingEntity#travel
+                    double predictedDeltaY;
+
+                    if (entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(StatusEffects.LEVITATION))
+                        predictedDeltaY = this.lastMovement.y + (0.05D * (double)(((LivingEntity) entity).getStatusEffect(StatusEffects.LEVITATION).getAmplifier() + 1) - this.lastMovement.y) * 0.2D;
+                    else
+                        predictedDeltaY = (this.lastMovement.y - d) * 0.9800000190734863D;
+
+                    if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - packetMovement.y) > 0.003) {
+                        if(flyAttempts > 2) {
+                            flyAttempts = 0;
+                            shouldCancel = true;
+                            ((Golfer) this.player).report(CheatType.FLY_HACK);
+                        }
+                        ++flyAttempts;
+                    }
+                    else
+                        flyAttempts = 0;
+                }
+            }
+        }
+        else if(notLevitating && onGround) {
+
+            double allowedShift;
+            if(entity instanceof PlayerEntity || entity instanceof PigEntity) {
+                allowedShift = 0.0372247D;
+            }
+            else {
+                allowedShift = 0.102123D;
+            }
+
+            if(this.lLastOnGround && this.lastOnGround) {
+                if(entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(StatusEffects.SPEED)) {
+                    if(packetOnGround && distDelta > (0.35  + ((LivingEntity) entity).getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.4)) {
+                        if(this.jumpFP > 10){
+                            this.jumpFP = 0;
+                            shouldCancel = true;
+                            ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                        }
+                        ++this.jumpFP;
+                    }
+                    else if(distDelta > (0.05394  + ((LivingEntity) entity).getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.02)) {
+                        if(this.jumpFP > 10){
+                            this.jumpFP = 0;
+                            shouldCancel = true;
+                            ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                        }
+                        ++this.jumpFP;
+                    }
+                }
+                else if(distDelta > allowedShift && !((Golfer) this.player).hasEntityCollisions()) {
+                    if(this.jumpFP > 10){
+                        this.jumpFP = 0;
+                        shouldCancel = true;
+                        ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                    }
+                    ++this.jumpFP;
+                }
+                flyAttempts = 0;
+            }
+            else if (!packetOnGround) {
+                this.jumpFP = 0;
+            }
+        }
+
+        this.lastDist = packetDist;
+        this.lastMovement = packetMovement;
+        this.lLastOnGround = this.lastOnGround;
+        this.lastOnGround = onGround;
+
+        return shouldCancel;
     }
 }

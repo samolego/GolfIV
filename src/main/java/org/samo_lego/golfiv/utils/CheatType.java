@@ -3,10 +3,11 @@ package org.samo_lego.golfiv.utils;
 public enum CheatType {
     FLY_HACK("fly"),
     SPEED_HACK("speed"),
+    ELYTRA_HACK("elytra"),
     NO_FALL("no fall / Jesus"),
     SUSPICIOUS_CREATIVE("suspicious creative");
 
-    private String cheatString;
+    private final String cheatString;
 
     CheatType(String cheat) {
         this.cheatString = cheat;
