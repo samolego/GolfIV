@@ -224,12 +224,6 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                     packet.getZ(this.player.getZ()) - this.player.getZ()
             );
 
-            if(!this.player.isFallFlying() && checkMove(player, packetMovement, packet.isOnGround())) {
-                player.requestTeleport(this.lastTickX, this.lastTickY, this.lastTickZ);
-                ci.cancel();
-                return;
-            }
-
             boolean onGround = ((Golfer) player).isNearGround();
 
             if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
@@ -244,7 +238,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                         this.lastCheat = NO_FALL;
                 }
                 if(this.player.isFallFlying() && golfConfig.main.preventElytraHacks) {
-                    System.out.println(packetMovement);
+                    //System.out.println(packetMovement);
                     if(packetMovement.equals(this.lastMovement) || packetMovement.length() == 0 || this.player.getVelocity().length() == 0) {
                         ++this.elytraFP;
                         if(this.elytraFP > 10 && (ELYTRA_HACK.equals(this.lastCheat) || FLY_HACK.equals(this.lastCheat))) {
@@ -261,9 +255,10 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                 }
             }
 
-            this.lastMovement = packetMovement;
-            this.lLastOnGround = this.lastOnGround;
-            this.lastOnGround = onGround;
+            if(!this.player.isFallFlying() && checkMove(player, packetMovement, packet.isOnGround())) {
+                player.requestTeleport(this.lastTickX, this.lastTickY, this.lastTickZ);
+                ci.cancel();
+            }
         }
     }
 
