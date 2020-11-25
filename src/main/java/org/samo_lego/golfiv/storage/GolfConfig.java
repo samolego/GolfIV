@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,6 +19,7 @@ public class GolfConfig {
         public boolean noFly = true;
         public boolean antiTimer = true;
         public boolean noSpeed = true;
+        public boolean preventElytraHacks = true;
     }
 
     public static class Logging {

@@ -3,8 +3,7 @@ package org.samo_lego.golfiv.mixin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
@@ -26,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.stream.Stream;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
+import static org.samo_lego.golfiv.utils.CheatType.*;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin_movementChecks {
@@ -33,6 +33,9 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
     private final ServerPlayNetworkHandler serverPlayNetworkHandler = (ServerPlayNetworkHandler) (Object) this;
 
     @Shadow public ServerPlayerEntity player;
+    @Shadow private double lastTickX;
+    @Shadow private double lastTickY;
+    @Shadow private double lastTickZ;
     @Unique
     private boolean lastOnGround, lLastOnGround;
 
@@ -50,6 +53,8 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
 
     @Unique
     private double lastDist;
+    @Unique
+    private CheatType lastCheat;
 
     public ServerPlayNetworkHandlerMixin_movementChecks() {
     }
@@ -220,6 +225,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
             );
 
             if(!this.player.isFallFlying() && checkMove(player, packetMovement, packet.isOnGround())) {
+                player.requestTeleport(this.lastTickX, this.lastTickY, this.lastTickZ);
                 ci.cancel();
                 return;
             }
@@ -229,18 +235,26 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
             if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
                 if(packet.isOnGround() && golfConfig.main.yesFall) {
                     ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
-                    if(player.getVelocity().y <= 0.0D)
-                        ((Golfer) this.player).report(CheatType.NO_FALL);
+                    if(player.getVelocity().y <= 0.0D && NO_FALL.equals(this.lastCheat)) {
+                        ((Golfer) this.player).report(NO_FALL);
+                        player.requestTeleport(this.lastTickX, this.lastTickY, this.lastTickZ);
+                        ci.cancel();
+                    }
+                    else
+                        this.lastCheat = NO_FALL;
                 }
-                if(this.player.isFallFlying()) {
+                if(this.player.isFallFlying() && golfConfig.main.preventElytraHacks) {
                     System.out.println(packetMovement);
                     if(packetMovement.equals(this.lastMovement) || packetMovement.length() == 0 || this.player.getVelocity().length() == 0) {
                         ++this.elytraFP;
-                        if(this.elytraFP > 4) {
+                        if(this.elytraFP > 10 && (ELYTRA_HACK.equals(this.lastCheat) || FLY_HACK.equals(this.lastCheat))) {
                             this.elytraFP = 0;
-                            ((Golfer) this.player).report(CheatType.ELYTRA_HACK);
+                            ((Golfer) this.player).report(ELYTRA_HACK);
+                            player.requestTeleport(this.lastTickX, this.lastTickY, this.lastTickZ);
                             ci.cancel();
                         }
+                        else
+                            this.lastCheat = ELYTRA_HACK;
                     }
                     else
                         this.elytraFP = 0;
@@ -271,8 +285,10 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                 packet.getZ() - vehicle.getZ()
         );
 
-        if(checkMove(vehicle, packetMovement, vehicle.isOnGround()))
+        if(checkMove(vehicle, packetMovement, vehicle.isOnGround())) {
+            vehicle.requestTeleport(this.lastTickX, this.lastTickY, this.lastTickZ);
             ci.cancel();
+        }
 
         /*Box bBox = vehicle.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packetMovement.y - 0.25005D, 0);
 
@@ -387,19 +403,21 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
 
         if(!this.lLastOnGround && !this.lastOnGround && !onGround) {
 
-            if(distDelta > 0.00750716D) {
-                if(this.speedFP > 10) {
+            if(distDelta > 0.00750716D && !this.player.isCreative()) {
+                if(this.speedFP > 10 && (SPEED_HACK.equals(this.lastCheat) || FLY_HACK.equals(this.lastCheat))) {
                     this.speedFP = 0;
                     shouldCancel = true;
-                    ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                    ((Golfer) this.player).report(SPEED_HACK);
                 }
+                else
+                    this.lastCheat = SPEED_HACK;
                 ++this.speedFP;
             }
 
-            if(golfConfig.main.noFly && !this.player.abilities.allowFlying && (entity instanceof LivingEntity && !((LivingEntity) entity).isClimbing() || entity instanceof BoatEntity)) {
+            if(golfConfig.main.noFly && !this.player.abilities.allowFlying && !notLevitating && (entity instanceof LivingEntity && !((LivingEntity) entity).isClimbing() || entity instanceof BoatEntity)) {
                 double d = 0.08D;
 
-                if (notLevitating && entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(StatusEffects.SLOW_FALLING)) {
+                if (entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(StatusEffects.SLOW_FALLING)) {
                     d = 0.01D;
                 }
 
@@ -418,12 +436,14 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                     else
                         predictedDeltaY = (this.lastMovement.y - d) * 0.9800000190734863D;
 
-                    if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - packetMovement.y) > 0.003) {
+                    if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - packetMovement.y) > 0.003 && (FLY_HACK.equals(this.lastCheat) || SPEED_HACK.equals(this.lastCheat))) {
                         if(flyAttempts > 2) {
                             flyAttempts = 0;
                             shouldCancel = true;
-                            ((Golfer) this.player).report(CheatType.FLY_HACK);
+                            ((Golfer) this.player).report(FLY_HACK);
                         }
+                        else
+                            this.lastCheat = FLY_HACK;
                         ++flyAttempts;
                     }
                     else
@@ -434,38 +454,44 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
         else if(notLevitating && onGround) {
 
             double allowedShift;
-            if(entity instanceof PlayerEntity || entity instanceof PigEntity) {
-                allowedShift = 0.0372247D;
+            if(entity instanceof HorseEntity) {
+                allowedShift = 0.102123D;
             }
             else {
-                allowedShift = 0.102123D;
+                allowedShift = 0.0372247D;
             }
 
             if(this.lLastOnGround && this.lastOnGround) {
                 if(entity instanceof LivingEntity && ((LivingEntity) entity).hasStatusEffect(StatusEffects.SPEED)) {
                     if(packetOnGround && distDelta > (0.35  + ((LivingEntity) entity).getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.4)) {
-                        if(this.jumpFP > 10){
+                        if(this.jumpFP > 10 && SPEED_HACK.equals(this.lastCheat)){
                             this.jumpFP = 0;
                             shouldCancel = true;
-                            ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                            ((Golfer) this.player).report(SPEED_HACK);
                         }
+                        else
+                            this.lastCheat = SPEED_HACK;
                         ++this.jumpFP;
                     }
                     else if(distDelta > (0.05394  + ((LivingEntity) entity).getStatusEffect(StatusEffects.SPEED).getAmplifier() * 0.02)) {
-                        if(this.jumpFP > 10){
+                        if(this.jumpFP > 10 && SPEED_HACK.equals(this.lastCheat)){
                             this.jumpFP = 0;
                             shouldCancel = true;
-                            ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                            ((Golfer) this.player).report(SPEED_HACK);
                         }
+                        else
+                            this.lastCheat = SPEED_HACK;
                         ++this.jumpFP;
                     }
                 }
                 else if(distDelta > allowedShift && !((Golfer) this.player).hasEntityCollisions()) {
-                    if(this.jumpFP > 10){
+                    if(this.jumpFP > 10 && SPEED_HACK.equals(this.lastCheat)){
                         this.jumpFP = 0;
                         shouldCancel = true;
-                        ((Golfer) this.player).report(CheatType.SPEED_HACK);
+                        ((Golfer) this.player).report(SPEED_HACK);
                     }
+                    else
+                        this.lastCheat = SPEED_HACK;
                     ++this.jumpFP;
                 }
                 flyAttempts = 0;
