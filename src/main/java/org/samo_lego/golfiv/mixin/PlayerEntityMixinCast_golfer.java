@@ -2,12 +2,11 @@ package org.samo_lego.golfiv.mixin;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
+import org.samo_lego.golfiv.casts.Golfer;
 import org.samo_lego.golfiv.utils.BallLogger;
 import org.samo_lego.golfiv.utils.CheatType;
-import org.samo_lego.golfiv.utils.casts.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -60,13 +59,13 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
             }
         }
 
-        if(player instanceof ServerPlayerEntity) {
+        /*if(player instanceof ServerPlayerEntity) {
             ((ServerPlayerEntity) player).networkHandler.disconnect(new LiteralText(
                     "§3[GolfIV]\n§a" +
                             golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
                             ))
             ));
-        }
+        }*/
         int meesages = golfConfig.kickMessages.size();
         if(meesages > 0)
             player.sendMessage(
@@ -82,7 +81,7 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
 
     @Inject(method = "collideWithEntity(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"))
     private void updateCollision(Entity entity, CallbackInfo ci) {
-        if(entity instanceof BoatEntity) {
+        if(entity.isCollidable()) {
             if(entity.equals(this.player.getVehicle())) {
                 this.setEntityCollisions(false);
             }

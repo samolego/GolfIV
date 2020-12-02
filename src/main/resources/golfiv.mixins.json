@@ -4,12 +4,16 @@
   "package": "org.samo_lego.golfiv.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "DecoderHandlerMixin_timerCheck",
+    "ItemStackMixinCast_itemStackChecker",
     "PlayerEntityMixinCast_golfer",
+    "PlayerInventoryMixin_illegalsCheckInsert",
     "PlayerMoveC2SPacketAccessor",
+    "ServerPlayNetworkHandlerMixin_creativeItemsCheck",
     "ServerPlayNetworkHandlerMixin_movementChecks",
     "ServerPlayNetworkHandlerMixin_timerCheck",
     "ServerPlayNetworkHandlerMixinCast_TPSTracker",
-    "SlotMixin_illegalsCheck"
+    "SlotMixin_illegalsCheckSet"
   ],
   "injectors": {
     "defaultRequire": 1

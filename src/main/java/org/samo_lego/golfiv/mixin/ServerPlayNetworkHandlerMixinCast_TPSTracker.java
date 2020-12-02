@@ -1,7 +1,7 @@
 package org.samo_lego.golfiv.mixin;
 
 import net.minecraft.server.network.ServerPlayNetworkHandler;
-import org.samo_lego.golfiv.utils.casts.TPSTracker;
+import org.samo_lego.golfiv.casts.TPSTracker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

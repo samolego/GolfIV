@@ -6,6 +6,7 @@ public enum CheatType {
     ELYTRA_HACK("elytra"),
     NO_FALL("no fall / Jesus"),
     TIMER("timer"),
+    NBT_ITEMS("nbt items"),
     SUSPICIOUS_CREATIVE("suspicious creative");
 
     private final String cheatString;

@@ -20,6 +20,7 @@ public class GolfConfig {
         public boolean antiTimer = true;
         public boolean noSpeed = true;
         public boolean preventElytraHacks = true;
+        public boolean preventCreativeStrangeItems = false;
     }
 
     public static class Logging {

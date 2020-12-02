@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.utils.casts;
+package org.samo_lego.golfiv.casts;
 
 import org.samo_lego.golfiv.utils.CheatType;
 
