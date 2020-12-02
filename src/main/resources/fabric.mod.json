@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "glofiv",
+  "id": "golfiv",
   "version": "${version}",
 
   "name": "Golf IV",
@@ -29,8 +29,5 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }

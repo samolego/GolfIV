@@ -54,10 +54,10 @@ public class ServerPlayNetworkHandlerMixin_timerCheck {
                     packet.getPitch(this.player.pitch) - this.player.pitch
             );
             double delay;
-            boolean isStill = packetMovement.lengthSquared() == 0 && packetLook.x + packetLook.y == 0;
-            if(isStill && lastStill && this.lLastStill) {
+            boolean isStill = packetMovement.lengthSquared() == 0;
+            if(isStill /*&& this.lastStill  && this.lLastStill */&& packet instanceof PlayerMoveC2SPacket.PositionOnly) {
                 // One second passed from previous packet
-                System.out.println("Standing still.");
+                //System.out.println("Standing still.");
                 delay = 1000.0D;
             }
             else
@@ -69,7 +69,7 @@ public class ServerPlayNetworkHandlerMixin_timerCheck {
             if(lastTime != 0.0D) {
                 this.packetRate += (delay + lastTime - currentPacketTime);
             }
-            System.out.println("Rate: " + this.packetRate);
+            //System.out.println("Rate: " + this.packetRate);
 
             if(this.packetRate > 2000.0D) {
                 ((Golfer) player).report(TIMER);

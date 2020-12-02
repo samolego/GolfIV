@@ -14,7 +14,7 @@ public class GolfConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static class Main {
-        public boolean preventStrangeCreativeItems = true;
+        public boolean checkForStrangeItems = true;
         public boolean yesFall = true;
         public boolean noFly = true;
         public boolean antiTimer = true;
