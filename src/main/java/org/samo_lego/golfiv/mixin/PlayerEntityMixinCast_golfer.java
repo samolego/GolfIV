@@ -59,13 +59,13 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
             }
         }
 
-        /*if(player instanceof ServerPlayerEntity) {
+        if(player instanceof ServerPlayerEntity) {
             ((ServerPlayerEntity) player).networkHandler.disconnect(new LiteralText(
                     "§3[GolfIV]\n§a" +
                             golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
                             ))
             ));
-        }*/
+        }
         int meesages = golfConfig.kickMessages.size();
         if(meesages > 0)
             player.sendMessage(

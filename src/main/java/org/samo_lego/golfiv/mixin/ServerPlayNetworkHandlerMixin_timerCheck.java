@@ -84,6 +84,6 @@ public abstract class ServerPlayNetworkHandlerMixin_timerCheck {
     @Inject(method = "teleportRequest(DDDFFLjava/util/Set;)V", at = @At("HEAD"))
     private void timerRebalance(double x, double y, double z, float yaw, float pitch, Set<PlayerPositionLookS2CPacket.Flag> set, CallbackInfo ci) {
         this.packetRate -= 50.0D;
-        System.out.println("TP");
+        //System.out.println("TP");
     }
 }

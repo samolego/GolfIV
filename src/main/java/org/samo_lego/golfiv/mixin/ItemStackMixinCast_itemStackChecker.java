@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.Map;
+import java.util.Set;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixinCast_itemStackChecker implements ItemStackChecker {
@@ -35,8 +36,13 @@ public abstract class ItemStackMixinCast_itemStackChecker implements ItemStackCh
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.fromTag(this.getEnchantments());
 
         for(Map.Entry<Enchantment, Integer> ench : enchantments.entrySet()) {
-            if(!ench.getKey().isAcceptableItem(this.itemStack) || !EnchantmentHelper.isCompatible(EnchantmentHelper.get(this.itemStack).keySet(), ench.getKey())) {
-                System.out.println("Found wrong enchantment: " + ench.getKey() + " lvl " + ench.getValue());
+            Enchantment enchantment = ench.getKey();
+            int level = ench.getValue();
+
+            Set<Enchantment> otherEnchants = EnchantmentHelper.get(this.itemStack).keySet();
+            otherEnchants.remove(enchantment);
+
+            if(!enchantment.isAcceptableItem(this.itemStack) || !EnchantmentHelper.isCompatible(otherEnchants, enchantment) || level > enchantment.getMaxLevel()) {
                 this.removeSubTag("Enchantments");
                 illegal = true;
                 break;
@@ -46,7 +52,6 @@ public abstract class ItemStackMixinCast_itemStackChecker implements ItemStackCh
             illegal = true;
             this.count = 1;
         }
-
         return illegal;
     }
 }
