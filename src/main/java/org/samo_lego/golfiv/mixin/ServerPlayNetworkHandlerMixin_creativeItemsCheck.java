@@ -18,7 +18,6 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 public abstract class ServerPlayNetworkHandlerMixin_creativeItemsCheck {
     @Shadow public ServerPlayerEntity player;
 
-
     /**
      * Clears the CompoundTags from creative items while still allowing pick block function
      *
@@ -33,7 +32,8 @@ public abstract class ServerPlayNetworkHandlerMixin_creativeItemsCheck {
             )
     )
     private ItemStack checkCreativeItem(ItemStack itemStack) {
-        ((ItemStackChecker) itemStack).makeLegal();
+        //noinspection ConstantConditions
+        ((ItemStackChecker) (Object) itemStack).makeLegal();
         if(golfConfig.main.preventCreativeStrangeItems) {
             CompoundTag compoundTag = itemStack.getSubTag("BlockEntityTag");
             int amount = itemStack.getCount();

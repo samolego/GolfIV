@@ -21,7 +21,9 @@ public abstract class PlayerInventoryMixin_illegalsCheckInsert {
 
     @ModifyVariable(method = "insertStack(ILnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isDamaged()Z"))
     private ItemStack checkInsertedStack(ItemStack stack) {
-        if(golfConfig.main.checkForStrangeItems && ((ItemStackChecker) stack).makeLegal()) {
+        //noinspection ConstantConditions
+        boolean isLegal = ((ItemStackChecker) (Object) stack).makeLegal();
+        if(golfConfig.main.checkForStrangeItems && isLegal) {
             ((Golfer) player).report(NBT_ITEMS);
         }
         return stack;

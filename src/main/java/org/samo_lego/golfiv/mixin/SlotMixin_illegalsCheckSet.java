@@ -16,6 +16,7 @@ public abstract class SlotMixin_illegalsCheckSet {
     @Inject(method = "setStack(Lnet/minecraft/item/ItemStack;)V", at = @At("HEAD"))
     private void checkInsertedStack(ItemStack stack, CallbackInfo ci) {
         if(golfConfig.main.checkForStrangeItems)
-            ((ItemStackChecker) stack).makeLegal();
+            //noinspection ConstantConditions
+            ((ItemStackChecker) (Object) stack).makeLegal();
     }
 }
