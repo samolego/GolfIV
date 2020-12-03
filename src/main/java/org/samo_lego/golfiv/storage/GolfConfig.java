@@ -38,7 +38,8 @@ public class GolfConfig {
             "If you cheat, you only cheat yourself.",
             "I'm not upset that you lied to me,\n I'm upset that from now on I can't believe you.",
             "Hax bad.",
-            "You better check your client. It seems to be lying."
+            "You better check your client. It seems to be lying.",
+            "Impossible = cannot be done. But it was done by you?"
     ));
 
     public final GolfConfig.Main main = new Main();

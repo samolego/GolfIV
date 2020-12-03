@@ -5,6 +5,7 @@ public enum CheatType {
     SPEED_HACK("speed"),
     ELYTRA_HACK("elytra"),
     NO_FALL("no fall / Jesus"),
+    INVENTORY_WALK("inventory walk"),
     TIMER("timer"),
     NBT_ITEMS("nbt items"),
     SUSPICIOUS_CREATIVE("suspicious creative");

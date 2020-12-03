@@ -28,6 +28,7 @@ public class ServerPlayNetworkHandlerMixin_illegalsCheckSlot {
             )
     )
     private void checkSlot(ClickSlotC2SPacket packet, CallbackInfo ci) {
+        ((Golfer) player).setOpenGui(true);
         int packetSlot = packet.getSlot();
         if(packetSlot >= 0) {
             ItemStack itemStack = this.player.currentScreenHandler.getSlot(packetSlot).getStack();

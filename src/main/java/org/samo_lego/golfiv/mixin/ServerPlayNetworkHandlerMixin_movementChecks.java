@@ -483,7 +483,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                     }
                 }
                 else if(distDelta > allowedShift && !((Golfer) this.player).hasEntityCollisions()) {
-                    System.out.println(distDelta);
+                    //System.out.println(distDelta);
                     if(this.jumpFP > 10 && SPEED_HACK.equals(this.lastCheat)){
                         this.jumpFP = 0;
                         shouldCancel = true;

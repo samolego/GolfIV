@@ -81,6 +81,7 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
 
     @Override
     public void setOpenGui(boolean openGui) {
+        System.out.println("inv. Was open: " + this.hasOpenScreen + ", setting to " + openGui);
         this.hasOpenScreen = openGui;
     }
 

@@ -9,12 +9,13 @@
     "PlayerEntityMixinCast_golfer",
     "PlayerInventoryMixin_illegalsCheckInsert",
     "PlayerMoveC2SPacketAccessor",
+    "ServerPlayerEntityMixin_inventoryWalk",
     "ServerPlayNetworkHandlerMixin_creativeItemsCheck",
     "ServerPlayNetworkHandlerMixin_illegalsCheckSlot",
     "ServerPlayNetworkHandlerMixin_inventoryWalk",
     "ServerPlayNetworkHandlerMixin_movementChecks",
     "ServerPlayNetworkHandlerMixin_timerCheck",
-    "ServerPlayNetworkHandlerMixinCast_TPSTracker",
+    "ServerPlayNetworkHandlerMixinCast_TPSTracker"
   ],
   "injectors": {
     "defaultRequire": 1
