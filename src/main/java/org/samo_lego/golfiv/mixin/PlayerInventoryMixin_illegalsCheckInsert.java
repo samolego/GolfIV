@@ -25,6 +25,7 @@ public abstract class PlayerInventoryMixin_illegalsCheckInsert {
         boolean illegal = ((ItemStackChecker) (Object) stack).makeLegal();
         if(golfConfig.main.checkForStrangeItems && illegal) {
             ((Golfer) player).report(NBT_ITEMS);
+            System.out.println("Player inv");
         }
         return stack;
     }

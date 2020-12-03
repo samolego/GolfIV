@@ -10,10 +10,11 @@
     "PlayerInventoryMixin_illegalsCheckInsert",
     "PlayerMoveC2SPacketAccessor",
     "ServerPlayNetworkHandlerMixin_creativeItemsCheck",
+    "ServerPlayNetworkHandlerMixin_illegalsCheckSlot",
+    "ServerPlayNetworkHandlerMixin_inventoryWalk",
     "ServerPlayNetworkHandlerMixin_movementChecks",
     "ServerPlayNetworkHandlerMixin_timerCheck",
     "ServerPlayNetworkHandlerMixinCast_TPSTracker",
-    "SlotMixin_illegalsCheckSet"
   ],
   "injectors": {
     "defaultRequire": 1

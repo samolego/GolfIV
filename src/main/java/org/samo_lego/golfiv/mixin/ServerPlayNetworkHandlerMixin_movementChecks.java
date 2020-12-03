@@ -452,6 +452,9 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
             if(entity instanceof HorseEntity) {
                 allowedShift = 0.102123D;
             }
+            else if(entity instanceof BoatEntity && slipperiness >= 0.98F) {
+                allowedShift = 0.54D;
+            }
             else {
                 allowedShift = 0.0372247D;
             }
@@ -480,6 +483,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                     }
                 }
                 else if(distDelta > allowedShift && !((Golfer) this.player).hasEntityCollisions()) {
+                    System.out.println(distDelta);
                     if(this.jumpFP > 10 && SPEED_HACK.equals(this.lastCheat)){
                         this.jumpFP = 0;
                         shouldCancel = true;

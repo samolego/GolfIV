@@ -23,7 +23,7 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
     private final PlayerEntity player = (PlayerEntity) (Object) this;
 
     @Unique
-    private boolean blockCollisions, entityCollisions;
+    private boolean blockCollisions, entityCollisions, hasOpenScreen;
 
     @Override
     public boolean isNearGround() {
@@ -59,13 +59,13 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
             }
         }
 
-        if(player instanceof ServerPlayerEntity) {
+        /*if(player instanceof ServerPlayerEntity) {
             ((ServerPlayerEntity) player).networkHandler.disconnect(new LiteralText(
                     "§3[GolfIV]\n§a" +
                             golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
                             ))
             ));
-        }
+        }*/
         int meesages = golfConfig.kickMessages.size();
         if(meesages > 0)
             player.sendMessage(
@@ -77,6 +77,16 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
                     ),
                     false
             );
+    }
+
+    @Override
+    public void setOpenGui(boolean openGui) {
+        this.hasOpenScreen = openGui;
+    }
+
+    @Override
+    public boolean hasOpenGui() {
+        return this.hasOpenScreen;
     }
 
     @Inject(method = "collideWithEntity(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"))

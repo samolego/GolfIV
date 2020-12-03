@@ -15,4 +15,7 @@ public interface Golfer {
     boolean hasEntityCollisions();
 
     void report(CheatType cheatType);
+
+    void setOpenGui(boolean openGui);
+    boolean hasOpenGui();
 }
