@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin;
+package org.samo_lego.golfiv.mixin.illegals;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
@@ -20,6 +20,15 @@ public class ServerPlayNetworkHandlerMixin_illegalsCheckSlot {
 
     @Shadow public ServerPlayerEntity player;
 
+    /**
+     * Checks whether the clicked slot contains
+     * illegal stack.
+     *
+     * Also set the GUI status to open.
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "onClickSlot(Lnet/minecraft/network/packet/c2s/play/ClickSlotC2SPacket;)V",
             at = @At(

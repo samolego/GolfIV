@@ -8,8 +8,14 @@ import java.io.File;
 
 public class GolfIV implements ModInitializer {
 
+	/**
+	 * GolfIV config.
+	 */
 	public static GolfConfig golfConfig;
 
+	/**
+	 * Initializes GolfIV.
+	 */
 	@Override
 	public void onInitialize() {
 		golfConfig = GolfConfig.loadConfig(new File(FabricLoader.getInstance().getConfigDir() + "/GolfIV_config.json"));

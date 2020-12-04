@@ -31,6 +31,14 @@ public abstract class ServerPlayNetworkHandlerMixin_timerCheck {
     @Unique
     private boolean lastStill, lLastStill;
 
+    /**
+     * Tries to detect timer hack.
+     *
+     * Bad.
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(
@@ -81,6 +89,16 @@ public abstract class ServerPlayNetworkHandlerMixin_timerCheck {
         }
     }
 
+    /**
+     * Re-balances timer on teleport request.
+     * @param x
+     * @param y
+     * @param z
+     * @param yaw
+     * @param pitch
+     * @param set
+     * @param ci
+     */
     @Inject(method = "teleportRequest(DDDFFLjava/util/Set;)V", at = @At("HEAD"))
     private void timerRebalance(double x, double y, double z, float yaw, float pitch, Set<PlayerPositionLookS2CPacket.Flag> set, CallbackInfo ci) {
         this.packetRate -= 50.0D;

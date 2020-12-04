@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin;
+package org.samo_lego.golfiv.mixin.movement;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
+import org.samo_lego.golfiv.mixin.PlayerMoveC2SPacketAccessor;
 import org.samo_lego.golfiv.utils.CheatType;
 import org.samo_lego.golfiv.casts.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,6 +28,9 @@ import java.util.stream.Stream;
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.utils.CheatType.*;
 
+/**
+ * A spaghetti movement-check class.
+ */
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin_movementChecks {
 
@@ -56,9 +60,12 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
     @Unique
     private CheatType lastCheat;
 
-    public ServerPlayNetworkHandlerMixin_movementChecks() {
-    }
-
+    /**
+     * Calls player movement check.
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(
@@ -263,6 +270,11 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
     }
 
 
+    /**
+     * Calls vehicle movement check.
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "onVehicleMove(Lnet/minecraft/network/packet/c2s/play/VehicleMoveC2SPacket;)V",
             at = @At(
@@ -367,6 +379,14 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
     }
 
 
+    /**
+     * Checks movement.
+     *
+     * @param entity entity that has moved.
+     * @param packetMovement movement according to the packet
+     * @param packetOnGround whether packet says entity is on ground.
+     * @return true if movement should be canceled (was cheaty), otherwise false.
+     */
     private boolean checkMove(Entity entity, Vec3d packetMovement, boolean packetOnGround) {
         boolean shouldCancel = false;
 

@@ -13,21 +13,98 @@ import static org.samo_lego.golfiv.utils.BallLogger.logError;
 public class GolfConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+    /**
+     * Main part of the config.
+     */
     public static class Main {
+        /**
+         * Checks item picked that come in players inventory,
+         * whether they have disallowed enchantments. This
+         * can be disabled if you believe that players
+         * didn't spawn in illegals.
+         *
+         * Status: working
+         */
         public boolean checkForStrangeItems = true;
+        /**
+         * Client can tell server its onGround status and
+         * server blindly accepts it. This can allow
+         * client to not take any fall damage.
+         * This setting re-enables the check server-side
+         * and doesn't care about the client's onGround status.
+         *
+         * Status: working (might throw false positives when lagging, not sure)
+         */
         public boolean yesFall = true;
+        /**
+         * Detects flight, either it being
+         * a boat-flight or normal player flight
+         *
+         * Status: working (might throw false positives when lagging, not sure)
+         */
         public boolean noFly = true;
+        /**
+         * Tries to detect the timer check, which allows
+         * client to speed up the game, in order to move faster or use items
+         * faster.
+         * Currently bad. Please do not use.
+         *
+         * Status: terrible
+         */
         public boolean antiTimer = true;
+        /**
+         * Tries to detect speed hacks.
+         * Kinda works, but needs overhaul.
+         *
+         * Status: not really usable, as ice paths still throw false positives
+         */
         public boolean noSpeed = true;
+        /**
+         * Tries to prevent "fake" elytra movement.
+         * Bad.
+         *
+         * Status: even worse than speed checks, needs overhaul
+         */
         public boolean preventElytraHacks = true;
-        public boolean preventCreativeStrangeItems = false;
+        /**
+         * Clears NBT items, but still allows block-picking.
+         *
+         * Status: working
+         */
+        public boolean preventCreativeStrangeItems = true;
+
+        /**
+         * Checks whether is doing actions
+         * that cannot be done while having the GUI open.
+         * (e. g. hitting, moving, etc.)
+         */
+        public boolean checkIllegalActions = true;
     }
 
+    /**
+     * Where to log cheaters.
+     */
     public static class Logging {
+        /**
+         * Logs cheat attempts to console.
+         *
+         * Status: working
+         */
         public boolean toConsole = true;
+        /**
+         * Logs cheat attempts to ops.
+         *
+         * Status: not yet implemented
+         */
         public boolean toOps = true;
     }
 
+    /**
+     * Which messages should be used when kicking client on cheat attempts.
+     * Messages are chosen randomly.
+     *
+     * Status: working
+     */
     public ArrayList<String> kickMessages = new ArrayList<>(Arrays.asList(
             "Only who dares wins!",
             "Bad Liar ...",
@@ -45,6 +122,12 @@ public class GolfConfig {
     public final GolfConfig.Main main = new Main();
     public final GolfConfig.Logging logging = new Logging();
 
+    /**
+     * Loads GolfIV config from file.
+     *
+     * @param configFile file to read GolfIV config from.
+     * @return GolfConfig object
+     */
     public static GolfConfig loadConfig(File configFile) {
         GolfConfig golfConfig;
         if(configFile.exists() && configFile.isFile()) {
@@ -67,6 +150,11 @@ public class GolfConfig {
         return golfConfig;
     }
 
+    /**
+     * Saves GolfIV config to the file.
+     *
+     * @param configFile file where to save config to.
+     */
     public void saveConfig(File configFile) {
         try (
                 FileOutputStream stream = new FileOutputStream(configFile);

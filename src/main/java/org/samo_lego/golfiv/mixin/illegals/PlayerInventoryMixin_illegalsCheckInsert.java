@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin;
+package org.samo_lego.golfiv.mixin.illegals;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,6 +19,14 @@ public abstract class PlayerInventoryMixin_illegalsCheckInsert {
 
     @Shadow @Final public PlayerEntity player;
 
+    /**
+     * Checks if the insrted stack to
+     * player's inventory was legal.
+     * Catches /give as well.
+     *
+     * @param stack
+     * @return
+     */
     @ModifyVariable(method = "insertStack(ILnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isDamaged()Z"))
     private ItemStack checkInsertedStack(ItemStack stack) {
         //noinspection ConstantConditions

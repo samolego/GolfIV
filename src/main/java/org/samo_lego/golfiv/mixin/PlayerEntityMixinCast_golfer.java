@@ -25,31 +25,53 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
     @Unique
     private boolean blockCollisions, entityCollisions, hasOpenScreen;
 
+    /**
+     * Real onGround value, which isn't affected
+     * by the client packet.
+     *
+     * @return true if player is near ground (0.5001 block tolerance), otherwise false.
+     */
     @Override
     public boolean isNearGround() {
         return blockCollisions || entityCollisions;
     }
 
+    /**
+     * Sets whether player has block collisions.
+     *
+     * @param blockCollisions whether player has block collisions.
+     */
     @Override
     public void setBlockCollisions(boolean blockCollisions) {
         this.blockCollisions = blockCollisions;
     }
 
-    @Override
-    public boolean hasBlockCollisions() {
-        return blockCollisions;
-    }
-
+    /**
+     * Sets whether player has entity collisions (e. g. boat collisions).
+     *
+     * @param entityCollisions whether player has entity collisions.
+     */
     @Override
     public void setEntityCollisions(boolean entityCollisions) {
         this.entityCollisions = entityCollisions;
     }
 
+    /**
+     * Tells whether player has entity collisions.
+     *
+     * @return true if player has entity collisions, otherwise false.
+     */
     @Override
     public boolean hasEntityCollisions() {
         return entityCollisions;
     }
 
+    /**
+     * Reports player for cheating / kicks them.
+     * (will be changed in future)
+     *
+     * @param cheatType type of the cheat player has used.
+     */
     @Override
     public void report(CheatType cheatType) {
         if(player instanceof ServerPlayerEntity) {
@@ -79,17 +101,35 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
             );
     }
 
+    /**
+     * Sets whether player has opened GUI.
+     * Doesn't catch opening their own inventory.
+     *
+     * @param openGui whether player has opened the GUI.
+     */
     @Override
     public void setOpenGui(boolean openGui) {
         System.out.println("inv. Was open: " + this.hasOpenScreen + ", setting to " + openGui);
         this.hasOpenScreen = openGui;
     }
 
+    /**
+     * Tells whether player has open GUI.
+     * Doesn't catch their own inventory being open.
+     *
+     * @return true if player has open GUI, otherwise false
+     */
     @Override
     public boolean hasOpenGui() {
         return this.hasOpenScreen;
     }
 
+    /**
+     * Checks for entity collisions.
+     *
+     * @param entity colliding entity
+     * @param ci callbackInfo
+     */
     @Inject(method = "collideWithEntity(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"))
     private void updateCollision(Entity entity, CallbackInfo ci) {
         if(entity.isCollidable()) {

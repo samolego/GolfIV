@@ -25,6 +25,10 @@ public abstract class ServerPlayNetworkHandlerMixinCast_TPSTracker implements TP
         return 1000.0 / this.mspt;
     }
 
+    /**
+     * Tracks server's tps.
+     * @param ci
+     */
     @Inject(method = "tick()V", at= @At("HEAD"))
     private void measureTPS(CallbackInfo ci) {
         final double now = System.currentTimeMillis();
