@@ -47,9 +47,8 @@ public class GolfConfig {
          * Tries to detect the timer check, which allows
          * client to speed up the game, in order to move faster or use items
          * faster.
-         * Currently bad. Please do not use.
          *
-         * Status: terrible
+         * Status: ohh, we are halfway there
          */
         public boolean antiTimer = true;
         /**
