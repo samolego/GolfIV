@@ -61,36 +61,37 @@ public abstract class ServerPlayNetworkHandlerMixin_timerCheck {
                     packet.getYaw(this.player.yaw) - this.player.yaw,
                     packet.getPitch(this.player.pitch) - this.player.pitch
             );
-            double delay;
-            boolean isStill = packetMovement.lengthSquared() == 0;
-            if(isStill /*&& this.lastStill  && this.lLastStill */&& packet instanceof PlayerMoveC2SPacket.PositionOnly) {
+            double delay = 50.0D;
+            /*boolean isStill = packetMovement.lengthSquared() == 0;
+            if(isStill /*&& this.lastStill  && this.lLastStill && packet instanceof PlayerMoveC2SPacket.PositionOnly) {
                 // One second passed from previous packet
                 //System.out.println("Standing still.");
                 delay = 1000.0D;
             }
             else
-                delay = 50.0D;
+                delay = 50.0D;*/
 
-            this.lLastStill = this.lastStill;
-            this.lastStill = isStill;
+            //this.lLastStill = this.lastStill;
+            //this.lastStill = isStill;
 
             if(lastTime != 0.0D) {
                 this.packetRate += (delay + lastTime - currentPacketTime);
             }
-            //System.out.println("Rate: " + this.packetRate);
 
-            if(this.packetRate > 2000.0D) {
+            if(this.packetRate < -10.0D) {
+                this.packetRate = 0.0D;
+            }
+            else if(this.packetRate > 100.0D) {
                 ((Golfer) player).report(TIMER);
                 this.packetRate = 0.0D;
             }
-            else if(this.packetRate < -200.0D) {
-                this.packetRate = -100.0D;
-            }
+            //System.out.println("Rate: " + this.packetRate);
         }
     }
 
     /**
      * Re-balances timer on teleport request.
+     *
      * @param x
      * @param y
      * @param z

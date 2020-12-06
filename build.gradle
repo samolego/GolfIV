@@ -1,10 +1,12 @@
 plugins {
 	id 'fabric-loom' version '0.5-SNAPSHOT'
 	id 'maven-publish'
+	id 'java'
 }
 
 repositories {
 	maven { url 'https://jitpack.io' }
+	mavenCentral()
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -14,6 +16,10 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+configurations {
+	doclava
+}
+
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -22,6 +28,9 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	doclava "com.google.doclava:doclava:1.0.6"
+
 
 	//modImplementation 'com.github.jellysquid3:lithium-fabric:1.16.x-0.4.5'
 	//modImplementation "com.github.gnembon:fabric-carpet:master-SNAPSHOT"
@@ -63,6 +72,17 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archivesBaseName}"}
 	}
+}
+
+javadoc {
+/*	source = sourceSets.main.allJava
+
+	options.windowTitle = "SDK"
+	options.docTitle = "SDK"
+
+	options.docletpath = configurations.doclava.files.asType(List)
+	options.doclet = "com.¸google.doclava"*/
+	//options.stylesheetFile = new File(projectDir, "src/main/javadoc/dracula.css");
 }
 
 // configure the maven publication
