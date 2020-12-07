@@ -1,6 +1,7 @@
 org.samo_lego.golfiv
 org.samo_lego.golfiv.casts
 org.samo_lego.golfiv.mixin
+org.samo_lego.golfiv.mixin.combat
 org.samo_lego.golfiv.mixin.illegalActions
 org.samo_lego.golfiv.mixin.illegals
 org.samo_lego.golfiv.mixin.movement
