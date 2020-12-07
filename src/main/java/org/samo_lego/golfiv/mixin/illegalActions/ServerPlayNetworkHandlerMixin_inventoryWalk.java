@@ -3,10 +3,12 @@ package org.samo_lego.golfiv.mixin.illegalActions;
 import net.minecraft.network.packet.c2s.play.*;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import org.samo_lego.golfiv.casts.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,6 +25,11 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
 
     @Shadow public ServerPlayerEntity player;
 
+    @Unique
+    private short illegalActionsMoveAttempts;
+    @Unique
+    private short illegalActionsLookAttempts;
+
 
     /**
      * Sets the status of open GUI to false.
@@ -38,6 +45,8 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
             )
     )
     private void closeHandledScreen(CloseHandledScreenC2SPacket packet, CallbackInfo ci) {
+        this.illegalActionsMoveAttempts = 0;
+        this.illegalActionsLookAttempts = 0;
         ((Golfer) this.player).setOpenGui(false);
     }
 
@@ -83,8 +92,25 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
                 packet.getY(this.player.getY()) - this.player.getY(),
                 packet.getZ(this.player.getZ()) - this.player.getZ()
         );
-        if(((Golfer) this.player).hasOpenGui() && !player.isFallFlying() && packetMovement.getY() == 0 && packetMovement.lengthSquared() != 0) {
-            ((Golfer) this.player).report(ILLEGAL_ACTIONS);
+        Vec2f packetLook = new Vec2f(
+                packet.getYaw(this.player.yaw) - this.player.yaw,
+                packet.getPitch(this.player.pitch) - this.player.pitch
+        );
+        if(((Golfer) this.player).hasOpenGui() && !player.isFallFlying() && !player.isInsideWaterOrBubbleColumn()) {
+            if(packet instanceof PlayerMoveC2SPacket.PositionOnly && packetMovement.getY() == 0 && packetMovement.lengthSquared() != 0) {
+                if(++this.illegalActionsMoveAttempts > 40) {
+                    ((Golfer) this.player).report(ILLEGAL_ACTIONS);
+                    ci.cancel();
+                }
+                System.out.println("Walk");
+            }
+            else if(packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both && packetLook.x + packetLook.y != 0) {
+                if(++this.illegalActionsLookAttempts > 4) {
+                    ((Golfer) this.player).report(ILLEGAL_ACTIONS);
+                    ci.cancel();
+                }
+                System.out.println("Look");
+            }
         }
     }
 
