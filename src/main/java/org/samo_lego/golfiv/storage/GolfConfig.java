@@ -76,8 +76,17 @@ public class GolfConfig {
          * Checks whether is doing actions
          * that cannot be done while having the GUI open.
          * (e. g. hitting, moving, etc.)
+         *
+         * Status: partially working
          */
         public boolean checkIllegalActions = true;
+
+        /**
+         * Detects player hitting entity through full blocks.
+         *
+         * Status: working
+         */
+        public boolean hitThroughWallCheck = true;
     }
 
     /**

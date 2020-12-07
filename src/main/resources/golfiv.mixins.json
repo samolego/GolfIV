@@ -4,17 +4,18 @@
   "package": "org.samo_lego.golfiv.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "illegals.ItemStackMixinCast_itemStackChecker",
     "PlayerEntityMixinCast_golfer",
-    "illegals.PlayerInventoryMixin_illegalsCheckInsert",
     "PlayerMoveC2SPacketAccessor",
+    "ServerPlayNetworkHandlerMixin_timerCheck",
+    "ServerPlayNetworkHandlerMixinCast_TPSTracker",
     "illegalActions.ServerPlayerEntityMixin_inventoryWalk",
+    "illegalActions.ServerPlayNetworkHandlerMixin_inventoryWalk",
+    "illegals.ItemStackMixinCast_itemStackChecker",
+    "illegals.PlayerInventoryMixin_illegalsCheckInsert",
     "illegals.ServerPlayNetworkHandlerMixin_creativeItemsCheck",
     "illegals.ServerPlayNetworkHandlerMixin_illegalsCheckSlot",
-    "illegalActions.ServerPlayNetworkHandlerMixin_inventoryWalk",
-    "movement.ServerPlayNetworkHandlerMixin_movementChecks",
-    "ServerPlayNetworkHandlerMixin_timerCheck",
-    "ServerPlayNetworkHandlerMixinCast_TPSTracker"
+    "combat.ServerPlayNetworkHandlerMixin_hitThroughWallCheck",
+    "movement.ServerPlayNetworkHandlerMixin_movementChecks"
   ],
   "injectors": {
     "defaultRequire": 1
