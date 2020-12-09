@@ -33,7 +33,7 @@ dependencies {
 
 
 	//modImplementation 'com.github.jellysquid3:lithium-fabric:1.16.x-0.4.5'
-	//modImplementation "com.github.gnembon:fabric-carpet:master-SNAPSHOT"
+	modImplementation "com.github.gnembon:fabric-carpet:master-SNAPSHOT"
 	//modImplementation 'com.github.jellysquid3:cadmium-fabric:1.15.x/dev-SNAPSHOT'
 }
 

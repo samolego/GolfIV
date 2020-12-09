@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.combat;
+package org.samo_lego.golfiv.mixin_checks.combat;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -18,9 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.utils.CheatType.HIT_THROUGH_WALLS;
+import static org.samo_lego.golfiv.utils.CheatType.REACH;
 
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin_hitThroughWallCheck {
+public class ServerPlayNetworkHandlerMixin_hitCheck {
 
     @Shadow public ServerPlayerEntity player;
 
@@ -33,15 +34,20 @@ public class ServerPlayNetworkHandlerMixin_hitThroughWallCheck {
             locals = LocalCapture.CAPTURE_FAILHARD,
             cancellable = true
     )
-    private void checkKillaura(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, ServerWorld serverWorld, Entity victim, double distanceSquared) {
-        if(golfConfig.main.hitThroughWallCheck) {
+    private void hitThroughWallCheck(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, ServerWorld serverWorld, Entity victim, double distanceSquared) {
+        if(golfConfig.main.hitCheck) {
             EntityHitResult entityHit = new EntityHitResult(victim);
+
+            if(!player.isCreative() && entityHit.squaredDistanceTo(player) > 16) {
+                ((Golfer) player).report(REACH, 5);
+                ci.cancel();
+            }
 
             BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
             BlockState blockState = serverWorld.getBlockState(blockHit.getBlockPos());
 
-            if(blockState.isFullCube(serverWorld, blockHit.getBlockPos()) && blockHit.squaredDistanceTo(player) < entityHit.squaredDistanceTo(player)) {
-                ((Golfer) player).report(HIT_THROUGH_WALLS);
+            if(blockState.isFullCube(serverWorld, blockHit.getBlockPos()) && blockHit.squaredDistanceTo(player) + 1.0D < entityHit.squaredDistanceTo(player)) {
+                ((Golfer) player).report(HIT_THROUGH_WALLS, 10);
                 ci.cancel();
             }
         }

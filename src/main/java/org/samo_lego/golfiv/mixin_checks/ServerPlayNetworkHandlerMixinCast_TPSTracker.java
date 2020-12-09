@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin;
+package org.samo_lego.golfiv.mixin_checks;
 
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import org.samo_lego.golfiv.casts.TPSTracker;

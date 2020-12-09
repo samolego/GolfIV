@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin;
+package org.samo_lego.golfiv.mixin_checks.accessors;
 
 
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;

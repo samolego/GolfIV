@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegalActions;
+package org.samo_lego.golfiv.mixin_checks.illegalActions;
 
 import net.minecraft.network.packet.c2s.play.*;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -99,14 +99,14 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
         if(((Golfer) this.player).hasOpenGui() && !player.isFallFlying() && !player.isInsideWaterOrBubbleColumn()) {
             if(packet instanceof PlayerMoveC2SPacket.PositionOnly && packetMovement.getY() == 0 && packetMovement.lengthSquared() != 0) {
                 if(++this.illegalActionsMoveAttempts > 40) {
-                    ((Golfer) this.player).report(ILLEGAL_ACTIONS);
+                    ((Golfer) this.player).report(ILLEGAL_ACTIONS, 10);
                     ci.cancel();
                 }
                 System.out.println("Walk");
             }
             else if(packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both && packetLook.x + packetLook.y != 0) {
                 if(++this.illegalActionsLookAttempts > 4) {
-                    ((Golfer) this.player).report(ILLEGAL_ACTIONS);
+                    ((Golfer) this.player).report(ILLEGAL_ACTIONS, 50);
                     ci.cancel();
                 }
                 System.out.println("Look");
@@ -131,7 +131,7 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
     )
     private void entityInteraction(PlayerInteractEntityC2SPacket packet, CallbackInfo ci) {
         if(((Golfer) this.player).hasOpenGui()) {
-            ((Golfer) this.player).report(ILLEGAL_ACTIONS);
+            ((Golfer) this.player).report(ILLEGAL_ACTIONS, 50);
             ci.cancel();
         }
     }
@@ -150,7 +150,7 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
     )
     private void chatWithInventoryOpened(ChatMessageC2SPacket packet, CallbackInfo ci) {
         if(((Golfer) player).hasOpenGui()) {
-            ((Golfer) this.player).report(ILLEGAL_ACTIONS);
+            ((Golfer) this.player).report(ILLEGAL_ACTIONS, 100);
             ci.cancel();
         }
     }

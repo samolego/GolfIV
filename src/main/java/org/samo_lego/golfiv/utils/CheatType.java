@@ -12,6 +12,7 @@ public enum CheatType {
     NO_FALL("no fall / Jesus"),
     ILLEGAL_ACTIONS("inventory walk"),
     KILLAURA("killaura"),
+    REACH("reach"),
     HIT_THROUGH_WALLS("hit through walls"),
     TIMER("timer"),
     NBT_ITEMS("nbt items"),

@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegals;
+package org.samo_lego.golfiv.mixin_checks.illegals;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -36,7 +36,7 @@ public abstract class ServerPlayNetworkHandlerMixin_creativeItemsCheck {
             int amount = itemStack.getCount();
             if(amount > itemStack.getMaxCount()) {
                 amount = 1;
-                ((Golfer) player).report(CheatType.SUSPICIOUS_CREATIVE);
+                ((Golfer) player).report(CheatType.SUSPICIOUS_CREATIVE, 100);
             }
             itemStack =  new ItemStack(itemStack.getItem(), amount);
             itemStack.setTag(compoundTag);

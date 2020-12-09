@@ -1,20 +1,24 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "org.samo_lego.golfiv.mixin",
+  "package": "org.samo_lego.golfiv.mixin_checks",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "DecoderHandlerMixin_DEBUG",
     "PlayerEntityMixinCast_golfer",
-    "PlayerMoveC2SPacketAccessor",
     "ServerPlayNetworkHandlerMixin_timerCheck",
     "ServerPlayNetworkHandlerMixinCast_TPSTracker",
+    "accessors.PlayerInteractEntityC2SPacketAccessor",
+    "accessors.PlayerMoveC2SPacketAccessor",
+    "combat.ServerPlayNetworkHandlerMixin_hitCheck",
+    "combat.ServerPlayNetworkHandlerMixin_killauraAccuracyCheck",
+    "combat.ServerPlayNetworkHandlerMixin_killauraCheck",
     "illegalActions.ServerPlayerEntityMixin_inventoryWalk",
     "illegalActions.ServerPlayNetworkHandlerMixin_inventoryWalk",
     "illegals.ItemStackMixinCast_itemStackChecker",
     "illegals.PlayerInventoryMixin_illegalsCheckInsert",
     "illegals.ServerPlayNetworkHandlerMixin_creativeItemsCheck",
     "illegals.ServerPlayNetworkHandlerMixin_illegalsCheckSlot",
-    "combat.ServerPlayNetworkHandlerMixin_hitThroughWallCheck",
     "movement.ServerPlayNetworkHandlerMixin_movementChecks"
   ],
   "injectors": {

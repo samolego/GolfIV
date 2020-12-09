@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegals;
+package org.samo_lego.golfiv.mixin_checks.illegals;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;
@@ -44,7 +44,7 @@ public class ServerPlayNetworkHandlerMixin_illegalsCheckSlot {
             //noinspection ConstantConditions
             boolean illegal = ((ItemStackChecker) (Object) itemStack).makeLegal();
             if(golfConfig.main.checkForStrangeItems && illegal) {
-                ((Golfer) this.player).report(NBT_ITEMS);
+                ((Golfer) this.player).report(NBT_ITEMS, 100);
             }
         }
     }

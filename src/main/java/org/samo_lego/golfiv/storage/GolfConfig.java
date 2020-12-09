@@ -82,11 +82,17 @@ public class GolfConfig {
         public boolean checkIllegalActions = true;
 
         /**
-         * Detects player hitting entity through full blocks.
+         * Detects player hitting entity through full blocks or
+         * usage of reach hacks.
          *
          * Status: working
          */
-        public boolean hitThroughWallCheck = true;
+        public boolean hitCheck = true;
+
+        /**
+         *
+         */
+        public boolean checkKillaura = true;
     }
 
     /**

@@ -1,7 +1,8 @@
-package org.samo_lego.golfiv.mixin;
+package org.samo_lego.golfiv.mixin_checks;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import org.samo_lego.golfiv.casts.Golfer;
@@ -24,6 +25,19 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
 
     @Unique
     private boolean blockCollisions, entityCollisions, hasOpenScreen;
+
+    /**
+     * The sus level of the player
+     *
+     * 0 - 100 = nothing at all (FPs etc.)
+     * 100 - 1000 = kickable (likely to be using hacks)
+     * > 1000 = bannable (surely using hacks)
+     */
+    @Unique
+    private int susLevel;
+
+    @Unique
+    private int timer;
 
     /**
      * Real onGround value, which isn't affected
@@ -73,21 +87,25 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
      * @param cheatType type of the cheat player has used.
      */
     @Override
-    public void report(CheatType cheatType) {
+    public void report(CheatType cheatType, int susValue) {
+        this.susLevel += susValue;
         if(player instanceof ServerPlayerEntity) {
             final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
             if(golfConfig.logging.toConsole) {
                 BallLogger.logInfo(player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
             }
+
+            if(this.susLevel > 100) {
+                this.susLevel = 0;
+                serverPlayerEntity.networkHandler.disconnect(new LiteralText(
+                        "§3[GolfIV]\n§a" +
+                                golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
+                                ))
+                ));
+            }
+
         }
 
-        if(player instanceof ServerPlayerEntity) {
-            ((ServerPlayerEntity) player).networkHandler.disconnect(new LiteralText(
-                    "§3[GolfIV]\n§a" +
-                            golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
-                            ))
-            ));
-        }
         int meesages = golfConfig.kickMessages.size();
         if(meesages > 0)
             player.sendMessage(
@@ -139,6 +157,36 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
             else if(!this.entityCollisions && !this.player.hasVehicle()) {
                 this.setEntityCollisions(true);
             }
+        }
+    }
+
+
+    /**
+     * Saves susLevel to player data.
+     *
+     * @param tag
+     * @param ci
+     */
+    @Inject(method = "writeCustomDataToTag(Lnet/minecraft/nbt/CompoundTag;)V", at = @At("TAIL"))
+    private void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
+        if(this.susLevel > 0) {
+            CompoundTag dataTag = new CompoundTag();
+            dataTag.putInt("sus_lvl", this.susLevel);
+            tag.put("golfIV:player_data", dataTag);
+        }
+    }
+
+    /**
+     * Reads susLevel from player data.
+     *
+     * @param tag
+     * @param ci
+     */
+    @Inject(method = "readCustomDataFromTag(Lnet/minecraft/nbt/CompoundTag;)V", at = @At("TAIL"))
+    private void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
+        CompoundTag dataTag = tag.getCompound("golfIV:player_data");
+        if(dataTag != null) {
+            this.susLevel = dataTag.contains("sus_lvl") ? dataTag.getInt("sus_lvl") : 0;
         }
     }
 }

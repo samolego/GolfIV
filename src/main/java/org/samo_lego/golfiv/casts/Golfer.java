@@ -43,7 +43,7 @@ public interface Golfer {
      *
      * @param cheatType type of the cheat player has used.
      */
-    void report(CheatType cheatType);
+    void report(CheatType cheatType, int susValue);
 
     /**
      * Sets whether player has opened GUI.

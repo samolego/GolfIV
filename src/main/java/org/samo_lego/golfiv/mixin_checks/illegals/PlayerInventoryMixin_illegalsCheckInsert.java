@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegals;
+package org.samo_lego.golfiv.mixin_checks.illegals;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,7 +20,7 @@ public abstract class PlayerInventoryMixin_illegalsCheckInsert {
     @Shadow @Final public PlayerEntity player;
 
     /**
-     * Checks if the insrted stack to
+     * Checks if the inserted stack to
      * player's inventory was legal.
      * Catches /give as well.
      *
@@ -32,7 +32,7 @@ public abstract class PlayerInventoryMixin_illegalsCheckInsert {
         //noinspection ConstantConditions
         boolean illegal = ((ItemStackChecker) (Object) stack).makeLegal();
         if(golfConfig.main.checkForStrangeItems && illegal) {
-            ((Golfer) player).report(NBT_ITEMS);
+            ((Golfer) player).report(NBT_ITEMS, 10);
         }
         return stack;
     }

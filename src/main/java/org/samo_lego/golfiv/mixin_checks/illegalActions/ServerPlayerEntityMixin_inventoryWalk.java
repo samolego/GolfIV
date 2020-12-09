@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegalActions;
+package org.samo_lego.golfiv.mixin_checks.illegalActions;
 
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;

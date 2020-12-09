@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.movement;
+package org.samo_lego.golfiv.mixin_checks.movement;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
-import org.samo_lego.golfiv.mixin.PlayerMoveC2SPacketAccessor;
+import org.samo_lego.golfiv.mixin_checks.accessors.PlayerMoveC2SPacketAccessor;
 import org.samo_lego.golfiv.utils.CheatType;
 import org.samo_lego.golfiv.casts.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -237,7 +237,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                 if(packet.isOnGround() && golfConfig.main.yesFall) {
                     ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
                     if(player.getVelocity().y <= 0.0D && NO_FALL.equals(this.lastCheat)) {
-                        ((Golfer) this.player).report(NO_FALL);
+                        ((Golfer) this.player).report(NO_FALL, 20);
                         player.requestTeleport(this.lastTickX, this.lastTickY, this.lastTickZ);
                         ci.cancel();
                     }
@@ -250,7 +250,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                         ++this.elytraFP;
                         if(this.elytraFP > 10 && (ELYTRA_HACK.equals(this.lastCheat) || FLY_HACK.equals(this.lastCheat))) {
                             this.elytraFP = 0;
-                            ((Golfer) this.player).report(ELYTRA_HACK);
+                            ((Golfer) this.player).report(ELYTRA_HACK, 1); // since it's not usable
                             player.requestTeleport(this.lastTickX, this.lastTickY, this.lastTickZ);
                             ci.cancel();
                         }
@@ -422,7 +422,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                 if(this.speedFP > 10 && (SPEED_HACK.equals(this.lastCheat) || FLY_HACK.equals(this.lastCheat))) {
                     this.speedFP = 0;
                     shouldCancel = true;
-                    ((Golfer) this.player).report(SPEED_HACK);
+                    ((Golfer) this.player).report(SPEED_HACK, 20);
                 }
                 else
                     this.lastCheat = SPEED_HACK;
@@ -455,7 +455,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                         if(flyAttempts > 2) {
                             flyAttempts = 0;
                             shouldCancel = true;
-                            ((Golfer) this.player).report(FLY_HACK);
+                            ((Golfer) this.player).report(FLY_HACK, 20);
                         }
                         else
                             this.lastCheat = FLY_HACK;
@@ -485,7 +485,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                         if(this.jumpFP > 10 && SPEED_HACK.equals(this.lastCheat)){
                             this.jumpFP = 0;
                             shouldCancel = true;
-                            ((Golfer) this.player).report(SPEED_HACK);
+                            ((Golfer) this.player).report(SPEED_HACK, 10);
                         }
                         else
                             this.lastCheat = SPEED_HACK;
@@ -495,7 +495,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                         if(this.jumpFP > 10 && SPEED_HACK.equals(this.lastCheat)){
                             this.jumpFP = 0;
                             shouldCancel = true;
-                            ((Golfer) this.player).report(SPEED_HACK);
+                            ((Golfer) this.player).report(SPEED_HACK, 10);
                         }
                         else
                             this.lastCheat = SPEED_HACK;
@@ -507,7 +507,7 @@ public class ServerPlayNetworkHandlerMixin_movementChecks {
                     if(this.jumpFP > 10 && SPEED_HACK.equals(this.lastCheat)){
                         this.jumpFP = 0;
                         shouldCancel = true;
-                        ((Golfer) this.player).report(SPEED_HACK);
+                        ((Golfer) this.player).report(SPEED_HACK, 10);
                     }
                     else
                         this.lastCheat = SPEED_HACK;
