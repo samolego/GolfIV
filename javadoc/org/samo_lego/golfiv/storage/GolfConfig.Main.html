@@ -150,11 +150,16 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#hitThroughWallCheck">hitThroughWallCheck</a></span></code>
-<div class="block">Detects player hitting entity through full blocks.</div>
-</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#checkKillaura">checkKillaura</a></span></code>&nbsp;</td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#hitCheck">hitCheck</a></span></code>
+<div class="block">Detects player hitting entity through full blocks or
+ usage of reach hacks.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#noFly">noFly</a></span></code>
 <div class="block">Detects flight, either it being
@@ -163,25 +168,25 @@ extends java.lang.Object</pre>
  Status: working (might throw false positives when lagging, not sure)</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#noSpeed">noSpeed</a></span></code>
 <div class="block">Tries to detect speed hacks.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#preventCreativeStrangeItems">preventCreativeStrangeItems</a></span></code>
 <div class="block">Clears NBT items, but still allows block-picking.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#preventElytraHacks">preventElytraHacks</a></span></code>
 <div class="block">Tries to prevent "fake" elytra movement.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#yesFall">yesFall</a></span></code>
 <div class="block">Client can tell server its onGround status and
@@ -345,16 +350,26 @@ extends java.lang.Object</pre>
  Status: partially working</div>
 </li>
 </ul>
-<a name="hitThroughWallCheck">
+<a name="hitCheck">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>hitCheck</h4>
+<pre>public&nbsp;boolean hitCheck</pre>
+<div class="block">Detects player hitting entity through full blocks or
+ usage of reach hacks.
+
+ Status: working</div>
+</li>
+</ul>
+<a name="checkKillaura">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>hitThroughWallCheck</h4>
-<pre>public&nbsp;boolean hitThroughWallCheck</pre>
-<div class="block">Detects player hitting entity through full blocks.
-
- Status: working</div>
+<h4>checkKillaura</h4>
+<pre>public&nbsp;boolean checkKillaura</pre>
 </li>
 </ul>
 </li>
