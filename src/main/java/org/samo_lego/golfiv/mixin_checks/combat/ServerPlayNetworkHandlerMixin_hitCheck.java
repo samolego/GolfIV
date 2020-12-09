@@ -20,11 +20,24 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.utils.CheatType.HIT_THROUGH_WALLS;
 import static org.samo_lego.golfiv.utils.CheatType.REACH;
 
+/**
+ * Checks for hitting through walls.
+ */
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin_hitCheck {
 
     @Shadow public ServerPlayerEntity player;
 
+    /**
+     * Checks whether player is hitting entity through wall
+     * by comparing raycast distance of the block and targeted entity.
+     *
+     * @param packet
+     * @param ci
+     * @param serverWorld
+     * @param victim
+     * @param distanceSquared
+     */
     @Inject(
             method = "onPlayerInteractEntity(Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket;)V",
             at = @At(

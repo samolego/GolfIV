@@ -28,6 +28,9 @@ import static net.minecraft.network.packet.s2c.play.PlayerListS2CPacket.Action.R
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.utils.CheatType.KILLAURA;
 
+/**
+ * Checks for killaura by sending a fake player to client.
+ */
 @Mixin(ServerPlayNetworkHandler.class)
 public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
 
@@ -39,6 +42,14 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
     @Unique
     private boolean fakeAttacked;
 
+    /**
+     * Removes fake player after hitting any entity.
+     *
+     * @param packet
+     * @param ci
+     * @param serverWorld
+     * @param target
+     */
     @Inject(
             method = "onPlayerInteractEntity(Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket;)V",
             at = @At(
@@ -57,6 +68,13 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
         }
     }
 
+    /**
+     * Sends a fake player to the client to check if it will get hit.
+     *
+     * @param packet
+     * @param ci
+     * @param target
+     */
     @Inject(
             method = "onPlayerInteractEntity(Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket;)V",
             at = @At("TAIL"),
@@ -71,6 +89,9 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
         }
     }
 
+    /**
+     * Clears fake player.
+     */
     @Unique
     private void clearFakeVictim() {
         player.networkHandler.sendPacket(new PlayerListS2CPacket(REMOVE_PLAYER, fakeVictim));
@@ -78,6 +99,11 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
         this.fakeVictim = null;
     }
 
+    /**
+     * Clears fake player if it has not been hit for certain amount of ticks.
+     *
+     * @param ci
+     */
     @Inject(method = "tick()V", at = @At("HEAD"))
     private void preTick(CallbackInfo ci) {
         if(fakeVictim != null && player.getAttackCooldownProgress(0.5F) == 1 && this.ticks % 4 == 0) {
@@ -85,6 +111,13 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
         }
     }
 
+    /**
+     * Updates fake player position in order to not
+     * get seen in first person view.
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
         method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
         at = @At(

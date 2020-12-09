@@ -30,6 +30,7 @@ import static org.samo_lego.golfiv.utils.CheatType.*;
 
 /**
  * A spaghetti movement-check class.
+ * To be redone.
  */
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin_movementChecks {

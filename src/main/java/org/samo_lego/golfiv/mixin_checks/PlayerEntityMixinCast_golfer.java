@@ -18,6 +18,9 @@ import java.util.Random;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
+/**
+ * Additional methods and fields for PlayerEntities.
+ */
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixinCast_golfer implements Golfer {
 

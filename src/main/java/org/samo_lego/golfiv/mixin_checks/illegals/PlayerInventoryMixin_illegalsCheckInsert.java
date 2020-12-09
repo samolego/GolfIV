@@ -14,6 +14,9 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.utils.CheatType.NBT_ITEMS;
 
+/**
+ * Checks if the inserted stack is illegal.
+ */
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin_illegalsCheckInsert {
 

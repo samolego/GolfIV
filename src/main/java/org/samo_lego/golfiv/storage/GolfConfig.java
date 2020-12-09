@@ -58,6 +58,7 @@ public class GolfConfig {
          * Status: not really usable, as ice paths still throw false positives
          */
         public boolean noSpeed = true;
+
         /**
          * Tries to prevent "fake" elytra movement.
          * Bad.
@@ -85,12 +86,14 @@ public class GolfConfig {
          * Detects player hitting entity through full blocks or
          * usage of reach hacks.
          *
-         * Status: working
+         * Status: working,  waiting for falses to be reported.
          */
         public boolean hitCheck = true;
 
         /**
+         * Checks for killaura by summoning a fake player.
          *
+         * Status: working, waiting for falses to be reported.
          */
         public boolean checkKillaura = true;
     }

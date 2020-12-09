@@ -11,6 +11,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Additional methods for checking ItemStack's legality.
+ */
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixinCast_itemStackChecker implements ItemStackChecker {
 

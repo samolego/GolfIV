@@ -87,29 +87,31 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
             cancellable = true
     )
     private void checkInventoryWalk(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        Vec3d packetMovement = new Vec3d(
-                packet.getX(this.player.getX()) - this.player.getX(),
-                packet.getY(this.player.getY()) - this.player.getY(),
-                packet.getZ(this.player.getZ()) - this.player.getZ()
-        );
-        Vec2f packetLook = new Vec2f(
-                packet.getYaw(this.player.yaw) - this.player.yaw,
-                packet.getPitch(this.player.pitch) - this.player.pitch
-        );
-        if(((Golfer) this.player).hasOpenGui() && !player.isFallFlying() && !player.isInsideWaterOrBubbleColumn()) {
-            if(packet instanceof PlayerMoveC2SPacket.PositionOnly && packetMovement.getY() == 0 && packetMovement.lengthSquared() != 0) {
-                if(++this.illegalActionsMoveAttempts > 40) {
-                    ((Golfer) this.player).report(ILLEGAL_ACTIONS, 10);
-                    ci.cancel();
+        if(golfConfig.main.checkIllegalActions) {
+            Vec3d packetMovement = new Vec3d(
+                    packet.getX(this.player.getX()) - this.player.getX(),
+                    packet.getY(this.player.getY()) - this.player.getY(),
+                    packet.getZ(this.player.getZ()) - this.player.getZ()
+            );
+            Vec2f packetLook = new Vec2f(
+                    packet.getYaw(this.player.yaw) - this.player.yaw,
+                    packet.getPitch(this.player.pitch) - this.player.pitch
+            );
+            if(((Golfer) this.player).hasOpenGui() && !player.isFallFlying() && !player.isInsideWaterOrBubbleColumn()) {
+                if(packet instanceof PlayerMoveC2SPacket.PositionOnly && packetMovement.getY() == 0 && packetMovement.lengthSquared() != 0) {
+                    if(++this.illegalActionsMoveAttempts > 40) {
+                        ((Golfer) this.player).report(ILLEGAL_ACTIONS, 10);
+                        ci.cancel();
+                    }
+                    System.out.println("Walk");
                 }
-                System.out.println("Walk");
-            }
-            else if(packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both && packetLook.x + packetLook.y != 0) {
-                if(++this.illegalActionsLookAttempts > 4) {
-                    ((Golfer) this.player).report(ILLEGAL_ACTIONS, 50);
-                    ci.cancel();
+                else if(packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both && packetLook.x + packetLook.y != 0) {
+                    if(++this.illegalActionsLookAttempts > 4) {
+                        ((Golfer) this.player).report(ILLEGAL_ACTIONS, 50);
+                        ci.cancel();
+                    }
+                    System.out.println("Look");
                 }
-                System.out.println("Look");
             }
         }
     }
@@ -130,7 +132,7 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
             cancellable = true
     )
     private void entityInteraction(PlayerInteractEntityC2SPacket packet, CallbackInfo ci) {
-        if(((Golfer) this.player).hasOpenGui()) {
+        if(golfConfig.main.checkIllegalActions && ((Golfer) this.player).hasOpenGui()) {
             ((Golfer) this.player).report(ILLEGAL_ACTIONS, 50);
             ci.cancel();
         }
@@ -149,7 +151,7 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
             cancellable = true
     )
     private void chatWithInventoryOpened(ChatMessageC2SPacket packet, CallbackInfo ci) {
-        if(((Golfer) player).hasOpenGui()) {
+        if(golfConfig.main.checkIllegalActions && ((Golfer) player).hasOpenGui()) {
             ((Golfer) this.player).report(ILLEGAL_ACTIONS, 100);
             ci.cancel();
         }
