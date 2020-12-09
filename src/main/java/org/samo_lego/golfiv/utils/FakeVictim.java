@@ -1,6 +1,7 @@
 package org.samo_lego.golfiv.utils;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
@@ -10,6 +11,7 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 @SuppressWarnings("EntityConstructor")
 public class FakeVictim extends ServerPlayerEntity {
@@ -47,6 +49,7 @@ public class FakeVictim extends ServerPlayerEntity {
 
         FakeVictim fakeVictim = new FakeVictim(player.getServer(), world, fakeProfile, interactionManager);
         fakeVictim.rotateAroundPlayer(movement, rotations);
+        fakeVictim.isCollidable();
 
         return fakeVictim;
     }
@@ -57,11 +60,15 @@ public class FakeVictim extends ServerPlayerEntity {
         double x = Math.cos(phi);
         double z = Math.sin(phi);
 
-        this.refreshPositionAndAngles(x + movement.getX(), movement.getY(), z + movement.getZ(), rotation.x, rotation.y);
+        this.refreshPositionAndAngles(x + movement.getX(), movement.getY() - 1.0D, z + movement.getZ(), rotation.x, rotation.y);
     }
 
     @Override
-    public boolean collides() {
-        return false;
+    protected void pushAway(Entity entity) {
+    }
+
+    @Override
+    protected void tickCramming() {
+
     }
 }

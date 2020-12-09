@@ -63,7 +63,7 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
         if(golfConfig.main.checkKillaura && fakeVictim != null) {
             this.fakeAttacked = ((PlayerInteractEntityC2SPacketAccessor) packet).getEntityId() == this.fakeVictim.getEntityId();
             if(fakeAttacked)
-                ((Golfer) player).report(KILLAURA, 1);
+                ((Golfer) player).report(KILLAURA, 50);
             this.clearFakeVictim();
         }
     }
