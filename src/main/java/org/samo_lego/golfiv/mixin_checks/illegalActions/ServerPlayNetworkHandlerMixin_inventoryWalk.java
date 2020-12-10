@@ -46,7 +46,6 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
     )
     private void closeHandledScreen(CloseHandledScreenC2SPacket packet, CallbackInfo ci) {
         this.illegalActionsMoveAttempts = 0;
-        this.illegalActionsLookAttempts = 0;
         ((Golfer) this.player).setOpenGui(false);
     }
 
@@ -103,14 +102,12 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
                         ((Golfer) this.player).report(ILLEGAL_ACTIONS, 10);
                         ci.cancel();
                     }
-                    System.out.println("Walk");
                 }
                 else if(packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both && packetLook.x + packetLook.y != 0) {
                     if(++this.illegalActionsLookAttempts > 4) {
                         ((Golfer) this.player).report(ILLEGAL_ACTIONS, 50);
                         ci.cancel();
                     }
-                    System.out.println("Look");
                 }
             }
         }

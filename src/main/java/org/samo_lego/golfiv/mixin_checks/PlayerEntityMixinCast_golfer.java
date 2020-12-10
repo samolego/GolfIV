@@ -100,16 +100,17 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
 
             if(this.susLevel > 100) {
                 this.susLevel = 0;
-                serverPlayerEntity.networkHandler.disconnect(new LiteralText(
+                /*serverPlayerEntity.networkHandler.disconnect(new LiteralText(
                         "§3[GolfIV]\n§a" +
                                 golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
                                 ))
-                ));
+                ));*/
+                BallLogger.logInfo(player.getGameProfile().getName() + " is KICKED for " + cheatType.getCheat() + " hack(s).");
             }
 
         }
 
-        int meesages = golfConfig.kickMessages.size();
+        /*int meesages = golfConfig.kickMessages.size();
         if(meesages > 0)
             player.sendMessage(
                     new LiteralText(
@@ -119,7 +120,7 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
                                     )
                     ),
                     false
-            );
+            );*/
     }
 
     /**
@@ -130,7 +131,6 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
      */
     @Override
     public void setOpenGui(boolean openGui) {
-        System.out.println("inv. Was open: " + this.hasOpenScreen + ", setting to " + openGui);
         this.hasOpenScreen = openGui;
     }
 
