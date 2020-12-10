@@ -4,7 +4,6 @@
   "package": "org.samo_lego.golfiv.mixin_checks",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "DecoderHandlerMixin_DEBUG",
     "PlayerEntityMixinCast_golfer",
     "ServerPlayNetworkHandlerMixin_timerCheck",
     "ServerPlayNetworkHandlerMixinCast_TPSTracker",
