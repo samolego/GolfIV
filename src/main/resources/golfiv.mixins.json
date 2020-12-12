@@ -9,6 +9,7 @@
     "ServerPlayNetworkHandlerMixinCast_TPSTracker",
     "accessors.PlayerInteractEntityC2SPacketAccessor",
     "accessors.PlayerMoveC2SPacketAccessor",
+    "combat.DataTrackerMixin_HealthTags",
     "combat.ServerPlayNetworkHandlerMixin_hitCheck",
     "combat.ServerPlayNetworkHandlerMixin_killauraAccuracyCheck",
     "combat.ServerPlayNetworkHandlerMixin_killauraCheck",

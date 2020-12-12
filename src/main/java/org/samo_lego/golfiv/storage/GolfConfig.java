@@ -96,6 +96,12 @@ public class GolfConfig {
          * Status: working, waiting for falses to be reported.
          */
         public boolean checkKillaura = true;
+
+        /**
+         * Removes entity health data from packets
+         * sent to client.
+         */
+        public boolean removeHealthTags = true;
     }
 
     /**
