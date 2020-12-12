@@ -97,6 +97,10 @@ public class GolfConfig {
          */
         public boolean checkKillaura = true;
 
+
+    }
+
+    public static class EntityDataPacket {
         /**
          * Removes entity health data from packets
          * sent to client.
@@ -143,6 +147,7 @@ public class GolfConfig {
     ));
 
     public final GolfConfig.Main main = new Main();
+    public final GolfConfig.EntityDataPacket entityDataPacket = new EntityDataPacket();
     public final GolfConfig.Logging logging = new Logging();
 
     /**
