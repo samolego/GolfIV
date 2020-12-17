@@ -50,27 +50,6 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
     }
 
     /**
-     * Called when player opens horse inventory.
-     * Sets the status of open GUI to true.
-     *
-     * @param packet
-     * @param ci
-     */
-    @Inject(
-            method = "onClientCommand(Lnet/minecraft/network/packet/c2s/play/ClientCommandC2SPacket;)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayerEntity;updateLastActionTime()V"
-            )
-    )
-    private void openScreenHandler(ClientCommandC2SPacket packet, CallbackInfo ci) {
-        if(packet.getMode() == OPEN_INVENTORY) {
-            ((Golfer) this.player).setOpenGui(golfConfig.main.checkIllegalActions);
-        }
-    }
-
-
-    /**
      * Checks for movement while having a GUI open.
      *
      * @param packet
@@ -80,8 +59,7 @@ public class ServerPlayNetworkHandlerMixin_inventoryWalk {
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/server/world/ServerWorld;)V",
-                    shift = At.Shift.AFTER
+                    target = "Lnet/minecraft/server/network/ServerPlayerEntity;hasVehicle()Z"
             ),
             cancellable = true
     )

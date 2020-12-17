@@ -49,13 +49,12 @@ public class FakeVictim extends ServerPlayerEntity {
 
         FakeVictim fakeVictim = new FakeVictim(player.getServer(), world, fakeProfile, interactionManager);
         fakeVictim.rotateAroundPlayer(movement, rotations);
-        fakeVictim.isCollidable();
 
         return fakeVictim;
     }
 
     public void rotateAroundPlayer(Vec3d movement, Vec2f rotation) {
-        double phi = (rotation.x - 90) / 180 * Math.PI;
+        double phi = Math.toRadians(rotation.x - 90);
 
         double x = Math.cos(phi);
         double z = Math.sin(phi);
@@ -65,6 +64,7 @@ public class FakeVictim extends ServerPlayerEntity {
 
     @Override
     protected void pushAway(Entity entity) {
+        // Disables collision with entities
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.samo_lego.golfiv.mixin_checks.combat;
 
+import carpet.script.language.Sys;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
@@ -17,8 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
-import static org.samo_lego.golfiv.utils.CheatType.HIT_THROUGH_WALLS;
-import static org.samo_lego.golfiv.utils.CheatType.REACH;
+import static org.samo_lego.golfiv.utils.CheatType.*;
 
 /**
  * Checks for hitting through walls.
@@ -31,6 +31,9 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
     /**
      * Checks whether player is hitting entity through wall
      * by comparing raycast distance of the block and targeted entity.
+     *
+     * Checks distance from attacker to attacked entity as well,
+     * in order to prevent reach hacks.
      *
      * @param packet
      * @param ci
@@ -50,16 +53,41 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
     private void hitThroughWallCheck(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, ServerWorld serverWorld, Entity victim, double distanceSquared) {
         if(golfConfig.main.hitCheck) {
             EntityHitResult entityHit = new EntityHitResult(victim);
+            double dist2 = entityHit.squaredDistanceTo(player);
 
-            if(!player.isCreative() && entityHit.squaredDistanceTo(player) > 16) {
-                ((Golfer) player).report(REACH, 5);
+            if(!player.isCreative() && dist2 > 16) {
+                ((Golfer) player).report(REACH, 20);
                 ci.cancel();
             }
 
+            float yaw = player.yaw;
+            int xOffset = player.getHorizontalFacing().getOffsetX();
+            int zOffset = player.getHorizontalFacing().getOffsetZ();
+
+            // Checking if victim is behind player
+            if(xOffset * victim.getX() - xOffset * player.getX() < 0 || zOffset * victim.getZ() - zOffset * player.getZ() < 0) {
+                // "Dumb" check
+                ((Golfer) player).report(KILLAURA, 20);
+                ci.cancel();
+                return;
+            }
+            double deltaX = victim.getX() - player.getX();
+            double deltaZ = victim.getZ() - player.getZ();
+            double beta = Math.atan2(deltaZ, deltaX) - Math.PI / 2;
+
+            double phi = beta - Math.toRadians(yaw);
+            if(Math.abs(Math.sqrt(dist2) * Math.sin(phi)) > 0.7D){
+                // Fine check
+                ((Golfer) player).report(KILLAURA, 5);
+                ci.cancel();
+                return;
+            }
+
+            // Through-wall hit check
             BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
             BlockState blockState = serverWorld.getBlockState(blockHit.getBlockPos());
 
-            if(blockState.isFullCube(serverWorld, blockHit.getBlockPos()) && blockHit.squaredDistanceTo(player) + 1.0D < entityHit.squaredDistanceTo(player)) {
+            if(blockState.isFullCube(serverWorld, blockHit.getBlockPos()) && blockHit.squaredDistanceTo(player) + 1.0D < dist2) {
                 ((Golfer) player).report(HIT_THROUGH_WALLS, 10);
                 ci.cancel();
             }

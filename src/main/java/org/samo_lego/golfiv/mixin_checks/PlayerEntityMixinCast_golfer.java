@@ -157,7 +157,7 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
             if(entity.equals(this.player.getVehicle())) {
                 this.setEntityCollisions(false);
             }
-            else if(!this.entityCollisions && !this.player.hasVehicle()) {
+            else if(!this.entityCollisions && !this.player.hasVehicle() && entity.getY() < this.player.getY()) {
                 this.setEntityCollisions(true);
             }
         }

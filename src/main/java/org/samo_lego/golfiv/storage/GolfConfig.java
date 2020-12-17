@@ -104,6 +104,8 @@ public class GolfConfig {
         /**
          * Removes entity health data from packets
          * sent to client.
+         *
+         * Status: working.
          */
         public boolean removeHealthTags = true;
     }

@@ -1,6 +1,8 @@
 package org.samo_lego.golfiv.mixin_checks.combat;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Saddleable;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -24,9 +26,11 @@ public class ServerPlayNetworkHandlerMixin_HealthTags {
     )
     private void removeHealthTags(Packet<?> packet, CallbackInfo ci) {
         if(golfConfig.entityDataPacket.removeHealthTags && packet instanceof EntityTrackerUpdateS2CPacket) {
+
             EntityTrackerUpdateS2CPacketAccessor p = ((EntityTrackerUpdateS2CPacketAccessor) packet);
-            int entityId = p.getID();
-            if(this.player.getServerWorld().getEntityById(entityId) instanceof LivingEntity) {
+            Entity entity = this.player.getServerWorld().getEntityById(p.getID());
+
+            if(entity instanceof LivingEntity && entity.isAlive() && !(entity instanceof Saddleable)) {
                 p.getTrackedValues().removeIf(trackedValue -> trackedValue.getData().getId() == 8);
             }
         }
