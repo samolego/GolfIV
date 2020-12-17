@@ -35,6 +35,8 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
      * Checks distance from attacker to attacked entity as well,
      * in order to prevent reach hacks.
      *
+     * Also checks the angle at which player is hitting the entity.
+     *
      * @param packet
      * @param ci
      * @param serverWorld
@@ -51,15 +53,16 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
             cancellable = true
     )
     private void hitThroughWallCheck(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, ServerWorld serverWorld, Entity victim, double distanceSquared) {
-        if(golfConfig.main.hitCheck) {
-            EntityHitResult entityHit = new EntityHitResult(victim);
-            double dist2 = entityHit.squaredDistanceTo(player);
+        EntityHitResult entityHit = new EntityHitResult(victim);
+        double dist2 = entityHit.squaredDistanceTo(player);
 
-            if(!player.isCreative() && dist2 > 16) {
-                ((Golfer) player).report(REACH, 20);
-                ci.cancel();
-            }
-
+        if(golfConfig.combat.checkHitDistance && !player.isCreative() && dist2 > 16) {
+            ((Golfer) player).report(REACH, 20);
+            ci.cancel();
+            return;
+        }
+        if(golfConfig.combat.checkHitAngle) {
+            // Angle check
             float yaw = player.yaw;
             int xOffset = player.getHorizontalFacing().getOffsetX();
             int zOffset = player.getHorizontalFacing().getOffsetZ();
@@ -82,7 +85,8 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
                 ci.cancel();
                 return;
             }
-
+        }
+        if(golfConfig.combat.checkWallHit) {
             // Through-wall hit check
             BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
             BlockState blockState = serverWorld.getBlockState(blockHit.getBlockPos());

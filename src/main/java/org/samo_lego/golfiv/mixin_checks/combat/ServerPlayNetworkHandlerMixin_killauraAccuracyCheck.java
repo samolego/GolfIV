@@ -42,7 +42,7 @@ public class ServerPlayNetworkHandlerMixin_killauraAccuracyCheck {
             cancellable = true
     )
     private void onHitEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, Entity victim, Hand hand, ItemStack weapon, Optional<ActionResult> optional) {
-        if(golfConfig.main.checkKillaura) {
+        if(golfConfig.combat.checkKillaura) {
             if(this.wasLastHit) {
                 System.out.println("No hand swing!");
                 ci.cancel();
@@ -63,7 +63,7 @@ public class ServerPlayNetworkHandlerMixin_killauraAccuracyCheck {
             )
     )
     private void onHandSwing(HandSwingC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.main.checkKillaura) {
+        if(golfConfig.combat.checkKillaura) {
             this.wasLastHit = false;
         }
     }

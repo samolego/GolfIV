@@ -60,7 +60,7 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
             cancellable = true
     )
     private void checkHitEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, ServerWorld serverWorld, Entity target) {
-        if(golfConfig.main.checkKillaura && fakeVictim != null) {
+        if(golfConfig.combat.checkKillaura && fakeVictim != null) {
             this.fakeAttacked = ((PlayerInteractEntityC2SPacketAccessor) packet).getEntityId() == this.fakeVictim.getEntityId();
             if(fakeAttacked)
                 ((Golfer) player).report(KILLAURA, 50);
@@ -82,7 +82,7 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
             cancellable = true
     )
     private void testWithFakeVictim(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, Entity target) {
-        if(golfConfig.main.checkKillaura && fakeVictim == null && target instanceof LivingEntity && !target.isAlive()) {
+        if(golfConfig.combat.checkKillaura && fakeVictim == null && target instanceof LivingEntity && !target.isAlive()) {
             this.fakeVictim = FakeVictim.summonFake(player);
             player.networkHandler.sendPacket(new PlayerListS2CPacket(ADD_PLAYER, fakeVictim));
             player.networkHandler.sendPacket(new PlayerSpawnS2CPacket(fakeVictim));

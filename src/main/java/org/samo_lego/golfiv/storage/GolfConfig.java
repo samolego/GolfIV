@@ -81,15 +81,9 @@ public class GolfConfig {
          * Status: partially working
          */
         public boolean checkIllegalActions = true;
+    }
 
-        /**
-         * Detects player hitting entity through full blocks or
-         * usage of reach hacks.
-         *
-         * Status: working,  waiting for falses to be reported.
-         */
-        public boolean hitCheck = true;
-
+    public static class Combat {
         /**
          * Checks for killaura by summoning a fake player.
          *
@@ -97,9 +91,27 @@ public class GolfConfig {
          */
         public boolean checkKillaura = true;
 
+        /**
+         * Checks if player is hitting entity through wall.
+         *
+         * Status: working, waiting for falses to be reported.
+         */
+        public boolean checkWallHit = true;
 
+        /**
+         * Checks if player is using reach hacks.
+         *
+         * Status: working, waiting for falses to be reported.
+         */
+        public boolean checkHitDistance = true;
+
+        /**
+         * Checks the angle at which player is hitting the entity.
+         *
+         * Status: working, waiting for falses to be reported.
+         */
+        public boolean checkHitAngle = true;
     }
-
     public static class EntityDataPacket {
         /**
          * Removes entity health data from packets
@@ -150,6 +162,7 @@ public class GolfConfig {
 
     public final GolfConfig.Main main = new Main();
     public final GolfConfig.EntityDataPacket entityDataPacket = new EntityDataPacket();
+    public final GolfConfig.Combat combat = new Combat();
     public final GolfConfig.Logging logging = new Logging();
 
     /**
