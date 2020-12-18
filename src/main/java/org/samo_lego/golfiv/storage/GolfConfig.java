@@ -157,7 +157,8 @@ public class GolfConfig {
             "I'm not upset that you lied to me,\n I'm upset that from now on I can't believe you.",
             "Hax bad.",
             "You better check your client. It seems to be lying.",
-            "Impossible = cannot be done. But it was done by you?"
+            "Impossible = cannot be done. But it was done by you?",
+            "If you have great power, you should\n use it with even greater responsibility."
     ));
 
     public final GolfConfig.Main main = new Main();

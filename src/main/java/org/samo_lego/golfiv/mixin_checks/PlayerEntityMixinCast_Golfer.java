@@ -22,7 +22,7 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
  * Additional methods and fields for PlayerEntities.
  */
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixinCast_golfer implements Golfer {
+public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
 
     private final PlayerEntity player = (PlayerEntity) (Object) this;
 
@@ -144,25 +144,6 @@ public abstract class PlayerEntityMixinCast_golfer implements Golfer {
     public boolean hasOpenGui() {
         return this.hasOpenScreen;
     }
-
-    /**
-     * Checks for entity collisions.
-     *
-     * @param entity colliding entity
-     * @param ci callbackInfo
-     */
-    @Inject(method = "collideWithEntity(Lnet/minecraft/entity/Entity;)V", at = @At("HEAD"))
-    private void updateCollision(Entity entity, CallbackInfo ci) {
-        if(entity.isCollidable()) {
-            if(entity.equals(this.player.getVehicle())) {
-                this.setEntityCollisions(false);
-            }
-            else if(!this.entityCollisions && !this.player.hasVehicle() && entity.getY() < this.player.getY()) {
-                this.setEntityCollisions(true);
-            }
-        }
-    }
-
 
     /**
      * Saves susLevel to player data.
