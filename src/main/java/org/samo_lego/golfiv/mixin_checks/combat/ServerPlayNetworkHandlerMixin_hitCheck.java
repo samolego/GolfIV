@@ -1,6 +1,5 @@
 package org.samo_lego.golfiv.mixin_checks.combat;
 
-import carpet.script.language.Sys;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
@@ -56,8 +55,9 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
         EntityHitResult entityHit = new EntityHitResult(victim);
         double dist2 = entityHit.squaredDistanceTo(player);
 
-        if(golfConfig.combat.checkHitDistance && !player.isCreative() && dist2 > 16) {
-            ((Golfer) player).report(REACH, 20);
+        if(golfConfig.combat.checkHitDistance && !player.isCreative() && dist2 > 22) {
+            System.out.println(dist2);
+            ((Golfer) player).report(REACH, 22);
             ci.cancel();
             return;
         }
