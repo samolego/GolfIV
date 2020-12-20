@@ -91,7 +91,7 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
             BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
             BlockState blockState = serverWorld.getBlockState(blockHit.getBlockPos());
 
-            if(blockState.isFullCube(serverWorld, blockHit.getBlockPos()) && blockHit.squaredDistanceTo(player) + 1.0D < dist2) {
+            if(blockHit.squaredDistanceTo(player) + 1.0D < dist2) {
                 ((Golfer) player).report(HIT_THROUGH_WALLS, 10);
                 ci.cancel();
             }

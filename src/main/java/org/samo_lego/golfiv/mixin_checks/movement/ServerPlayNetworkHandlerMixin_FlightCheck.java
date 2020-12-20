@@ -70,11 +70,12 @@ public class ServerPlayNetworkHandlerMixin_FlightCheck {
 
                     //System.out.println(Math.abs(predictedDeltaY - data.getPacketMovement().getY()));
                     if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - data.getPacketMovement().getY()) > 0.003D) {
-                        if(++this.flyCounter > 1)
+                        if(++this.flyCounter > 4)
                             ((Golfer) this.player).report(FLY_HACK, 20);
                     }
-                    else
+                    else {
                         this.flyCounter += this.flyCounter > 0 ? -1 : 0;
+                    }
                 }
             }
         }
