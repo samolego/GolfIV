@@ -9,6 +9,8 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import org.samo_lego.golfiv.casts.Golfer;
+import org.samo_lego.golfiv.utils.CheatType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -44,13 +46,20 @@ public class ServerPlayNetworkHandlerMixin_killauraAccuracyCheck {
     private void onHitEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, Entity victim, Hand hand, ItemStack weapon, Optional<ActionResult> optional) {
         if(golfConfig.combat.checkKillaura) {
             if(this.wasLastHit) {
-                System.out.println("No hand swing!");
+                ((Golfer) player).report(CheatType.NO_HAND_SWING, 20);
                 ci.cancel();
             }
             this.wasLastHit = true;
+            ++this.entityHits;
 
-            if(victim instanceof PlayerEntity) {
-                // Hit miss ratio?
+            if(victim instanceof PlayerEntity && this.handSwings == 50) {
+                System.out.println(entityHits + " hits of " + handSwings + " tries.");
+                if(handSwings - entityHits < 5) {
+                    // > 90 % accuracy?
+                    System.out.println("Player " + player.getGameProfile().getName() + " is hitting with " + entityHits / handSwings * 100 + "% accuracy.");
+                }
+                this.handSwings = 0;
+                this.entityHits = 0;
             }
         }
     }
@@ -65,6 +74,7 @@ public class ServerPlayNetworkHandlerMixin_killauraAccuracyCheck {
     private void onHandSwing(HandSwingC2SPacket packet, CallbackInfo ci) {
         if(golfConfig.combat.checkKillaura) {
             this.wasLastHit = false;
+            ++this.handSwings;
         }
     }
 }

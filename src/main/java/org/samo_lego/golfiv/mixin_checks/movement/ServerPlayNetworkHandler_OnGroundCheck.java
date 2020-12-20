@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.stream.Stream;
 
+import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.utils.CheatType.NO_FALL;
 
 @Mixin(value = ServerPlayNetworkHandler.class, priority = 800)
@@ -48,7 +49,8 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             ((Golfer) player).setBlockCollisions(true);
         }
         else {
-            Stream<VoxelShape> collidingEntities = player.getEntityWorld().getEntityCollisions(bottomEntity, bBox, entity -> true);
+            Entity finalBottomEntity = bottomEntity;
+            Stream<VoxelShape> collidingEntities = player.getEntityWorld().getEntityCollisions(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
             long entityCollisions = collidingEntities.count();
 
             ((Golfer) player).setEntityCollisions(entityCollisions != 0);
@@ -56,7 +58,7 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
         }
 
 
-        if(!data.wasLLastOnGround() && !data.wasLastOnGround() && !((Golfer) player).isNearGround() && player.getVelocity().y <= 0.0D && packet.isOnGround()) {
+        if(!data.wasLLastOnGround() && !data.wasLastOnGround() && !((Golfer) player).isNearGround() && player.getVelocity().y <= 0.0D && packet.isOnGround() && golfConfig.main.yesFall) {
             // Player hasn't been on ground for 3 move packets but client says it is
             ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
             ((Golfer) this.player).report(NO_FALL, 10);
