@@ -3,6 +3,7 @@ package org.samo_lego.golfiv.mixin_checks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
@@ -15,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -45,6 +47,9 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     private int ticks;
     @Unique
     private short kicks;
+
+    @Unique
+    private ListTag cheatLog;
 
     /**
      * Gets the suspicion value for the player.
@@ -114,23 +119,52 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Override
     public void report(CheatType cheatType, int susValue) {
         this.susLevel += susValue;
+        System.out.println(cheatType.getCheat());
         if(this.susLevel < 100)
             return;
+
+
+        // Saving cheat log
+        LocalDateTime now = LocalDateTime.now();
+        if(cheatLog.size() > 0) {
+            CompoundTag lastCheat = cheatLog.getCompound(cheatLog.size() - 1);
+            if(lastCheat != null && cheatType.getCheat().equals(lastCheat.getString("type"))) {
+                int usages = lastCheat.getInt("times_used");
+                lastCheat.putInt("times_used", ++usages);
+            }
+            else {
+                CompoundTag cheat = new CompoundTag();
+                cheat.putString("type", cheatType.getCheat());
+                cheat.putString("time", now.toString());
+
+                cheatLog.add(cheat);
+            }
+        }
+        else {
+            CompoundTag cheat = new CompoundTag();
+            cheat.putString("type", cheatType.getCheat());
+            cheat.putString("time", now.toString());
+
+            cheatLog.add(cheat);
+        }
+
+
+
 
         if(player instanceof ServerPlayerEntity) {
             final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 
             String msg = "§6[GolfIV] §2Suspicion value of §b" + player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
-
             Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat()))));
 
-            List<ServerPlayerEntity> players = serverPlayerEntity.getServer().getPlayerManager().getPlayerList();
-            for(ServerPlayerEntity p : players) {
-                if(p.hasPermissionLevel(4)) {
-                    p.sendMessage(text, false);
+            if(golfConfig.logging.toOps) {
+                List<ServerPlayerEntity> players = serverPlayerEntity.getServer().getPlayerManager().getPlayerList();
+                for(ServerPlayerEntity p : players) {
+                    if(p.hasPermissionLevel(4)) {
+                        p.sendMessage(text, false);
+                    }
                 }
             }
-
             if(golfConfig.logging.toConsole) {
                 BallLogger.logInfo(player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
             }
@@ -201,16 +235,13 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
      */
     @Inject(method = "writeCustomDataToTag(Lnet/minecraft/nbt/CompoundTag;)V", at = @At("TAIL"))
     private void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
-        if(this.susLevel > 0) {
-            CompoundTag dataTag = new CompoundTag();
-            dataTag.putInt("sus_lvl", this.susLevel);
-            tag.put("golfIV:player_data", dataTag);
-        }
-        if(this.kicks > 0) {
-            CompoundTag dataTag = new CompoundTag();
-            dataTag.putInt("kicks", this.kicks);
-            tag.put("golfIV:player_data", dataTag);
-        }
+        CompoundTag dataTag = new CompoundTag();
+
+        dataTag.putInt("sus_lvl", this.susLevel);
+        dataTag.putShort("kicks", this.kicks);
+        dataTag.put("cheat_log", this.cheatLog);
+
+        tag.put("golfIV:player_data", dataTag);
     }
 
     /**
@@ -225,6 +256,8 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
         if(dataTag != null) {
             this.susLevel = dataTag.contains("sus_lvl") ? dataTag.getInt("sus_lvl") : 0;
             this.kicks = dataTag.contains("kicks") ? dataTag.getShort("kicks") : 0;
+            this.cheatLog = dataTag.contains("cheat_log") ? (ListTag) dataTag.get("cheat_log") : new ListTag();
+            System.out.println(cheatLog);
         }
     }
 }
