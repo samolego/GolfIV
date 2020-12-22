@@ -23,7 +23,6 @@
     "illegals.ServerPlayNetworkHandlerMixin_illegalsCheckSlot",
     "movement.ServerPlayNetworkHandler_OnGroundCheck",
     "movement.ServerPlayNetworkHandlerMixin_FlightCheck",
-    "movement.ServerPlayNetworkHandlerMixin_movementChecks",
     "movement.ServerPlayNetworkHandlerMixinCast_NetworkHandlerData"
   ],
   "injectors": {
