@@ -81,6 +81,11 @@ public class GolfConfig {
          * Status: partially working
          */
         public boolean checkIllegalActions = true;
+
+        /**
+         * Disables kicks and logs them to console.
+         */
+        public boolean developerMode = false;
     }
 
     public static class Combat {

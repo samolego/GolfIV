@@ -119,7 +119,6 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Override
     public void report(CheatType cheatType, int susValue) {
         this.susLevel += susValue;
-        System.out.println(cheatType.getCheat());
         if(this.susLevel < 100)
             return;
 
@@ -149,8 +148,6 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
         }
 
 
-
-
         if(player instanceof ServerPlayerEntity) {
             final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 
@@ -173,21 +170,25 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
                 this.susLevel = 0;
                 if(++this.kicks > 10) {
                     this.kicks = 0;
-                    serverPlayerEntity.networkHandler.disconnect(new LiteralText(
-                            "§c[Ban from GolfIV (not really)]\n§6" +
-                                    golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
-                                    ))
-                    ));
-                    //BallLogger.logInfo(player.getGameProfile().getName() + " is BANNED for " + cheatType.getCheat() + " hack(s).");
+                    if(golfConfig.main.developerMode)
+                        serverPlayerEntity.networkHandler.disconnect(new LiteralText(
+                                "§c[Ban from GolfIV (not really)]\n§6" +
+                                        golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
+                                        ))
+                        ));
+                    else
+                        BallLogger.logInfo(player.getGameProfile().getName() + " should be BANNED.");
                 }
                 else {
-                    serverPlayerEntity.networkHandler.disconnect(new LiteralText(
-                            "§3[GolfIV]\n§a" +
-                                    golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
-                                    ))
-                    ));
+                    if(golfConfig.main.developerMode)
+                        serverPlayerEntity.networkHandler.disconnect(new LiteralText(
+                                "§3[GolfIV]\n§a" +
+                                        golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
+                                        ))
+                        ));
+                    else
+                        BallLogger.logInfo(player.getGameProfile().getName() + " should be KICKED.");
                 }
-                //BallLogger.logInfo(player.getGameProfile().getName() + " is KICKED for " + cheatType.getCheat() + " hack(s).");
             }
         }
     }
@@ -257,7 +258,6 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
             this.susLevel = dataTag.contains("sus_lvl") ? dataTag.getInt("sus_lvl") : 0;
             this.kicks = dataTag.contains("kicks") ? dataTag.getShort("kicks") : 0;
             this.cheatLog = dataTag.contains("cheat_log") ? (ListTag) dataTag.get("cheat_log") : new ListTag();
-            System.out.println(cheatLog);
         }
     }
 }
