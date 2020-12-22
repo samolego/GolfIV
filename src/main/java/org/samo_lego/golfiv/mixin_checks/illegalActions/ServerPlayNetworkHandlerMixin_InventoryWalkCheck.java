@@ -81,7 +81,7 @@ public class ServerPlayNetworkHandlerMixin_InventoryWalkCheck {
                     }
                 }
                 else if(packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both && ((PlayerMoveC2SPacketAccessor) packet).changesLook()) {
-                    if(++this.illegalActionsLookAttempts > 4) {
+                    if(++this.illegalActionsLookAttempts > 8) {
                         ((Golfer) this.player).report(ILLEGAL_ACTIONS, 50);
                         ci.cancel();
                     }

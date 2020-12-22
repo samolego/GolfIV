@@ -1,5 +1,6 @@
 package org.samo_lego.golfiv.casts;
 
+import net.minecraft.nbt.ListTag;
 import org.samo_lego.golfiv.utils.CheatType;
 
 /**
@@ -72,4 +73,14 @@ public interface Golfer {
      * Sets suspicion value for the player.
      */
     void setSusLevel(int newSusLevel);
+
+    /**
+     * Clears cheat log from the player.
+     */
+    void clearCheatLog();
+
+    /**
+     * Gets cheat log for the player.
+     */
+    ListTag getCheatLog();
 }

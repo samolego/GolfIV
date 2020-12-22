@@ -51,6 +51,23 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Unique
     private ListTag cheatLog;
 
+
+    /**
+     * Clears cheat log from the player.
+     */
+    @Override
+    public void clearCheatLog() {
+        this.cheatLog = new ListTag();
+    }
+
+    /**
+     * Gets cheat log for the player.
+     */
+    @Override
+    public ListTag getCheatLog() {
+        return this.cheatLog;
+    }
+
     /**
      * Gets the suspicion value for the player.
      *
@@ -170,7 +187,7 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
                 this.susLevel = 0;
                 if(++this.kicks > 10) {
                     this.kicks = 0;
-                    if(golfConfig.main.developerMode)
+                    if(!golfConfig.main.developerMode)
                         serverPlayerEntity.networkHandler.disconnect(new LiteralText(
                                 "§c[Ban from GolfIV (not really)]\n§6" +
                                         golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
@@ -180,7 +197,7 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
                         BallLogger.logInfo(player.getGameProfile().getName() + " should be BANNED.");
                 }
                 else {
-                    if(golfConfig.main.developerMode)
+                    if(!golfConfig.main.developerMode)
                         serverPlayerEntity.networkHandler.disconnect(new LiteralText(
                                 "§3[GolfIV]\n§a" +
                                         golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
