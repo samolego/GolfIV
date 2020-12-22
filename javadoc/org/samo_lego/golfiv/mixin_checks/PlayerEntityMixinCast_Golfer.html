@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -151,47 +151,65 @@ implements <a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="i
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#getSusLevel--">getSusLevel</a></span>()</code>
+<div class="block">Gets the suspicion value for the player.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#hasEntityCollisions--">hasEntityCollisions</a></span>()</code>
 <div class="block">Tells whether player has entity collisions.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#hasOpenGui--">hasOpenGui</a></span>()</code>
 <div class="block">Tells whether player has open GUI.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#isNearGround--">isNearGround</a></span>()</code>
 <div class="block">Real onGround value, which isn't affected
  by the client packet.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#report-org.samo_lego.golfiv.utils.CheatType-int-">report</a></span>(<a href="../../../../org/samo_lego/golfiv/utils/CheatType.html" title="enum in org.samo_lego.golfiv.utils">CheatType</a>&nbsp;cheatType,
       int&nbsp;susValue)</code>
 <div class="block">Reports player for cheating / kicks them.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#setBlockCollisions-boolean-">setBlockCollisions</a></span>(boolean&nbsp;blockCollisions)</code>
 <div class="block">Sets whether player has block collisions.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#setEntityCollisions-boolean-">setEntityCollisions</a></span>(boolean&nbsp;entityCollisions)</code>
 <div class="block">Sets whether player has entity collisions (e.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#setOpenGui-boolean-">setOpenGui</a></span>(boolean&nbsp;openGui)</code>
 <div class="block">Sets whether player has opened GUI.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#setSusLevel-int-">setSusLevel</a></span>(int&nbsp;newSusLevel)</code>
+<div class="block">Sets suspicion value for the player.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#tick-org.spongepowered.asm.mixin.injection.callback.CallbackInfo-">tick</a></span>(org.spongepowered.asm.mixin.injection.callback.CallbackInfo&nbsp;ci)</code>
+<div class="block">Lowers the susLevel by 1 each half a minute.</div>
 </td>
 </tr>
 </table>
@@ -233,6 +251,36 @@ implements <a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="i
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a name="getSusLevel--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getSusLevel</h4>
+<pre>public&nbsp;int&nbsp;getSusLevel()</pre>
+<div class="block">Gets the suspicion value for the player.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#getSusLevel--">getSusLevel</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="interface in org.samo_lego.golfiv.casts">Golfer</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>suspicion value, higher than 0</dd>
+</dl>
+</li>
+</ul>
+<a name="setSusLevel-int-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setSusLevel</h4>
+<pre>public&nbsp;void&nbsp;setSusLevel(int&nbsp;newSusLevel)</pre>
+<div class="block">Sets suspicion value for the player.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#setSusLevel-int-">setSusLevel</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="interface in org.samo_lego.golfiv.casts">Golfer</a></code></dd>
+</dl>
+</li>
+</ul>
 <a name="isNearGround--">
 <!--   -->
 </a>
@@ -336,7 +384,7 @@ implements <a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="i
 <a name="hasOpenGui--">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>hasOpenGui</h4>
 <pre>public&nbsp;boolean&nbsp;hasOpenGui()</pre>
@@ -347,6 +395,20 @@ implements <a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="i
 <dd><code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#hasOpenGui--">hasOpenGui</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="interface in org.samo_lego.golfiv.casts">Golfer</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>true if player has open GUI, otherwise false</dd>
+</dl>
+</li>
+</ul>
+<a name="tick-org.spongepowered.asm.mixin.injection.callback.CallbackInfo-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>tick</h4>
+<pre>public&nbsp;void&nbsp;tick(org.spongepowered.asm.mixin.injection.callback.CallbackInfo&nbsp;ci)</pre>
+<div class="block">Lowers the susLevel by 1 each half a minute.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>ci</code> - </dd>
 </dl>
 </li>
 </ul>

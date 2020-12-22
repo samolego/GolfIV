@@ -1,5 +1,6 @@
 org.samo_lego.golfiv
 org.samo_lego.golfiv.casts
+org.samo_lego.golfiv.commands
 org.samo_lego.golfiv.mixin_checks
 org.samo_lego.golfiv.mixin_checks.accessors
 org.samo_lego.golfiv.mixin_checks.combat
