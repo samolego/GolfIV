@@ -40,9 +40,9 @@ public class GolfConfig {
          * Detects flight, either it being
          * a boat-flight or normal player flight
          *
-         * Status: working (might throw false positives when lagging, not sure)
+         * Status: working
          */
-        public boolean noFly = true;
+        public boolean checkFlight = true;
         /**
          * Tries to detect the timer check, which allows
          * client to speed up the game, in order to move faster or use items
@@ -111,8 +111,7 @@ public class GolfConfig {
          * Status: working, waiting for falses to be reported.
          */
         public boolean checkHitAngle = true;
-    }
-    public static class EntityDataPacket {
+
         /**
          * Removes entity health data from packets
          * sent to client.
@@ -162,7 +161,6 @@ public class GolfConfig {
     ));
 
     public final GolfConfig.Main main = new Main();
-    public final GolfConfig.EntityDataPacket entityDataPacket = new EntityDataPacket();
     public final GolfConfig.Combat combat = new Combat();
     public final GolfConfig.Logging logging = new Logging();
 

@@ -25,7 +25,7 @@ public class ServerPlayNetworkHandlerMixin_HealthTags {
             at = @At("HEAD")
     )
     private void removeHealthTags(Packet<?> packet, CallbackInfo ci) {
-        if(golfConfig.entityDataPacket.removeHealthTags && packet instanceof EntityTrackerUpdateS2CPacket) {
+        if(golfConfig.combat.removeHealthTags && packet instanceof EntityTrackerUpdateS2CPacket) {
 
             EntityTrackerUpdateS2CPacketAccessor p = ((EntityTrackerUpdateS2CPacketAccessor) packet);
             Entity entity = this.player.getServerWorld().getEntityById(p.getID());

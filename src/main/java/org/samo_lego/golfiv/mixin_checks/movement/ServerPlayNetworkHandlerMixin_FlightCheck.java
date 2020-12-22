@@ -41,7 +41,7 @@ public class ServerPlayNetworkHandlerMixin_FlightCheck {
                 vehicle = player;
             }
 
-            if(golfConfig.main.noFly && !this.player.abilities.allowFlying) {
+            if(golfConfig.main.checkFlight && !this.player.abilities.allowFlying) {
                 double d = 0.08D;
                 boolean falling = data.getPacketMovement().getY() <= 0.0D;
                 boolean wasFalling = data.getLastMovement().getY() <= 0.0D;

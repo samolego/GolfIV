@@ -60,4 +60,16 @@ public interface Golfer {
      * @return true if player has open GUI, otherwise false
      */
     boolean hasOpenGui();
+
+    /**
+     * Gets the suspicion value for the player.
+     *
+     * @return suspicion value, higher than 0
+     */
+    int getSusLevel();
+
+    /**
+     * Sets suspicion value for the player.
+     */
+    void setSusLevel(int newSusLevel);
 }

@@ -4,7 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.*;
+import net.minecraft.util.Formatting;
 import org.samo_lego.golfiv.casts.Golfer;
 import org.samo_lego.golfiv.utils.BallLogger;
 import org.samo_lego.golfiv.utils.CheatType;
@@ -14,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
 import java.util.Random;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
@@ -40,7 +42,27 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     private int susLevel;
 
     @Unique
-    private int timer;
+    private int ticks;
+    @Unique
+    private short kicks;
+
+    /**
+     * Gets the suspicion value for the player.
+     *
+     * @return suspicion value, higher than 0
+     */
+    @Override
+    public int getSusLevel() {
+        return this.susLevel;
+    }
+
+    /**
+     * Sets suspicion value for the player.
+     */
+    @Override
+    public void setSusLevel(int newSusLevel) {
+        this.susLevel = newSusLevel;
+    }
 
     /**
      * Real onGround value, which isn't affected
@@ -92,35 +114,48 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Override
     public void report(CheatType cheatType, int susValue) {
         this.susLevel += susValue;
+        if(this.susLevel < 100)
+            return;
+
         if(player instanceof ServerPlayerEntity) {
             final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
+
+            String msg = "§6[GolfIV] §2Suspicion value of §b" + player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
+
+            Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat()))));
+
+            List<ServerPlayerEntity> players = serverPlayerEntity.getServer().getPlayerManager().getPlayerList();
+            for(ServerPlayerEntity p : players) {
+                if(p.hasPermissionLevel(4)) {
+                    p.sendMessage(text, false);
+                }
+            }
+
             if(golfConfig.logging.toConsole) {
                 BallLogger.logInfo(player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
             }
 
-            if(this.susLevel > 100) {
+            if(this.susLevel > 200) {
                 this.susLevel = 0;
-                /*serverPlayerEntity.networkHandler.disconnect(new LiteralText(
-                        "§3[GolfIV]\n§a" +
-                                golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
-                                ))
-                ));*/
-                BallLogger.logInfo(player.getGameProfile().getName() + " is KICKED for " + cheatType.getCheat() + " hack(s).");
-            }
-
-        }
-
-        /*int meesages = golfConfig.kickMessages.size();
-        if(meesages > 0)
-            player.sendMessage(
-                    new LiteralText(
+                if(++this.kicks > 10) {
+                    this.kicks = 0;
+                    serverPlayerEntity.networkHandler.disconnect(new LiteralText(
+                            "§c[Ban from GolfIV (not really)]\n§6" +
+                                    golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
+                                    ))
+                    ));
+                    //BallLogger.logInfo(player.getGameProfile().getName() + " is BANNED for " + cheatType.getCheat() + " hack(s).");
+                }
+                else {
+                    serverPlayerEntity.networkHandler.disconnect(new LiteralText(
                             "§3[GolfIV]\n§a" +
-                                    golfConfig.kickMessages.get(
-                                            new Random().nextInt(meesages)
-                                    )
-                    ),
-                    false
-            );*/
+                                    golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
+                                    ))
+                    ));
+                }
+                //BallLogger.logInfo(player.getGameProfile().getName() + " is KICKED for " + cheatType.getCheat() + " hack(s).");
+            }
+        }
     }
 
     /**
@@ -146,6 +181,19 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     }
 
     /**
+     * Lowers the susLevel by 1 each half a minute.
+     *
+     * @param ci
+     */
+    @Inject(method = "tick()V", at = @At("TAIL"))
+    public void tick(CallbackInfo ci) {
+        if(++this.ticks == 600) {
+            this.ticks = 0;
+            this.susLevel -= this.susLevel > 0 ? 1 : 0;
+        }
+    }
+
+    /**
      * Saves susLevel to player data.
      *
      * @param tag
@@ -156,6 +204,11 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
         if(this.susLevel > 0) {
             CompoundTag dataTag = new CompoundTag();
             dataTag.putInt("sus_lvl", this.susLevel);
+            tag.put("golfIV:player_data", dataTag);
+        }
+        if(this.kicks > 0) {
+            CompoundTag dataTag = new CompoundTag();
+            dataTag.putInt("kicks", this.kicks);
             tag.put("golfIV:player_data", dataTag);
         }
     }
@@ -171,6 +224,7 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
         CompoundTag dataTag = tag.getCompound("golfIV:player_data");
         if(dataTag != null) {
             this.susLevel = dataTag.contains("sus_lvl") ? dataTag.getInt("sus_lvl") : 0;
+            this.kicks = dataTag.contains("kicks") ? dataTag.getShort("kicks") : 0;
         }
     }
 }

@@ -17,7 +17,7 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
  * Sets the status of the GUI to open.
  */
 @Mixin(ServerPlayerEntity.class)
-public class ServerPlayerEntityMixin_inventoryWalk {
+public class ServerPlayerEntityMixin_InventoryClose {
 
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
