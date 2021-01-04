@@ -7,9 +7,11 @@ import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import org.samo_lego.golfiv.casts.Golfer;
+import org.samo_lego.golfiv.mixin_checks.accessors.PlayerInteractEntityC2SPacketAccessor;
 import org.samo_lego.golfiv.utils.CheatType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Optional;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
+import static org.samo_lego.golfiv.utils.CheatType.KILLAURA;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin_killauraAccuracyCheck {
@@ -52,15 +55,15 @@ public class ServerPlayNetworkHandlerMixin_killauraAccuracyCheck {
             this.wasLastHit = true;
             ++this.entityHits;
 
-            if(victim instanceof PlayerEntity && this.handSwings == 50) {
+            if(this.handSwings >= 50) {
                 System.out.println(entityHits + " hits of " + handSwings + " tries.");
-                if(handSwings - entityHits < 5) {
-                    // > 90 % accuracy?
-                    System.out.println("Player " + player.getGameProfile().getName() + " is hitting with " + entityHits / handSwings * 100 + "% accuracy.");
-                }
+
+                ((Golfer) player).setHitAccuracy(entityHits, handSwings);
+                System.out.println(((Golfer) player).getHitAccuracy() + "% accuracy.");
                 this.handSwings = 0;
                 this.entityHits = 0;
             }
+            //System.out.println(((Golfer) player).getHitAccuracy() + "% accuracy.");
         }
     }
 

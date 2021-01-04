@@ -124,6 +124,14 @@ public class GolfConfig {
          * Status: working.
          */
         public boolean removeHealthTags = true;
+
+        /**
+         * What hit accuracy counts as suspicious, in percentage.
+         *
+         * If player is hitting entities with higher accuracy, a fake player will spawn behind
+         * them to check for killaura hacks.
+         */
+        public byte minSuspiciousAccuracy = 80;
     }
 
     /**

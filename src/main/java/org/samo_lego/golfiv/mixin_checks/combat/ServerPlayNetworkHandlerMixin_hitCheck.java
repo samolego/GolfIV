@@ -53,13 +53,24 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
     )
     private void hitThroughWallCheck(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, ServerWorld serverWorld, Entity victim, double distanceSquared) {
         EntityHitResult entityHit = new EntityHitResult(victim);
-        double dist2 = entityHit.squaredDistanceTo(player);
+        double victimDistanceSquared = entityHit.squaredDistanceTo(player);
+        double victimDistance = Math.sqrt(victimDistanceSquared);
 
-        if(golfConfig.combat.checkHitDistance && !player.isCreative() && dist2 > 22) {
-            System.out.println(dist2);
+        if(golfConfig.combat.checkHitDistance && !player.isCreative() && victimDistanceSquared > 22) {
             ((Golfer) player).report(REACH, 22);
             ci.cancel();
             return;
+        }
+        if(golfConfig.combat.checkWallHit) {
+            // Through-wall hit check
+            BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
+            BlockState blockState = serverWorld.getBlockState(blockHit.getBlockPos());
+
+            if(Math.sqrt(blockHit.squaredDistanceTo(player)) + 0.5D < victimDistance) {
+                ((Golfer) player).report(HIT_THROUGH_WALLS, 10);
+                ci.cancel();
+                return;
+            }
         }
         if(golfConfig.combat.checkHitAngle) {
             // Angle check
@@ -79,20 +90,9 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
             double beta = Math.atan2(deltaZ, deltaX) - Math.PI / 2;
 
             double phi = beta - Math.toRadians(yaw);
-            if(Math.abs(Math.sqrt(dist2) * Math.sin(phi)) > 0.7D){
+            if(Math.abs(victimDistance * Math.sin(phi)) > 0.7D){
                 // Fine check
-                ((Golfer) player).report(KILLAURA, 5);
-                ci.cancel();
-                return;
-            }
-        }
-        if(golfConfig.combat.checkWallHit) {
-            // Through-wall hit check
-            BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
-            BlockState blockState = serverWorld.getBlockState(blockHit.getBlockPos());
-
-            if(blockHit.squaredDistanceTo(player) + 1.0D < dist2) {
-                ((Golfer) player).report(HIT_THROUGH_WALLS, 10);
+                ((Golfer) player).report(KILLAURA, 20);
                 ci.cancel();
             }
         }

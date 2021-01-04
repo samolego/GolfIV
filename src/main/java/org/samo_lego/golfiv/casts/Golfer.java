@@ -83,4 +83,9 @@ public interface Golfer {
      * Gets cheat log for the player.
      */
     ListTag getCheatLog();
+
+    int getHitAccuracy();
+
+    void setHitAccuracy(int entityHits, int handSwings);
+    void setHitAccuracy(int accuracy);
 }

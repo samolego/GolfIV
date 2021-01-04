@@ -1,6 +1,5 @@
 package org.samo_lego.golfiv.mixin_checks;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -51,6 +50,17 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Unique
     private ListTag cheatLog;
 
+    @Unique
+    private CheatType lastCheat;
+
+    @Unique
+    private int hackAttempts;
+
+    @Unique
+    private int entityHits = 0;
+    @Unique
+    private int handSwings = 1;
+
 
     /**
      * Clears cheat log from the player.
@@ -66,6 +76,22 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Override
     public ListTag getCheatLog() {
         return this.cheatLog;
+    }
+
+    @Override
+    public void setHitAccuracy(int entityHits, int handSwings) {
+        this.entityHits = entityHits;
+        this.handSwings = handSwings;
+    }
+    @Override
+    public void setHitAccuracy(int accuracy) {
+        this.entityHits = accuracy;
+        this.handSwings = 100;
+    }
+
+    @Override
+    public int getHitAccuracy() {
+        return this.entityHits * 100 / this.handSwings;
     }
 
     /**
@@ -136,6 +162,13 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Override
     public void report(CheatType cheatType, int susValue) {
         this.susLevel += susValue;
+        if(cheatType.equals(this.lastCheat)) {
+            ++this.hackAttempts;
+        }
+        else {
+            this.hackAttempts = 1;
+        }
+
         if(this.susLevel < 100)
             return;
 
@@ -152,6 +185,7 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
                 CompoundTag cheat = new CompoundTag();
                 cheat.putString("type", cheatType.getCheat());
                 cheat.putString("time", now.toString());
+                cheat.putInt("times_used", 1);
 
                 cheatLog.add(cheat);
             }
@@ -160,16 +194,17 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
             CompoundTag cheat = new CompoundTag();
             cheat.putString("type", cheatType.getCheat());
             cheat.putString("time", now.toString());
+            cheat.putInt("times_used", 1);
 
             cheatLog.add(cheat);
         }
 
 
-        if(player instanceof ServerPlayerEntity) {
+        if(player instanceof ServerPlayerEntity && this.hackAttempts % 20 == 0) {
             final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 
             String msg = "§6[GolfIV] §2Suspicion value of §b" + player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
-            Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat()))));
+            Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat() + ", used: " + this.hackAttempts + "x."))));
 
             if(golfConfig.logging.toOps) {
                 List<ServerPlayerEntity> players = serverPlayerEntity.getServer().getPlayerManager().getPlayerList();
@@ -208,6 +243,8 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
                 }
             }
         }
+
+        this.lastCheat = cheatType;
     }
 
     /**

@@ -2,9 +2,12 @@ package org.samo_lego.golfiv.mixin_checks.combat;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerSpawnS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -62,8 +65,11 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
     private void checkHitEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, ServerWorld serverWorld, Entity target) {
         if(golfConfig.combat.checkKillaura && fakeVictim != null) {
             this.fakeAttacked = ((PlayerInteractEntityC2SPacketAccessor) packet).getEntityId() == this.fakeVictim.getEntityId();
-            if(fakeAttacked)
-                ((Golfer) player).report(KILLAURA, 50);
+
+            if(fakeAttacked) {
+                ((Golfer) player).report(KILLAURA, 80);
+            }
+            ((Golfer) player).setHitAccuracy(golfConfig.combat.minSuspiciousAccuracy);
             this.clearFakeVictim();
         }
     }
@@ -82,7 +88,7 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
             cancellable = true
     )
     private void testWithFakeVictim(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, Entity target) {
-        if(golfConfig.combat.checkKillaura && fakeVictim == null && target instanceof LivingEntity && !target.isAlive()) {
+        if(golfConfig.combat.checkKillaura && fakeVictim == null && target instanceof LivingEntity && !target.isAlive() && ((Golfer) player).getHitAccuracy() > golfConfig.combat.minSuspiciousAccuracy) {
             this.fakeVictim = FakeVictim.summonFake(player);
             player.networkHandler.sendPacket(new PlayerListS2CPacket(ADD_PLAYER, fakeVictim));
             player.networkHandler.sendPacket(new PlayerSpawnS2CPacket(fakeVictim));
