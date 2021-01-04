@@ -150,6 +150,12 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr class="altColor">
+<td class="colFirst"><code>byte</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Combat.html#minSuspiciousAccuracy">minSuspiciousAccuracy</a></span></code>
+<div class="block">What hit accuracy counts as suspicious, in percentage.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Combat.html#removeHealthTags">removeHealthTags</a></span></code>
 <div class="block">Removes entity health data from packets
@@ -254,7 +260,7 @@ extends java.lang.Object</pre>
 <a name="removeHealthTags">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>removeHealthTags</h4>
 <pre>public&nbsp;boolean removeHealthTags</pre>
@@ -262,6 +268,19 @@ extends java.lang.Object</pre>
  sent to client.
 
  Status: working.</div>
+</li>
+</ul>
+<a name="minSuspiciousAccuracy">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>minSuspiciousAccuracy</h4>
+<pre>public&nbsp;byte minSuspiciousAccuracy</pre>
+<div class="block">What hit accuracy counts as suspicious, in percentage.
+
+ If player is hitting entities with higher accuracy, a fake player will spawn behind
+ them to check for killaura hacks.</div>
 </li>
 </ul>
 </li>
