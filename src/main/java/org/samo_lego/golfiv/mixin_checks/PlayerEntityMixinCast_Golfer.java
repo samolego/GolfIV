@@ -61,6 +61,9 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Unique
     private int handSwings = 1;
 
+    @Unique
+    private boolean nearFluid;
+
 
     /**
      * Clears cheat log from the player.
@@ -144,13 +147,23 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     }
 
     /**
-     * Tells whether player has entity collisions.
+     * Tells whether player is near fluid (above).
      *
-     * @return true if player has entity collisions, otherwise false.
+     * @return true if player is near fluid collisions, otherwise false.
      */
     @Override
-    public boolean hasEntityCollisions() {
-        return entityCollisions;
+    public boolean isNearFluid() {
+        return this.nearFluid;
+    }
+
+    /**
+     * Sets the nearFluid status.
+     *
+     * @param nearFluid if player is near (above) fluid
+     */
+    @Override
+    public void setNearFluid(boolean nearFluid) {
+        this.nearFluid = nearFluid;
     }
 
     /**
@@ -294,7 +307,9 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
 
         dataTag.putInt("sus_lvl", this.susLevel);
         dataTag.putShort("kicks", this.kicks);
-        dataTag.put("cheat_log", this.cheatLog);
+
+        if(this.cheatLog != null)
+            dataTag.put("cheat_log", this.cheatLog);
 
         tag.put("golfIV:player_data", dataTag);
     }

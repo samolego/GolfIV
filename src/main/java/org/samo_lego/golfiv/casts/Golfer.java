@@ -33,11 +33,18 @@ public interface Golfer {
     void setEntityCollisions(boolean entityCollisions);
 
     /**
-     * Tells whether player has entity collisions.
+     * Tells whether player is near fluid (above).
      *
-     * @return true if player has entity collisions, otherwise false.
+     * @return true if player is near fluid collisions, otherwise false.
      */
-    boolean hasEntityCollisions();
+    boolean isNearFluid();
+
+    /**
+     * Sets the nearFluid status.
+     *
+     * @param nearFluid if player is near (above) fluid
+     */
+    void setNearFluid(boolean nearFluid);
 
     /**
      * Reports player for cheating.
