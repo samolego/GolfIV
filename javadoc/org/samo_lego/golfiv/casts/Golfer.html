@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6};
+var methods = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -147,14 +147,14 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#hasEntityCollisions--">hasEntityCollisions</a></span>()</code>
-<div class="block">Tells whether player has entity collisions.</div>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#hasOpenGui--">hasOpenGui</a></span>()</code>
+<div class="block">Tells whether player has open GUI.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#hasOpenGui--">hasOpenGui</a></span>()</code>
-<div class="block">Tells whether player has open GUI.</div>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#isNearFluid--">isNearFluid</a></span>()</code>
+<div class="block">Tells whether player is near fluid (above).</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
@@ -194,11 +194,17 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#setNearFluid-boolean-">setNearFluid</a></span>(boolean&nbsp;nearFluid)</code>
+<div class="block">Sets the nearFluid status.</div>
+</td>
+</tr>
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#setOpenGui-boolean-">setOpenGui</a></span>(boolean&nbsp;openGui)</code>
 <div class="block">Sets whether player has opened GUI.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#setSusLevel-int-">setSusLevel</a></span>(int&nbsp;newSusLevel)</code>
 <div class="block">Sets suspicion value for the player.</div>
@@ -262,17 +268,31 @@ var activeTableTab = "activeTableTab";
 </dl>
 </li>
 </ul>
-<a name="hasEntityCollisions--">
+<a name="isNearFluid--">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>hasEntityCollisions</h4>
-<pre>boolean&nbsp;hasEntityCollisions()</pre>
-<div class="block">Tells whether player has entity collisions.</div>
+<h4>isNearFluid</h4>
+<pre>boolean&nbsp;isNearFluid()</pre>
+<div class="block">Tells whether player is near fluid (above).</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>true if player has entity collisions, otherwise false.</dd>
+<dd>true if player is near fluid collisions, otherwise false.</dd>
+</dl>
+</li>
+</ul>
+<a name="setNearFluid-boolean-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setNearFluid</h4>
+<pre>void&nbsp;setNearFluid(boolean&nbsp;nearFluid)</pre>
+<div class="block">Sets the nearFluid status.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>nearFluid</code> - if player is near (above) fluid</dd>
 </dl>
 </li>
 </ul>
