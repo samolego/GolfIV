@@ -66,6 +66,7 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
             if(fakeAttacked) {
                 ((Golfer) player).report(KILLAURA, 80);
                 this.clearFakeVictim();
+                System.out.println("#Fake attacked");
             }
         }
     }
@@ -109,7 +110,7 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
      */
     @Inject(method = "tick()V", at = @At("HEAD"))
     private void preTick(CallbackInfo ci) {
-        if(fakeVictim != null && player.getAttackCooldownProgress(0.5F) == 1 && this.ticks % 4 == 0) {
+        if(fakeVictim != null && player.getAttackCooldownProgress(0.5F) == 1 && this.ticks % 10 == 0) {
             this.clearFakeVictim();
         }
     }

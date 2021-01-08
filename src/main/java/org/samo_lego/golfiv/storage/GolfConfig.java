@@ -97,6 +97,13 @@ public class GolfConfig {
         public boolean checkKillaura = true;
 
         /**
+         * Checks for antiknocback hack.
+         *
+         * Status: working, waiting for FPs to be reported.
+         */
+        public boolean checkAntiKnockback = true;
+
+        /**
          * Checks if player is hitting entity through wall.
          *
          * Status: working, waiting for falses to be reported.
