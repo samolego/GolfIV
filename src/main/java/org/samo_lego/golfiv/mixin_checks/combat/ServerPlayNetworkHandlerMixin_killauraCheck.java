@@ -6,10 +6,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerSpawnS2CPacket;
+import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -68,9 +65,8 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
 
             if(fakeAttacked) {
                 ((Golfer) player).report(KILLAURA, 80);
+                this.clearFakeVictim();
             }
-            ((Golfer) player).setHitAccuracy(golfConfig.combat.minSuspiciousAccuracy);
-            this.clearFakeVictim();
         }
     }
 
@@ -93,6 +89,7 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
             player.networkHandler.sendPacket(new PlayerListS2CPacket(ADD_PLAYER, fakeVictim));
             player.networkHandler.sendPacket(new PlayerSpawnS2CPacket(fakeVictim));
         }
+        ((Golfer) player).setHitAccuracy(golfConfig.combat.minSuspiciousAccuracy);
     }
 
     /**

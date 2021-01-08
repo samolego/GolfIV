@@ -77,11 +77,12 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
             float yaw = player.yaw;
             int xOffset = player.getHorizontalFacing().getOffsetX();
             int zOffset = player.getHorizontalFacing().getOffsetZ();
+            Box bBox = victim.getBoundingBox();
 
             // Checking if victim is behind player
-            if(xOffset * victim.getX() - xOffset * player.getX() < 0 || zOffset * victim.getZ() - zOffset * player.getZ() < 0) {
+            if(xOffset * victim.getX() + bBox.getXLength() / 2 - xOffset * player.getX() < 0 || zOffset * victim.getZ() + bBox.getZLength() / 2 - zOffset * player.getZ() < 0) {
                 // "Dumb" check
-                ((Golfer) player).report(KILLAURA, 20);
+                ((Golfer) player).report(KILLAURA, 60);
                 ci.cancel();
                 return;
             }
