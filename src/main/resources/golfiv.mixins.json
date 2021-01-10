@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "PlayerEntityMixinCast_Golfer",
-    "ServerPlayNetworkHandlerMixin_timerCheck",
-    "ServerPlayNetworkHandlerMixinCast_TPSTracker",
+    "ServerPlayNetworkHandlerMixin_TimerCheck",
     "accessors.EntityTrackerUpdateS2CPacketAccessor",
     "accessors.EntityVelocityUpdateS2CPacketAccessor",
     "accessors.LivingEntityAccessor",
