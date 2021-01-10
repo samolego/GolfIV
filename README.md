@@ -7,6 +7,7 @@ False positives are still a thing, your players might get spammed / kicked.
 **Please** test before using!
 
 # GolfIV
+[![Discord](https://img.shields.io/discord/797713290545332235)](https://discord.gg/PNPjqA4Aw6)
 
 An anticheat attempt for Fabric servers. For more info, check [wiki](https://github.com/samolego/GolfIV/wiki).
 
