@@ -6,6 +6,7 @@
   "mixins": [
     "PlayerEntityMixinCast_Golfer",
     "ServerPlayNetworkHandlerMixin_TimerCheck",
+    "accessors.EntityPositionS2CPacketAccessor",
     "accessors.EntityTrackerUpdateS2CPacketAccessor",
     "accessors.EntityVelocityUpdateS2CPacketAccessor",
     "accessors.LivingEntityAccessor",
@@ -23,6 +24,7 @@
     "illegals.ServerPlayNetworkHandlerMixin_creativeItemsCheck",
     "illegals.ServerPlayNetworkHandlerMixin_illegalsCheckSlot",
     "movement.ServerPlayNetworkHandler_OnGroundCheck",
+    "movement.ServerPlayNetworkHandlerMixin_EntityTeleportData",
     "movement.ServerPlayNetworkHandlerMixin_FlightCheck",
     "movement.ServerPlayNetworkHandlerMixinCast_NetworkHandlerData"
   ],

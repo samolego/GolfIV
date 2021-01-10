@@ -86,6 +86,13 @@ public class GolfConfig {
          * Disables kicks and logs them to console.
          */
         public boolean developerMode = false;
+
+        /**
+         * Whether to remove the teleport data
+         * from packets when entities move out of
+         * view distance.
+         */
+        public boolean removeTeleportData = true;
     }
 
     public static class Combat {
