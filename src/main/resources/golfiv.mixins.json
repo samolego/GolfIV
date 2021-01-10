@@ -14,7 +14,7 @@
     "accessors.PlayerMoveC2SPacketAccessor",
     "combat.ServerPlayNetworkHandlerMixin_AntiKnockbackCheck",
     "combat.ServerPlayNetworkHandlerMixin_HealthTags",
-    "combat.ServerPlayNetworkHandlerMixin_hitCheck",
+    "combat.ServerPlayNetworkHandlerMixin_HitCheck",
     "combat.ServerPlayNetworkHandlerMixin_killauraAccuracyCheck",
     "combat.ServerPlayNetworkHandlerMixin_killauraCheck",
     "illegalActions.ServerPlayerEntityMixin_InventoryClose",

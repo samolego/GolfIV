@@ -24,7 +24,7 @@ import static org.samo_lego.golfiv.utils.CheatType.*;
  * Checks for hitting through walls.
  */
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin_hitCheck {
+public class ServerPlayNetworkHandlerMixin_HitCheck {
 
     @Shadow public ServerPlayerEntity player;
 
@@ -65,7 +65,6 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
         if(golfConfig.combat.checkWallHit) {
             // Through-wall hit check
             BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
-            BlockState blockState = serverWorld.getBlockState(blockHit.getBlockPos());
 
             if(Math.sqrt(blockHit.squaredDistanceTo(player)) + 0.5D < victimDistance) {
                 ((Golfer) player).report(HIT_THROUGH_WALLS, 10);
@@ -75,7 +74,6 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
         }
         if(golfConfig.combat.checkHitAngle) {
             // Angle check
-            float yaw = player.yaw;
             int xOffset = player.getHorizontalFacing().getOffsetX();
             int zOffset = player.getHorizontalFacing().getOffsetZ();
             Box bBox = victim.getBoundingBox();
@@ -91,8 +89,11 @@ public class ServerPlayNetworkHandlerMixin_hitCheck {
             double deltaZ = victim.getZ() - player.getZ();
             double beta = Math.atan2(deltaZ, deltaX) - Math.PI / 2;
 
-            double phi = beta - Math.toRadians(yaw);
-            if(Math.abs(victimDistance * Math.sin(phi)) > 0.7D){
+            double phi = beta - Math.toRadians(player.yaw);
+            //todo can be improved?
+            double allowedAttackSpace = Math.sqrt(bBox.getXLength() * bBox.getXLength() + bBox.getZLength() * bBox.getZLength());
+
+            if(Math.abs(victimDistance * Math.sin(phi)) > allowedAttackSpace / 2 + 0.2D) {
                 // Fine check
                 ((Golfer) player).report(KILLAURA, 20);
                 ci.cancel();
