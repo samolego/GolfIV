@@ -26,6 +26,7 @@
     "movement.ServerPlayNetworkHandler_OnGroundCheck",
     "movement.ServerPlayNetworkHandlerMixin_EntityTeleportData",
     "movement.ServerPlayNetworkHandlerMixin_FlightCheck",
+    "movement.ServerPlayNetworkHandlerMixin_SpeedCheck",
     "movement.ServerPlayNetworkHandlerMixinCast_NetworkHandlerData"
   ],
   "injectors": {
