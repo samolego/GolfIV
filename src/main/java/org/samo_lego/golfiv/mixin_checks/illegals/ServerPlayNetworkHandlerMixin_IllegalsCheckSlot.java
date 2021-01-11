@@ -16,7 +16,7 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.utils.CheatType.NBT_ITEMS;
 
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin_illegalsCheckSlot {
+public class ServerPlayNetworkHandlerMixin_IllegalsCheckSlot {
 
     @Shadow public ServerPlayerEntity player;
 
@@ -37,8 +37,8 @@ public class ServerPlayNetworkHandlerMixin_illegalsCheckSlot {
             )
     )
     private void checkSlot(ClickSlotC2SPacket packet, CallbackInfo ci) {
+        ((Golfer) player).setOpenGui(golfConfig.main.checkIllegalActions);
         if(golfConfig.main.checkForStrangeItems) {
-            ((Golfer) player).setOpenGui(true);
             int packetSlot = packet.getSlot();
             if(packetSlot >= 0) {
                 ItemStack itemStack = this.player.currentScreenHandler.getSlot(packetSlot).getStack();

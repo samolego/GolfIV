@@ -85,7 +85,6 @@ public class ServerPlayNetworkHandlerMixinCast_NetworkHandlerData implements Net
 
     @Inject(method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V", at = @At("RETURN"))
     private void setLastPacketValues(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        //this.lastDistance = this.packetDist;
         this.lastMovement = packetMovement;
         this.lLastOnGround = this.lastOnGround;
         this.lastOnGround = ((Golfer) this.player).isNearGround();

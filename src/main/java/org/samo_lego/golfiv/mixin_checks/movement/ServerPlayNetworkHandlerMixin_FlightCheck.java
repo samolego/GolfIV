@@ -23,6 +23,7 @@ import static org.samo_lego.golfiv.utils.CheatType.FLY_HACK;
 public class ServerPlayNetworkHandlerMixin_FlightCheck {
     @Shadow
     public ServerPlayerEntity player;
+    @Unique
     private final NetworkHandlerData data = (NetworkHandlerData) this;
     @Unique
     private byte flyCounter;
