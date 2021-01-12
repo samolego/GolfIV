@@ -39,7 +39,8 @@ public class ServerPlayNetworkHandlerMixin_EntityEquipment {
                 ItemStack stack = pair.getSecond();
 
                 ItemStack fakedStack = new ItemStack(stack.getItem(), stack.getMaxCount());
-                fakedStack.addEnchantment(null, 0);
+                if(stack.hasEnchantments())
+                    fakedStack.addEnchantment(null, 0);
 
                 newEquipment.add(new Pair<>(pair.getFirst(), fakedStack));
             });
