@@ -6,6 +6,7 @@
   "mixins": [
     "PlayerEntityMixinCast_Golfer",
     "ServerPlayNetworkHandlerMixin_TimerCheck",
+    "accessors.EntityEquipmentUpdateS2CPacketAccessor",
     "accessors.EntityPositionS2CPacketAccessor",
     "accessors.EntityTrackerUpdateS2CPacketAccessor",
     "accessors.EntityVelocityUpdateS2CPacketAccessor",
@@ -13,6 +14,7 @@
     "accessors.PlayerInteractEntityC2SPacketAccessor",
     "accessors.PlayerMoveC2SPacketAccessor",
     "combat.ServerPlayNetworkHandlerMixin_AntiKnockbackCheck",
+    "combat.ServerPlayNetworkHandlerMixin_EntityEquipment",
     "combat.ServerPlayNetworkHandlerMixin_HealthTags",
     "combat.ServerPlayNetworkHandlerMixin_HitCheck",
     "combat.ServerPlayNetworkHandlerMixin_killauraAccuracyCheck",

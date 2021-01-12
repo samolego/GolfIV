@@ -64,7 +64,7 @@ public class GolfConfig {
          *
          * Status: working, waiting for falses to be reported.
          */
-        public boolean preventElytraHacks = true;
+        public boolean checkElytraFlight = true;
         /**
          * Clears NBT items, but still allows block-picking.
          *
@@ -139,6 +139,15 @@ public class GolfConfig {
          * Status: working.
          */
         public boolean removeHealthTags = true;
+
+        /**
+         * Removes entity equipment tags from
+         * packets. Players will still see if item is enchanted,
+         * but won't get the durability or stack size information.
+         *
+         * Status: working.
+         */
+        public boolean removeEquipmentTags = true;
 
         /**
          * What hit accuracy counts as suspicious, in percentage.

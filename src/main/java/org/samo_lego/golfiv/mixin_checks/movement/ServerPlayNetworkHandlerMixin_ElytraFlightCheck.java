@@ -1,9 +1,7 @@
 package org.samo_lego.golfiv.mixin_checks.movement;
 
 import net.minecraft.item.FireworkItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -43,7 +41,7 @@ public class ServerPlayNetworkHandlerMixin_ElytraFlightCheck {
             cancellable = true
     )
     private void checkElytraMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.main.preventElytraHacks && player.isFallFlying() && data.getLastMovement() != null && data.getPacketMovement().getY() > data.getLastMovement().getY()) {
+        if(golfConfig.main.checkElytraFlight && player.isFallFlying() && data.getLastMovement() != null && data.getPacketMovement().getY() > data.getLastMovement().getY()) {
             if(usedRocket) {
                 usedRocket = false;
             }
