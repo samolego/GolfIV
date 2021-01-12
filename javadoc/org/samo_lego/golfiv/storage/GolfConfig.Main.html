@@ -136,6 +136,12 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#checkElytraFlight">checkElytraFlight</a></span></code>
+<div class="block">Tries detect "fake" elytra movement.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#checkFlight">checkFlight</a></span></code>
 <div class="block">Detects flight, either it being
  a boat-flight or normal player flight
@@ -143,42 +149,36 @@ extends java.lang.Object</pre>
  Status: working, waiting for falses to be reported.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#checkForStrangeItems">checkForStrangeItems</a></span></code>
 <div class="block">Checks item picked that come in players inventory,
  whether they have disallowed enchantments.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#checkIllegalActions">checkIllegalActions</a></span></code>
 <div class="block">Checks whether is doing actions
  that cannot be done while having the GUI open.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#developerMode">developerMode</a></span></code>
 <div class="block">Disables kicks and logs them to console.</div>
 </td>
 </tr>
-<tr class="rowColor">
+<tr class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#noSpeed">noSpeed</a></span></code>
 <div class="block">Tries to detect speed hacks.</div>
 </td>
 </tr>
-<tr class="altColor">
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#preventCreativeStrangeItems">preventCreativeStrangeItems</a></span></code>
 <div class="block">Clears NBT items, but still allows block-picking.</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#preventElytraHacks">preventElytraHacks</a></span></code>
-<div class="block">Tries detect "fake" elytra movement.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -314,13 +314,13 @@ extends java.lang.Object</pre>
  Status: working, waiting for falses to be reported.</div>
 </li>
 </ul>
-<a name="preventElytraHacks">
+<a name="checkElytraFlight">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>preventElytraHacks</h4>
-<pre>public&nbsp;boolean preventElytraHacks</pre>
+<h4>checkElytraFlight</h4>
+<pre>public&nbsp;boolean checkElytraFlight</pre>
 <div class="block">Tries detect "fake" elytra movement.
 
  Status: working, waiting for falses to be reported.</div>
