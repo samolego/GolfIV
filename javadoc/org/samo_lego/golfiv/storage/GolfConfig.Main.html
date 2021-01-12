@@ -140,7 +140,7 @@ extends java.lang.Object</pre>
 <div class="block">Detects flight, either it being
  a boat-flight or normal player flight
 
- Status: working</div>
+ Status: working, waiting for falses to be reported.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -178,7 +178,7 @@ extends java.lang.Object</pre>
 <tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#preventElytraHacks">preventElytraHacks</a></span></code>
-<div class="block">Tries to prevent "fake" elytra movement.</div>
+<div class="block">Tries detect "fake" elytra movement.</div>
 </td>
 </tr>
 <tr class="altColor">
@@ -284,7 +284,7 @@ extends java.lang.Object</pre>
 <div class="block">Detects flight, either it being
  a boat-flight or normal player flight
 
- Status: working</div>
+ Status: working, waiting for falses to be reported.</div>
 </li>
 </ul>
 <a name="antiTimer">
@@ -298,7 +298,7 @@ extends java.lang.Object</pre>
  client to speed up the game, in order to move faster or use items
  faster.
 
- Status: ohh, we are halfway there</div>
+ Status: working, waiting for falses to be reported.</div>
 </li>
 </ul>
 <a name="noSpeed">
@@ -311,7 +311,7 @@ extends java.lang.Object</pre>
 <div class="block">Tries to detect speed hacks.
  Kinda works, but needs overhaul.
 
- Status: not really usable, as ice paths still throw false positives</div>
+ Status: working, waiting for falses to be reported.</div>
 </li>
 </ul>
 <a name="preventElytraHacks">
@@ -321,10 +321,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>preventElytraHacks</h4>
 <pre>public&nbsp;boolean preventElytraHacks</pre>
-<div class="block">Tries to prevent "fake" elytra movement.
- Bad.
+<div class="block">Tries detect "fake" elytra movement.
 
- Status: even worse than speed checks, needs overhaul</div>
+ Status: working, waiting for falses to be reported.</div>
 </li>
 </ul>
 <a name="preventCreativeStrangeItems">
@@ -350,7 +349,7 @@ extends java.lang.Object</pre>
  that cannot be done while having the GUI open.
  (e. g. hitting, moving, etc.)
 
- Status: partially working</div>
+ Status: working, waiting for falses to be reported.</div>
 </li>
 </ul>
 <a name="developerMode">
@@ -372,7 +371,9 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;boolean removeTeleportData</pre>
 <div class="block">Whether to remove the teleport data
  from packets when entities move out of
- view distance.</div>
+ view distance.
+
+ Status: working</div>
 </li>
 </ul>
 </li>
