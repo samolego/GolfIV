@@ -23,10 +23,6 @@ public class ServerPlayNetworkHandlerMixin_SpeedCheck {
     @Unique
     private final NetworkHandlerData data = (NetworkHandlerData) this;
 
-    @Unique
-    private int speedFP;
-
-
     @Inject(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(
@@ -36,7 +32,7 @@ public class ServerPlayNetworkHandlerMixin_SpeedCheck {
             cancellable = true
     )
     private void checkAirMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.main.noSpeed) {
+        if(golfConfig.main.noSpeed && !player.isFallFlying() && !player.isCreative()) {
             Vec3d packetMovement = data.getPacketMovement();
 
             double predictedDist = data.getLastDist() * 0.91F;
@@ -45,6 +41,7 @@ public class ServerPlayNetworkHandlerMixin_SpeedCheck {
 
             if(!data.wasLLastOnGround() && !data.wasLastOnGround() && !((Golfer) player).isNearGround() && distDelta > 0.00750716D) {
                 ((Golfer) this.player).report(CheatType.SPEED_HACK, 15);
+                this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
                 ci.cancel();
             }
             data.setLastDist(packetDist);

@@ -40,7 +40,7 @@ public class GolfConfig {
          * Detects flight, either it being
          * a boat-flight or normal player flight
          *
-         * Status: working
+         * Status: working, waiting for falses to be reported.
          */
         public boolean checkFlight = true;
         /**
@@ -48,14 +48,14 @@ public class GolfConfig {
          * client to speed up the game, in order to move faster or use items
          * faster.
          *
-         * Status: ohh, we are halfway there
+         * Status: working, waiting for falses to be reported.
          */
         public boolean antiTimer = true;
         /**
          * Tries to detect speed hacks.
          * Kinda works, but needs overhaul.
          *
-         * Status: not really usable, as ice paths still throw false positives
+         * Status: working, waiting for falses to be reported.
          */
         public boolean noSpeed = true;
 
@@ -63,7 +63,7 @@ public class GolfConfig {
          * Tries to prevent "fake" elytra movement.
          * Bad.
          *
-         * Status: even worse than speed checks, needs overhaul
+         * Status: needs overhaul
          */
         public boolean preventElytraHacks = true;
         /**
@@ -78,7 +78,7 @@ public class GolfConfig {
          * that cannot be done while having the GUI open.
          * (e. g. hitting, moving, etc.)
          *
-         * Status: partially working
+         * Status: working, waiting for falses to be reported.
          */
         public boolean checkIllegalActions = true;
 
@@ -91,6 +91,8 @@ public class GolfConfig {
          * Whether to remove the teleport data
          * from packets when entities move out of
          * view distance.
+         *
+         * Status: working
          */
         public boolean removeTeleportData = true;
     }

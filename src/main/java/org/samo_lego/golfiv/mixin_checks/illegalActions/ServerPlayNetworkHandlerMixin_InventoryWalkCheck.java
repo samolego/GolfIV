@@ -4,6 +4,7 @@ import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
@@ -77,12 +78,14 @@ public class ServerPlayNetworkHandlerMixin_InventoryWalkCheck {
                 if(packet instanceof PlayerMoveC2SPacket.PositionOnly && packetMovement.getY() == 0 && packetMovement.lengthSquared() != 0) {
                     if(++this.illegalActionsMoveAttempts > 40) {
                         ((Golfer) this.player).report(ILLEGAL_ACTIONS, 10);
+                        this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
                         ci.cancel();
                     }
                 }
                 else if(packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both && ((PlayerMoveC2SPacketAccessor) packet).changesLook()) {
                     if(++this.illegalActionsLookAttempts > 8) {
                         ((Golfer) this.player).report(ILLEGAL_ACTIONS, 50);
+                        this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
                         ci.cancel();
                     }
                 }
