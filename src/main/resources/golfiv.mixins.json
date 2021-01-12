@@ -24,6 +24,7 @@
     "illegals.ServerPlayNetworkHandlerMixin_creativeItemsCheck",
     "illegals.ServerPlayNetworkHandlerMixin_IllegalsCheckSlot",
     "movement.ServerPlayNetworkHandler_OnGroundCheck",
+    "movement.ServerPlayNetworkHandlerMixin_ElytraFlightCheck",
     "movement.ServerPlayNetworkHandlerMixin_EntityTeleportData",
     "movement.ServerPlayNetworkHandlerMixin_FlightCheck",
     "movement.ServerPlayNetworkHandlerMixin_SpeedCheck",

@@ -60,10 +60,9 @@ public class GolfConfig {
         public boolean noSpeed = true;
 
         /**
-         * Tries to prevent "fake" elytra movement.
-         * Bad.
+         * Tries detect "fake" elytra movement.
          *
-         * Status: needs overhaul
+         * Status: working, waiting for falses to be reported.
          */
         public boolean preventElytraHacks = true;
         /**
