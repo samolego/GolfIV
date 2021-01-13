@@ -21,7 +21,7 @@
     "illegalActions.ServerPlayerEntityMixin_SkinBlinkCheck",
     "illegalActions.ServerPlayNetworkHandlerMixin_InventoryWalkCheck",
     "illegals.ItemStackMixinCast_itemStackChecker",
-    "illegals.PlayerInventoryMixin_illegalsCheckInsert",
+    "illegals.PlayerInventoryMixin_IllegalsCheckInsert",
     "illegals.ServerPlayNetworkHandlerMixin_creativeItemsCheck",
     "illegals.ServerPlayNetworkHandlerMixin_IllegalsCheckSlot",
     "movement.ServerPlayNetworkHandler_OnGroundCheck",

@@ -18,7 +18,7 @@ import static org.samo_lego.golfiv.utils.CheatType.NBT_ITEMS;
  * Checks if the inserted stack is illegal.
  */
 @Mixin(PlayerInventory.class)
-public abstract class PlayerInventoryMixin_illegalsCheckInsert {
+public abstract class PlayerInventoryMixin_IllegalsCheckInsert {
 
     @Shadow @Final public PlayerEntity player;
 
@@ -36,7 +36,7 @@ public abstract class PlayerInventoryMixin_illegalsCheckInsert {
             //noinspection ConstantConditions
             boolean illegal = ((ItemStackChecker) (Object) stack).makeLegal();
             if(illegal) {
-                ((Golfer) player).report(NBT_ITEMS, 10);
+                ((Golfer) player).report(NBT_ITEMS, 100);
             }
         }
         return stack;

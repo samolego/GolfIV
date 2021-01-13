@@ -39,7 +39,8 @@ public abstract class ServerPlayNetworkHandlerMixin_TimerCheck {
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/server/network/ServerPlayerEntity;hasVehicle()Z"
-            )
+            ),
+            cancellable = true
     )
     private void checkTimer(PlayerMoveC2SPacket packet, CallbackInfo ci) {
         if(golfConfig.movement.antiTimer) {
@@ -55,6 +56,9 @@ public abstract class ServerPlayNetworkHandlerMixin_TimerCheck {
                 if(this.packetRate > 250) {
                     ((Golfer) player).report(TIMER, 20);
                     this.packetRate = 0;
+
+                    this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
+                    ci.cancel();
                 }
             }
             else {

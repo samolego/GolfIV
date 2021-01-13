@@ -47,8 +47,10 @@ public class ServerPlayNetworkHandlerMixin_FlightCheck {
                 !player.isFallFlying() &&
                 !((LivingEntityAccessor) player).jumping() &&
                 !player.hasVehicle() &&
-                data.getLastMovement() != null
+                data.getLastMovement() != null &&
+                player.fallDistance > 0.2F
         ) {
+            System.out.println(player.fallDistance);
             double d = 0.08D;
             double predictedDeltaY;
             boolean falling = data.getPacketMovement().getY() <= 0.0D;
