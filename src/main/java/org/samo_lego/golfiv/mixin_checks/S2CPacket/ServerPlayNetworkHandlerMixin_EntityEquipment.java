@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.combat;
+package org.samo_lego.golfiv.mixin_checks.S2CPacket;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
@@ -23,12 +23,19 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 public class ServerPlayNetworkHandlerMixin_EntityEquipment {
     @Shadow public ServerPlayerEntity player;
 
+    /**
+     * Loops through entity equipment packet data
+     * and removes attributes that cannot be seen.
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "sendPacket(Lnet/minecraft/network/Packet;)V",
             at = @At("HEAD")
     )
     private void removeHealthTags(Packet<?> packet, CallbackInfo ci) {
-        if(golfConfig.combat.removeEquipmentTags && packet instanceof EntityEquipmentUpdateS2CPacket) {
+        if(golfConfig.packet.removeEquipmentTags && packet instanceof EntityEquipmentUpdateS2CPacket) {
             EntityEquipmentUpdateS2CPacketAccessor packetAccessor = (EntityEquipmentUpdateS2CPacketAccessor) packet;
 
             if(packetAccessor.getEntityId() == player.getEntityId())

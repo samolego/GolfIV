@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -51,9 +52,6 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     private ListTag cheatLog;
 
     @Unique
-    private CheatType lastCheat;
-
-    @Unique
     private int hackAttempts;
 
     @Unique
@@ -63,6 +61,9 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
 
     @Unique
     private boolean nearFluid;
+
+    @Unique
+    private final LinkedList<CheatType> CHEATS = new LinkedList<>();
 
 
     /**
@@ -174,12 +175,14 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
      */
     @Override
     public void report(CheatType cheatType, int susValue) {
-        this.susLevel += susValue;
-        if(cheatType.equals(this.lastCheat)) {
+        this.susLevel += this.CHEATS.size() * susValue;
+
+        if(this.CHEATS.size() > 0 && cheatType.equals(this.CHEATS.getLast())) {
             ++this.hackAttempts;
         }
         else {
             this.hackAttempts = 1;
+            this.CHEATS.add(cheatType);
         }
 
         if(this.susLevel < 100)
@@ -216,27 +219,29 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
         }
 
 
-        if(player instanceof ServerPlayerEntity && this.hackAttempts % 20 == 0) {
+        if(player instanceof ServerPlayerEntity) {
             final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 
-            String msg = "§6[GolfIV] §2Suspicion value of §b" + player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
-            Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat() + ", used: " + this.hackAttempts + "x."))));
+            if(this.hackAttempts % 20 == 0) {
+                String msg = "§6[GolfIV] §2Suspicion value of §b" + player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
+                Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat() + ", used: " + this.hackAttempts + "x."))));
 
-            if(golfConfig.logging.toOps) {
-                List<ServerPlayerEntity> players = serverPlayerEntity.getServer().getPlayerManager().getPlayerList();
-                for(ServerPlayerEntity p : players) {
-                    if(p.hasPermissionLevel(4)) {
-                        p.sendMessage(text, false);
+                if(golfConfig.logging.toOps) {
+                    List<ServerPlayerEntity> players = serverPlayerEntity.getServer().getPlayerManager().getPlayerList();
+                    for(ServerPlayerEntity p : players) {
+                        if(p.hasPermissionLevel(4)) {
+                            p.sendMessage(text, false);
+                        }
                     }
                 }
-            }
-            if(golfConfig.logging.toConsole) {
-                BallLogger.logInfo(player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
+                if(golfConfig.logging.toConsole) {
+                    BallLogger.logInfo(player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
+                }
             }
 
             if(this.susLevel > 200) {
                 this.susLevel = 0;
-                if(++this.kicks > 10) {
+                if(this.CHEATS.size() > 2 && ++this.kicks > 10) {
                     this.kicks = 0;
                     if(!golfConfig.main.developerMode)
                         serverPlayerEntity.networkHandler.disconnect(new LiteralText(
@@ -259,8 +264,6 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
                 }
             }
         }
-
-        this.lastCheat = cheatType;
     }
 
     /**
@@ -296,6 +299,8 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
             this.ticks = 0;
             this.susLevel -= this.susLevel > 0 ? 1 : 0;
         }
+        if(this.ticks % 100 == 0 && this.CHEATS.size() > 1)
+            this.CHEATS.pop();
     }
 
     /**

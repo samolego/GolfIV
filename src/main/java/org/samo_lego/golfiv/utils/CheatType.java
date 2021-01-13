@@ -11,7 +11,7 @@ public enum CheatType {
     ELYTRA_HACK("elytra"),
     NO_FALL("no fall"),
     JESUS("Jesus"),
-    STEP("step"),
+    SKIN_BLINKER("skin blinker"),
     ILLEGAL_ACTIONS("inventory walk"),
     KILLAURA("killaura"),
     NO_HAND_SWING("multiaura"),

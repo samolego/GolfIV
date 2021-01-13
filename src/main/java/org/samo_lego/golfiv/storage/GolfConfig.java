@@ -26,6 +26,64 @@ public class GolfConfig {
          * Status: working
          */
         public boolean checkForStrangeItems = true;
+
+        /**
+         * Clears NBT items, but still allows block-picking.
+         *
+         * Status: working
+         */
+        public boolean preventCreativeStrangeItems = true;
+
+        /**
+         * Checks whether is doing actions
+         * that cannot be done while having the GUI open.
+         * (e. g. hitting, moving, etc.)
+         *
+         * Status: working, waiting for falses to be reported.
+         */
+        public boolean checkIllegalActions = true;
+
+        /**
+         * Disables kicks and logs them to console.
+         */
+        public boolean developerMode = false;
+    }
+
+    public static class Packet {
+        /**
+         * Whether to remove the teleport data
+         * from packets when entities move out of
+         * view distance.
+         *
+         * Status: working
+         */
+        public boolean removeTeleportData = true;
+
+        /**
+         * Removes entity health data from packets
+         * sent to client.
+         *
+         * Status: working.
+         */
+        public boolean removeHealthTags = true;
+
+        /**
+         * Removes entity equipment tags from
+         * packets. Players will still see if item is enchanted,
+         * but won't get the durability or stack size information.
+         *
+         * Status: working.
+         */
+        public boolean removeEquipmentTags = true;
+
+        /**
+         * Whether to check if player is using
+         * SkinBlinker hack.
+         */
+        public boolean checkSkinBlink = true;
+    }
+
+    public static class Movement {
         /**
          * Client can tell server its onGround status and
          * server blindly accepts it. This can allow
@@ -65,35 +123,11 @@ public class GolfConfig {
          * Status: working, waiting for falses to be reported.
          */
         public boolean checkElytraFlight = true;
-        /**
-         * Clears NBT items, but still allows block-picking.
-         *
-         * Status: working
-         */
-        public boolean preventCreativeStrangeItems = true;
 
         /**
-         * Checks whether is doing actions
-         * that cannot be done while having the GUI open.
-         * (e. g. hitting, moving, etc.)
-         *
-         * Status: working, waiting for falses to be reported.
+         * Checks for SafeWalk hacks.
          */
-        public boolean checkIllegalActions = true;
-
-        /**
-         * Disables kicks and logs them to console.
-         */
-        public boolean developerMode = false;
-
-        /**
-         * Whether to remove the teleport data
-         * from packets when entities move out of
-         * view distance.
-         *
-         * Status: working
-         */
-        public boolean removeTeleportData = true;
+        public boolean hazardousWalk = true;
     }
 
     public static class Combat {
@@ -131,23 +165,6 @@ public class GolfConfig {
          * Status: working, waiting for falses to be reported.
          */
         public boolean checkHitAngle = true;
-
-        /**
-         * Removes entity health data from packets
-         * sent to client.
-         *
-         * Status: working.
-         */
-        public boolean removeHealthTags = true;
-
-        /**
-         * Removes entity equipment tags from
-         * packets. Players will still see if item is enchanted,
-         * but won't get the durability or stack size information.
-         *
-         * Status: working.
-         */
-        public boolean removeEquipmentTags = true;
 
         /**
          * What hit accuracy counts as suspicious, in percentage.
@@ -199,6 +216,8 @@ public class GolfConfig {
 
     public final GolfConfig.Main main = new Main();
     public final GolfConfig.Combat combat = new Combat();
+    public final GolfConfig.Packet packet = new Packet();
+    public final GolfConfig.Movement movement = new Movement();
     public final GolfConfig.Logging logging = new Logging();
 
     /**

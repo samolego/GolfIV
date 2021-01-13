@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.movement;
+package org.samo_lego.golfiv.mixin_checks.S2CPacket;
 
 import net.fabricmc.fabric.impl.networking.ThreadedAnvilChunkStorageTrackingExtensions;
 import net.minecraft.entity.Entity;
@@ -33,13 +33,20 @@ public abstract class ServerPlayNetworkHandlerMixin_EntityTeleportData {
 
     @Shadow public abstract void sendPacket(Packet<?> packet);
 
+    /**
+     * If player teleports out of render distance, we sned the destroy entity
+     * packet instead of teleport one, in order to hide player's coordinates.
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "sendPacket(Lnet/minecraft/network/Packet;)V",
             at = @At("HEAD"),
             cancellable = true
     )
     private void removeTeleportData(Packet<?> packet, CallbackInfo ci) {
-        if(golfConfig.main.removeTeleportData && packet instanceof EntityPositionS2CPacket) {
+        if(golfConfig.packet.removeTeleportData && packet instanceof EntityPositionS2CPacket) {
             ServerWorld world = this.player.getServerWorld();
 
             int entityId = ((EntityPositionS2CPacketAccessor) packet).getId();

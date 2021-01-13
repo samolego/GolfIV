@@ -12,6 +12,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import org.samo_lego.golfiv.casts.Golfer;
 import org.samo_lego.golfiv.mixin_checks.accessors.PlayerInteractEntityC2SPacketAccessor;
+import org.samo_lego.golfiv.utils.BallLogger;
 import org.samo_lego.golfiv.utils.CheatType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,7 +28,7 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.utils.CheatType.KILLAURA;
 
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin_killauraAccuracyCheck {
+public class ServerPlayNetworkHandlerMixin_KillauraAccuracyCheck {
 
     @Shadow public ServerPlayerEntity player;
     @Unique
@@ -56,14 +57,15 @@ public class ServerPlayNetworkHandlerMixin_killauraAccuracyCheck {
             ++this.entityHits;
 
             if(this.handSwings >= 50) {
-                System.out.println(entityHits + " hits of " + handSwings + " tries.");
+                if(golfConfig.main.developerMode)
+                    BallLogger.logInfo(entityHits + " hits of " + handSwings + " tries.");
 
                 ((Golfer) player).setHitAccuracy(entityHits, handSwings);
-                System.out.println(((Golfer) player).getHitAccuracy() + "% accuracy.");
+                if(golfConfig.main.developerMode)
+                    BallLogger.logInfo(((Golfer) player).getHitAccuracy() + "% accuracy.");
                 this.handSwings = 0;
                 this.entityHits = 0;
             }
-            //System.out.println(((Golfer) player).getHitAccuracy() + "% accuracy.");
         }
     }
 

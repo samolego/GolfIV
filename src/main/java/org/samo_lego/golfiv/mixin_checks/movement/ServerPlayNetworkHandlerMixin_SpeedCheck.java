@@ -23,6 +23,13 @@ public class ServerPlayNetworkHandlerMixin_SpeedCheck {
     @Unique
     private final NetworkHandlerData data = (NetworkHandlerData) this;
 
+    /**
+     * Checks the Y difference when in air in order
+     * to detect speed hacks.
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(
@@ -32,7 +39,7 @@ public class ServerPlayNetworkHandlerMixin_SpeedCheck {
             cancellable = true
     )
     private void checkAirMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.main.noSpeed && !player.isFallFlying() && !player.isCreative()) {
+        if(golfConfig.movement.noSpeed && !player.isFallFlying() && !player.isCreative()) {
             Vec3d packetMovement = data.getPacketMovement();
 
             double predictedDist = data.getLastDist() * 0.91F;

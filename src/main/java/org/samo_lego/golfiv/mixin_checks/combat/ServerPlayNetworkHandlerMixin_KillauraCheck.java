@@ -14,6 +14,7 @@ import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import org.samo_lego.golfiv.casts.Golfer;
 import org.samo_lego.golfiv.mixin_checks.accessors.PlayerInteractEntityC2SPacketAccessor;
+import org.samo_lego.golfiv.utils.BallLogger;
 import org.samo_lego.golfiv.utils.FakeVictim;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,7 +33,7 @@ import static org.samo_lego.golfiv.utils.CheatType.KILLAURA;
  * Checks for killaura by sending a fake player to client.
  */
 @Mixin(ServerPlayNetworkHandler.class)
-public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
+public abstract class ServerPlayNetworkHandlerMixin_KillauraCheck {
 
     @Shadow public ServerPlayerEntity player;
 
@@ -66,7 +67,9 @@ public abstract class ServerPlayNetworkHandlerMixin_killauraCheck {
             if(fakeAttacked) {
                 ((Golfer) player).report(KILLAURA, 80);
                 this.clearFakeVictim();
-                System.out.println("#Fake attacked");
+
+                if(golfConfig.main.developerMode)
+                    BallLogger.logInfo("Player " + player.getGameProfile().getName() + " hass attacked fake entity.");
             }
         }
     }

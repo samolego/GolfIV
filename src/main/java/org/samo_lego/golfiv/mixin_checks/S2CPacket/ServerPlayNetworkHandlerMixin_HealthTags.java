@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.combat;
+package org.samo_lego.golfiv.mixin_checks.S2CPacket;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -20,12 +20,18 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 public class ServerPlayNetworkHandlerMixin_HealthTags {
     @Shadow public ServerPlayerEntity player;
 
+    /**
+     * Removes entity health data from packet.
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "sendPacket(Lnet/minecraft/network/Packet;)V",
             at = @At("HEAD")
     )
     private void removeHealthTags(Packet<?> packet, CallbackInfo ci) {
-        if(golfConfig.combat.removeHealthTags && packet instanceof EntityTrackerUpdateS2CPacket) {
+        if(golfConfig.packet.removeHealthTags && packet instanceof EntityTrackerUpdateS2CPacket) {
 
             EntityTrackerUpdateS2CPacketAccessor p = ((EntityTrackerUpdateS2CPacketAccessor) packet);
             Entity entity = this.player.getServerWorld().getEntityById(p.getID());

@@ -14,12 +14,11 @@
     "accessors.PlayerInteractEntityC2SPacketAccessor",
     "accessors.PlayerMoveC2SPacketAccessor",
     "combat.ServerPlayNetworkHandlerMixin_AntiKnockbackCheck",
-    "combat.ServerPlayNetworkHandlerMixin_EntityEquipment",
-    "combat.ServerPlayNetworkHandlerMixin_HealthTags",
     "combat.ServerPlayNetworkHandlerMixin_HitCheck",
-    "combat.ServerPlayNetworkHandlerMixin_killauraAccuracyCheck",
-    "combat.ServerPlayNetworkHandlerMixin_killauraCheck",
+    "combat.ServerPlayNetworkHandlerMixin_KillauraAccuracyCheck",
+    "combat.ServerPlayNetworkHandlerMixin_KillauraCheck",
     "illegalActions.ServerPlayerEntityMixin_InventoryClose",
+    "illegalActions.ServerPlayerEntityMixin_SkinBlinkCheck",
     "illegalActions.ServerPlayNetworkHandlerMixin_InventoryWalkCheck",
     "illegals.ItemStackMixinCast_itemStackChecker",
     "illegals.PlayerInventoryMixin_illegalsCheckInsert",
@@ -27,10 +26,12 @@
     "illegals.ServerPlayNetworkHandlerMixin_IllegalsCheckSlot",
     "movement.ServerPlayNetworkHandler_OnGroundCheck",
     "movement.ServerPlayNetworkHandlerMixin_ElytraFlightCheck",
-    "movement.ServerPlayNetworkHandlerMixin_EntityTeleportData",
     "movement.ServerPlayNetworkHandlerMixin_FlightCheck",
     "movement.ServerPlayNetworkHandlerMixin_SpeedCheck",
-    "movement.ServerPlayNetworkHandlerMixinCast_NetworkHandlerData"
+    "movement.ServerPlayNetworkHandlerMixinCast_NetworkHandlerData",
+    "S2CPacket.ServerPlayNetworkHandlerMixin_EntityEquipment",
+    "S2CPacket.ServerPlayNetworkHandlerMixin_EntityTeleportData",
+    "S2CPacket.ServerPlayNetworkHandlerMixin_HealthTags"
   ],
   "injectors": {
     "defaultRequire": 1

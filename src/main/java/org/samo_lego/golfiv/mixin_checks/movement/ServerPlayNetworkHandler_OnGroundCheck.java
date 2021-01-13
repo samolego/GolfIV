@@ -22,6 +22,10 @@ import java.util.stream.Stream;
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.utils.CheatType.*;
 
+/**
+ * This has a different priority since the data it provides
+ * is used in other checks as well.
+ */
 @Mixin(value = ServerPlayNetworkHandler.class, priority = 800)
 public class ServerPlayNetworkHandler_OnGroundCheck {
 
@@ -30,6 +34,12 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
     @Unique
     private final NetworkHandlerData data = (NetworkHandlerData) this;
 
+    /**
+     * Checks the real onGround value of the movement packet.
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(
@@ -64,7 +74,7 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
                 ((Golfer) player).setNearFluid(entityCollisions == 0 && player.getEntityWorld().containsFluid(bBox));
             }
 
-            if(!data.wasLLastOnGround() && !data.wasLastOnGround() && !((Golfer) player).isNearGround() && player.getVelocity().y <= 0.0D && packet.isOnGround() && golfConfig.main.yesFall) {
+            if(!data.wasLLastOnGround() && !data.wasLastOnGround() && !((Golfer) player).isNearGround() && player.getVelocity().y <= 0.0D && packet.isOnGround() && golfConfig.movement.yesFall) {
                 // Player hasn't been on ground for 3 move packets but client says it is
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
 

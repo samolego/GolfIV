@@ -42,7 +42,7 @@ public abstract class ServerPlayNetworkHandlerMixin_TimerCheck {
             )
     )
     private void checkTimer(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.main.antiTimer) {
+        if(golfConfig.movement.antiTimer) {
             if(packet instanceof PlayerMoveC2SPacket.Both || packet instanceof PlayerMoveC2SPacket.LookOnly || packet.getX(player.getX()) != player.getX() || packet.getY(player.getY()) != player.getY() || packet.getZ(player.getZ()) != player.getZ()) {
                 long currentPacketTime = System.currentTimeMillis();
                 long lastTime = this.lastPacketTime;
@@ -52,13 +52,13 @@ public abstract class ServerPlayNetworkHandlerMixin_TimerCheck {
                     this.packetRate += (50 + lastTime - currentPacketTime);
                 }
 
-                if(this.packetRate > 20) {
-                    ((Golfer) player).report(TIMER, 10);
+                if(this.packetRate > 250) {
+                    ((Golfer) player).report(TIMER, 20);
                     this.packetRate = 0;
                 }
             }
             else {
-                this.packetRate = -100;
+                this.packetRate = 0;
                 this.lastPacketTime = 0;
             }
         }

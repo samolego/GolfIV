@@ -32,6 +32,13 @@ public class ServerPlayNetworkHandlerMixin_ElytraFlightCheck {
     @Unique
     private boolean usedRocket;
 
+
+    /**
+     * Checks elytra movement and compares it to expected movement, found in FireworkRocketEntity#tick
+     *
+     * @param packet
+     * @param ci
+     */
     @Inject(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(
@@ -41,7 +48,7 @@ public class ServerPlayNetworkHandlerMixin_ElytraFlightCheck {
             cancellable = true
     )
     private void checkElytraMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.main.checkElytraFlight && player.isFallFlying() && data.getLastMovement() != null && data.getPacketMovement().getY() > data.getLastMovement().getY()) {
+        if(golfConfig.movement.checkElytraFlight && player.isFallFlying() && data.getLastMovement() != null && data.getPacketMovement().getY() > data.getLastMovement().getY()) {
             if(usedRocket) {
                 usedRocket = false;
             }
@@ -60,6 +67,16 @@ public class ServerPlayNetworkHandlerMixin_ElytraFlightCheck {
         }
     }
 
+    /**
+     * Detects firework boosting.
+     *
+     * @param packet
+     * @param ci
+     * @param serverWorld
+     * @param hand
+     * @param itemStack
+     * @param actionResult
+     */
     @Inject(
             method = "onPlayerInteractItem(Lnet/minecraft/network/packet/c2s/play/PlayerInteractItemC2SPacket;)V",
             at = @At(
