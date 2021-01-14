@@ -58,7 +58,7 @@ public class ServerPlayNetworkHandlerMixin_HitCheck {
         double victimDistance = Math.sqrt(victimDistanceSquared);
 
         if(golfConfig.combat.checkHitDistance && !player.isCreative() && victimDistanceSquared > 22) {
-            ((Golfer) player).report(REACH, 22);
+            ((Golfer) player).report(REACH, golfConfig.weights.reach);
             ci.cancel();
             return;
         }
@@ -67,7 +67,7 @@ public class ServerPlayNetworkHandlerMixin_HitCheck {
             BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
 
             if(Math.sqrt(blockHit.squaredDistanceTo(player)) + 0.5D < victimDistance) {
-                ((Golfer) player).report(HIT_THROUGH_WALLS, 10);
+                ((Golfer) player).report(HIT_THROUGH_WALLS, golfConfig.weights.hitThroughWalls);
                 ci.cancel();
                 return;
             }

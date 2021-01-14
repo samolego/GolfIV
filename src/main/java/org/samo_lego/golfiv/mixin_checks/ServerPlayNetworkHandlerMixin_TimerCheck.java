@@ -54,7 +54,7 @@ public abstract class ServerPlayNetworkHandlerMixin_TimerCheck {
                 }
 
                 if(this.packetRate > 250) {
-                    ((Golfer) player).report(TIMER, 20);
+                    ((Golfer) player).report(TIMER, golfConfig.weights.timer);
                     this.packetRate = 0;
 
                     this.player.requestTeleport(player.getX(), player.getY(), player.getZ());

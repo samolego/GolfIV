@@ -1,7 +1,5 @@
 package org.samo_lego.golfiv.mixin_checks.movement;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -71,7 +69,7 @@ public class ServerPlayNetworkHandlerMixin_FlightCheck {
             //System.out.println(Math.abs(predictedDeltaY - data.getPacketMovement().getY()));
             if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - data.getPacketMovement().getY()) > 0.003D) {
                 if(++this.flyCounter > 4)
-                    ((Golfer) this.player).report(FLY_HACK, 20);
+                    ((Golfer) this.player).report(FLY_HACK, golfConfig.weights.flyHack);
             }
             else {
                 this.flyCounter += this.flyCounter > 0 ? -1 : 0;

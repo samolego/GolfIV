@@ -40,7 +40,7 @@ public class ServerPlayNetworkHandlerMixin_AntiKnockbackCheck {
     )
     private void checkHitKnockback(PlayerMoveC2SPacket packet, CallbackInfo ci) {
         if(checkKnockback && !((PlayerMoveC2SPacketAccessor) packet).changesPosition()) {
-            ((Golfer) player).report(ANTIKNOCKBACK, 20);
+            ((Golfer) player).report(ANTIKNOCKBACK, golfConfig.weights.antiknockback);
         }
         this.checkKnockback = false;
     }

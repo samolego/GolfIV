@@ -98,7 +98,7 @@ public class ServerPlayNetworkHandlerMixinCast_NetworkHandlerData implements Net
             )
     )
     private void setPacketMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(!player.hasVehicle())
+        if(!player.hasVehicle() || player.getRootVehicle() instanceof LivingEntity)
             this.packetMovement = new Vec3d(
                     packet.getX(this.player.getX()) - this.player.getX(),
                     packet.getY(this.player.getY()) - this.player.getY(),

@@ -8,7 +8,7 @@ package org.samo_lego.golfiv.utils;
 public enum CheatType {
     FLY_HACK("fly"),
     SPEED_HACK("speed"),
-    ELYTRA_HACK("elytra"),
+    ELYTRA_FLIGHT("elytra"),
     NO_FALL("no fall"),
     JESUS("Jesus"),
     SKIN_BLINKER("skin blinker"),

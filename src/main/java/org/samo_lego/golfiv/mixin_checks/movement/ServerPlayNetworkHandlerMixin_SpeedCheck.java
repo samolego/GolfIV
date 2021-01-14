@@ -47,7 +47,7 @@ public class ServerPlayNetworkHandlerMixin_SpeedCheck {
             double distDelta = packetDist - predictedDist;
 
             if(!data.wasLLastOnGround() && !data.wasLastOnGround() && !((Golfer) player).isNearGround() && distDelta > 0.00750716D) {
-                ((Golfer) this.player).report(CheatType.SPEED_HACK, 15);
+                ((Golfer) this.player).report(CheatType.SPEED_HACK, golfConfig.weights.speedHack);
                 this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
                 ci.cancel();
             }

@@ -50,7 +50,7 @@ public class ServerPlayNetworkHandlerMixin_KillauraAccuracyCheck {
     private void onHitEntity(PlayerInteractEntityC2SPacket packet, CallbackInfo ci, Entity victim, Hand hand, ItemStack weapon, Optional<ActionResult> optional) {
         if(golfConfig.combat.checkKillaura) {
             if(this.wasLastHit) {
-                ((Golfer) player).report(CheatType.NO_HAND_SWING, 20);
+                ((Golfer) player).report(CheatType.NO_HAND_SWING, golfConfig.weights.noHandSwing);
                 ci.cancel();
             }
             this.wasLastHit = true;

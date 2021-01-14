@@ -79,9 +79,9 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
 
                 if(((Golfer) player).isNearFluid())
-                    ((Golfer) this.player).report(JESUS, 40);
+                    ((Golfer) this.player).report(JESUS, golfConfig.weights.Jesus);
                 else
-                    ((Golfer) this.player).report(NO_FALL, 10);
+                    ((Golfer) this.player).report(NO_FALL, golfConfig.weights.noFall);
             }
         }
     }

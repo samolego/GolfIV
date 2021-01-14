@@ -36,7 +36,7 @@ public abstract class ServerPlayNetworkHandlerMixin_creativeItemsCheck {
             int amount = itemStack.getCount();
             if(amount > itemStack.getMaxCount()) {
                 amount = 1;
-                ((Golfer) player).report(CheatType.SUSPICIOUS_CREATIVE, 100);
+                ((Golfer) player).report(CheatType.SUSPICIOUS_CREATIVE, golfConfig.weights.opCreativeItems);
             }
             itemStack =  new ItemStack(itemStack.getItem(), amount);
             itemStack.setTag(compoundTag);

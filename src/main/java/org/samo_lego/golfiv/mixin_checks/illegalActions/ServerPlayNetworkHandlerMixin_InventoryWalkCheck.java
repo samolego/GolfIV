@@ -77,14 +77,14 @@ public class ServerPlayNetworkHandlerMixin_InventoryWalkCheck {
             if(((Golfer) this.player).hasOpenGui() && !player.isFallFlying() && !player.isInsideWaterOrBubbleColumn()) {
                 if(packet instanceof PlayerMoveC2SPacket.PositionOnly && packetMovement.getY() == 0 && packetMovement.lengthSquared() != 0) {
                     if(++this.illegalActionsMoveAttempts > 40) {
-                        ((Golfer) this.player).report(ILLEGAL_ACTIONS, 10);
+                        ((Golfer) this.player).report(ILLEGAL_ACTIONS, golfConfig.weights.inventoryWalk);
                         this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
                         ci.cancel();
                     }
                 }
                 else if(packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both && ((PlayerMoveC2SPacketAccessor) packet).changesLook()) {
                     if(++this.illegalActionsLookAttempts > 8) {
-                        ((Golfer) this.player).report(ILLEGAL_ACTIONS, 50);
+                        ((Golfer) this.player).report(ILLEGAL_ACTIONS, golfConfig.weights.inventoryWalk);
                         this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
                         ci.cancel();
                     }

@@ -2,6 +2,7 @@ package org.samo_lego.golfiv.storage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.samo_lego.golfiv.utils.CheatType;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.samo_lego.golfiv.utils.BallLogger.logError;
+import org.samo_lego.golfiv.utils.CheatType.*;
 
 public class GolfConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -176,6 +178,27 @@ public class GolfConfig {
     }
 
     /**
+     * Hack "weights", used when reporting.
+     */
+    public static class SusLevels {
+        public byte flyHack = 20;
+        public byte speedHack = 15;
+        public byte timer = 20;
+        public byte elytraFlight = 40;
+        public byte noFall = 30;
+        public byte Jesus = 40;
+        public byte skinBlinker = 100;
+        public byte inventoryWalk = 20;
+        public byte killaura = 80;
+        public byte noHandSwing = 60;
+        public byte antiknockback = 20;
+        public byte reach = 20;
+        public byte hitThroughWalls = 10;
+        public byte nbtItems = 100;
+        public byte opCreativeItems = 100;
+    }
+
+    /**
      * Where to log cheaters.
      */
     public static class Logging {
@@ -219,6 +242,7 @@ public class GolfConfig {
     public final GolfConfig.Packet packet = new Packet();
     public final GolfConfig.Movement movement = new Movement();
     public final GolfConfig.Logging logging = new Logging();
+    public final GolfConfig.SusLevels weights = new SusLevels();
 
     /**
      * Loads GolfIV config from file.

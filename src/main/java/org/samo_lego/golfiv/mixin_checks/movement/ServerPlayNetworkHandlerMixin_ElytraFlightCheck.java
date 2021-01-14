@@ -58,12 +58,11 @@ public class ServerPlayNetworkHandlerMixin_ElytraFlightCheck {
                 lastMovement = lastMovement.add(rotation.x * 0.1D + (rotation.x * 1.5D - lastMovement.x) * 0.5D, rotation.y * 0.1D + (rotation.y * 1.5D - lastMovement.y) * 0.5D, rotation.z * 0.1D + (rotation.z * 1.5D - lastMovement.z) * 0.5D);
 
                 if(data.getPacketMovement().lengthSquared() - lastMovement.lengthSquared() > 0.067D) {
-                    ((Golfer) this.player).report(CheatType.ELYTRA_HACK, 40);
+                    ((Golfer) this.player).report(CheatType.ELYTRA_FLIGHT, golfConfig.weights.elytraFlight);
                     this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
                     ci.cancel();
                 }
             }
-
         }
     }
 
