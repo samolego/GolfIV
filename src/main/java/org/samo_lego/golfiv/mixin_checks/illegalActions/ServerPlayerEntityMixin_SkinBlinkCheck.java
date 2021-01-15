@@ -22,7 +22,7 @@ public class ServerPlayerEntityMixin_SkinBlinkCheck {
     )
     private void checkSkinBlink(ClientSettingsC2SPacket packet, CallbackInfo ci) {
         if(golfConfig.packet.checkSkinBlink && ((Golfer) player).hasOpenGui()) {
-            ((Golfer) player).report(SKIN_BLINKER, golfConfig.weights.skinBlinker);
+            ((Golfer) player).report(SKIN_BLINKER, golfConfig.sus.skinBlinker);
         }
     }
 }

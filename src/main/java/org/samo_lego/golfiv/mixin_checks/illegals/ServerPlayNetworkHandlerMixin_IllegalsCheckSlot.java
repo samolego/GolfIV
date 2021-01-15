@@ -45,7 +45,7 @@ public class ServerPlayNetworkHandlerMixin_IllegalsCheckSlot {
                 //noinspection ConstantConditions
                 boolean illegal = ((ItemStackChecker) (Object) itemStack).makeLegal();
                 if(illegal) {
-                    ((Golfer) this.player).report(NBT_ITEMS, golfConfig.weights.nbtItems);
+                    ((Golfer) this.player).report(NBT_ITEMS, golfConfig.sus.nbtItems);
                 }
             }
         }

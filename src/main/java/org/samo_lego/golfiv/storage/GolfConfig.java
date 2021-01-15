@@ -2,7 +2,6 @@ package org.samo_lego.golfiv.storage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.samo_lego.golfiv.utils.CheatType;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.samo_lego.golfiv.utils.BallLogger.logError;
-import org.samo_lego.golfiv.utils.CheatType.*;
 
 public class GolfConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -49,8 +47,23 @@ public class GolfConfig {
          * Disables kicks and logs them to console.
          */
         public boolean developerMode = false;
+
+        /**
+         * After how many kicks player should be banned.
+         *
+         * Set to -1 to disable.
+         */
+        public int maxKicks = 10;
+
+        /**
+         * How many cheats should player have in the log to in order to be banned.
+         */
+        public int minBanCheats = 3;
     }
 
+    /**
+     * Outgoing packet settings.
+     */
     public static class Packet {
         /**
          * Whether to remove the teleport data
@@ -85,7 +98,11 @@ public class GolfConfig {
         public boolean checkSkinBlink = true;
     }
 
+    /**
+     * Movement checks settings.
+     */
     public static class Movement {
+        private final String _comment = "Movement checks settings";
         /**
          * Client can tell server its onGround status and
          * server blindly accepts it. This can allow
@@ -132,7 +149,11 @@ public class GolfConfig {
         public boolean hazardousWalk = true;
     }
 
+    /**
+     * Combat checks settings.
+     */
     public static class Combat {
+        private final String _comment = "Combat checks settings.";
         /**
          * Checks for killaura by summoning a fake player.
          *
@@ -181,6 +202,25 @@ public class GolfConfig {
      * Hack "weights", used when reporting.
      */
     public static class SusLevels {
+
+        /**
+         * Suspicion value decreases by 1 each X
+         * seconds.
+         */
+        public int suspicionLevelDecreaseTime = 30;
+
+        /**
+         * Reports below this value won't count
+         * (this is to ensure FP reports aren't showing up in cheat log)
+         */
+        public int toleratedSuspicionValue = 100;
+
+        /**
+         * Players won't be kicked until their sus value reaches this.
+         */
+        public int reportSuspicionValue = 200;
+
+        private final String _comment = "How much should the suspicion value increase per each cheat attempt.";
         public byte flyHack = 20;
         public byte speedHack = 15;
         public byte timer = 20;
@@ -214,6 +254,13 @@ public class GolfConfig {
          * Status: not yet implemented
          */
         public boolean toOps = true;
+
+        /**
+         * How many times a cheat should be recorded before logging it to players/console.
+         *
+         * This is to ensure you don't get spammed.
+         */
+        public int logEveryXAttempts = 20;
     }
 
     /**
@@ -242,7 +289,7 @@ public class GolfConfig {
     public final GolfConfig.Packet packet = new Packet();
     public final GolfConfig.Movement movement = new Movement();
     public final GolfConfig.Logging logging = new Logging();
-    public final GolfConfig.SusLevels weights = new SusLevels();
+    public final GolfConfig.SusLevels sus = new SusLevels();
 
     /**
      * Loads GolfIV config from file.

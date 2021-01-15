@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.shape.VoxelShape;
 import org.samo_lego.golfiv.casts.Golfer;
@@ -79,9 +78,9 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
 
                 if(((Golfer) player).isNearFluid())
-                    ((Golfer) this.player).report(JESUS, golfConfig.weights.Jesus);
+                    ((Golfer) this.player).report(JESUS, golfConfig.sus.Jesus);
                 else
-                    ((Golfer) this.player).report(NO_FALL, golfConfig.weights.noFall);
+                    ((Golfer) this.player).report(NO_FALL, golfConfig.sus.noFall);
             }
         }
     }

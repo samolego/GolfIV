@@ -36,7 +36,7 @@ public abstract class PlayerInventoryMixin_IllegalsCheckInsert {
             //noinspection ConstantConditions
             boolean illegal = ((ItemStackChecker) (Object) stack).makeLegal();
             if(illegal) {
-                ((Golfer) player).report(NBT_ITEMS, golfConfig.weights.nbtItems);
+                ((Golfer) player).report(NBT_ITEMS, golfConfig.sus.nbtItems);
             }
         }
         return stack;

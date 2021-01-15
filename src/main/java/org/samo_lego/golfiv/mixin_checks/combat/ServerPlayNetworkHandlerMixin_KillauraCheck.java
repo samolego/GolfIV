@@ -2,8 +2,6 @@ package org.samo_lego.golfiv.mixin_checks.combat;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.*;
@@ -65,7 +63,7 @@ public abstract class ServerPlayNetworkHandlerMixin_KillauraCheck {
             this.fakeAttacked = ((PlayerInteractEntityC2SPacketAccessor) packet).getEntityId() == this.fakeVictim.getEntityId();
 
             if(fakeAttacked) {
-                ((Golfer) player).report(KILLAURA, golfConfig.weights.killaura);
+                ((Golfer) player).report(KILLAURA, golfConfig.sus.killaura);
                 this.clearFakeVictim();
 
                 if(golfConfig.main.developerMode)

@@ -185,7 +185,7 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
             this.CHEATS.add(cheatType);
         }
 
-        if(this.susLevel < 100)
+        if(this.susLevel < golfConfig.sus.toleratedSuspicionValue)
             return;
 
 
@@ -222,7 +222,7 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
         if(player instanceof ServerPlayerEntity) {
             final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 
-            if(this.hackAttempts % 20 == 0) {
+            if(this.hackAttempts % golfConfig.logging.logEveryXAttempts == 0) {
                 String msg = "§6[GolfIV] §2Suspicion value of §b" + player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
                 Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat() + ", used: " + this.hackAttempts + "x."))));
 
@@ -239,9 +239,9 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
                 }
             }
 
-            if(this.susLevel > 200) {
+            if(this.susLevel > golfConfig.sus.reportSuspicionValue) {
                 this.susLevel = 0;
-                if(this.CHEATS.size() > 2 && ++this.kicks > 10) {
+                if(this.CHEATS.size() > golfConfig.main.minBanCheats && golfConfig.main.maxKicks != -1 && ++this.kicks > golfConfig.main.maxKicks) {
                     this.kicks = 0;
                     if(!golfConfig.main.developerMode)
                         serverPlayerEntity.networkHandler.disconnect(new LiteralText(
@@ -295,7 +295,7 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
      */
     @Inject(method = "tick()V", at = @At("TAIL"))
     public void tick(CallbackInfo ci) {
-        if(++this.ticks == 600) {
+        if(++this.ticks == golfConfig.sus.suspicionLevelDecreaseTime * 20) {
             this.ticks = 0;
             this.susLevel -= this.susLevel > 0 ? 1 : 0;
         }

@@ -1,6 +1,5 @@
 package org.samo_lego.golfiv.mixin_checks.combat;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -58,7 +57,7 @@ public class ServerPlayNetworkHandlerMixin_HitCheck {
         double victimDistance = Math.sqrt(victimDistanceSquared);
 
         if(golfConfig.combat.checkHitDistance && !player.isCreative() && victimDistanceSquared > 22) {
-            ((Golfer) player).report(REACH, golfConfig.weights.reach);
+            ((Golfer) player).report(REACH, golfConfig.sus.reach);
             ci.cancel();
             return;
         }
@@ -67,7 +66,7 @@ public class ServerPlayNetworkHandlerMixin_HitCheck {
             BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
 
             if(Math.sqrt(blockHit.squaredDistanceTo(player)) + 0.5D < victimDistance) {
-                ((Golfer) player).report(HIT_THROUGH_WALLS, golfConfig.weights.hitThroughWalls);
+                ((Golfer) player).report(HIT_THROUGH_WALLS, golfConfig.sus.hitThroughWalls);
                 ci.cancel();
                 return;
             }
