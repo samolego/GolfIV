@@ -59,6 +59,12 @@ public class GolfConfig {
          * How many cheats should player have in the log to in order to be banned.
          */
         public int minBanCheats = 3;
+
+        /**
+         * How many seconds should pass between clearing each element
+         * from the cheat list
+         */
+        public int cheatListClearSeconds = 100;
     }
 
     /**

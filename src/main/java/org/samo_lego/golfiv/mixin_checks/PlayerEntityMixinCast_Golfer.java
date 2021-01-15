@@ -299,7 +299,7 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
             this.ticks = 0;
             this.susLevel -= this.susLevel > 0 ? 1 : 0;
         }
-        if(this.ticks % 100 == 0 && this.CHEATS.size() > 1)
+        if(this.ticks % (golfConfig.main.cheatListClearSeconds * 20) == 0 && this.CHEATS.size() > 1)
             this.CHEATS.pop();
     }
 
