@@ -175,16 +175,36 @@ extends java.lang.Object</pre>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#reach">reach</a></span></code>&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>byte</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#skinBlinker">skinBlinker</a></span></code>&nbsp;</td>
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#reportSuspicionValue">reportSuspicionValue</a></span></code>
+<div class="block">Players won't be kicked until their sus value reaches this.</div>
+</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>byte</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#skinBlinker">skinBlinker</a></span></code>&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>byte</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#speedHack">speedHack</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#suspicionLevelDecreaseTime">suspicionLevelDecreaseTime</a></span></code>
+<div class="block">Suspicion value decreases by 1 each X
+ seconds.</div>
+</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>byte</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#timer">timer</a></span></code>&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#toleratedSuspicionValue">toleratedSuspicionValue</a></span></code>
+<div class="block">Reports below this value won't count
+ (this is to ensure FP reports aren't showing up in cheat log)</div>
+</td>
 </tr>
 </table>
 </li>
@@ -233,6 +253,38 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Field Detail</h3>
+<a name="suspicionLevelDecreaseTime">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>suspicionLevelDecreaseTime</h4>
+<pre>public&nbsp;int suspicionLevelDecreaseTime</pre>
+<div class="block">Suspicion value decreases by 1 each X
+ seconds.</div>
+</li>
+</ul>
+<a name="toleratedSuspicionValue">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>toleratedSuspicionValue</h4>
+<pre>public&nbsp;int toleratedSuspicionValue</pre>
+<div class="block">Reports below this value won't count
+ (this is to ensure FP reports aren't showing up in cheat log)</div>
+</li>
+</ul>
+<a name="reportSuspicionValue">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>reportSuspicionValue</h4>
+<pre>public&nbsp;int reportSuspicionValue</pre>
+<div class="block">Players won't be kicked until their sus value reaches this.</div>
+</li>
+</ul>
 <a name="flyHack">
 <!--   -->
 </a>

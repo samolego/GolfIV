@@ -271,7 +271,9 @@
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.html#GolfConfig--">GolfConfig()</a></span> - Constructor for class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.html" title="class in org.samo_lego.golfiv.storage">GolfConfig</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="org/samo_lego/golfiv/storage/GolfConfig.Combat.html" title="class in org.samo_lego.golfiv.storage"><span class="typeNameLink">GolfConfig.Combat</span></a> - Class in <a href="org/samo_lego/golfiv/storage/package-summary.html">org.samo_lego.golfiv.storage</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Combat checks settings.</div>
+</dd>
 <dt><a href="org/samo_lego/golfiv/storage/GolfConfig.Logging.html" title="class in org.samo_lego.golfiv.storage"><span class="typeNameLink">GolfConfig.Logging</span></a> - Class in <a href="org/samo_lego/golfiv/storage/package-summary.html">org.samo_lego.golfiv.storage</a></dt>
 <dd>
 <div class="block">Where to log cheaters.</div>
@@ -281,9 +283,13 @@
 <div class="block">Main part of the config.</div>
 </dd>
 <dt><a href="org/samo_lego/golfiv/storage/GolfConfig.Movement.html" title="class in org.samo_lego.golfiv.storage"><span class="typeNameLink">GolfConfig.Movement</span></a> - Class in <a href="org/samo_lego/golfiv/storage/package-summary.html">org.samo_lego.golfiv.storage</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Movement checks settings.</div>
+</dd>
 <dt><a href="org/samo_lego/golfiv/storage/GolfConfig.Packet.html" title="class in org.samo_lego.golfiv.storage"><span class="typeNameLink">GolfConfig.Packet</span></a> - Class in <a href="org/samo_lego/golfiv/storage/package-summary.html">org.samo_lego.golfiv.storage</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Outgoing packet settings.</div>
+</dd>
 <dt><a href="org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html" title="class in org.samo_lego.golfiv.storage"><span class="typeNameLink">GolfConfig.SusLevels</span></a> - Class in <a href="org/samo_lego/golfiv/storage/package-summary.html">org.samo_lego.golfiv.storage</a></dt>
 <dd>
 <div class="block">Hack "weights", used when reporting.</div>
@@ -390,6 +396,10 @@
 <dd>
 <div class="block">Logs error message to console.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.Logging.html#logEveryXAttempts">logEveryXAttempts</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.Logging.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.Logging</a></dt>
+<dd>
+<div class="block">How many times a cheat should be recorded before logging it to players/console.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.html#logging">logging</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.html" title="class in org.samo_lego.golfiv.storage">GolfConfig</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.Logging.html#Logging--">Logging()</a></span> - Constructor for class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.Logging.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.Logging</a></dt>
@@ -416,6 +426,14 @@
 <dd>
 <div class="block">Sets the appropriate ItemStack size,
  removes disallowed enchantments.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.Main.html#maxKicks">maxKicks</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.Main.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.Main</a></dt>
+<dd>
+<div class="block">After how many kicks player should be banned.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.Main.html#minBanCheats">minBanCheats</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.Main.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.Main</a></dt>
+<dd>
+<div class="block">How many cheats should player have in the log to in order to be banned.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.Combat.html#minSuspiciousAccuracy">minSuspiciousAccuracy</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.Combat.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.Combat</a></dt>
 <dd>
@@ -588,6 +606,10 @@
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html#report-org.samo_lego.golfiv.utils.CheatType-int-">report(CheatType, int)</a></span> - Method in class org.samo_lego.golfiv.mixin_checks.<a href="org/samo_lego/golfiv/mixin_checks/PlayerEntityMixinCast_Golfer.html" title="class in org.samo_lego.golfiv.mixin_checks">PlayerEntityMixinCast_Golfer</a></dt>
 <dd>
 <div class="block">Reports player for cheating / kicks them.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#reportSuspicionValue">reportSuspicionValue</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.SusLevels</a></dt>
+<dd>
+<div class="block">Players won't be kicked until their sus value reaches this.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/utils/FakeVictim.html#rotateAroundPlayer-net.minecraft.util.math.Vec3d-net.minecraft.util.math.Vec2f-">rotateAroundPlayer(Vec3d, Vec2f)</a></span> - Method in class org.samo_lego.golfiv.utils.<a href="org/samo_lego/golfiv/utils/FakeVictim.html" title="class in org.samo_lego.golfiv.utils">FakeVictim</a></dt>
 <dd>&nbsp;</dd>
@@ -764,8 +786,15 @@
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/utils/FakeVictim.html#summonFake-net.minecraft.server.network.ServerPlayerEntity-">summonFake(ServerPlayerEntity)</a></span> - Static method in class org.samo_lego.golfiv.utils.<a href="org/samo_lego/golfiv/utils/FakeVictim.html" title="class in org.samo_lego.golfiv.utils">FakeVictim</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.html#sus">sus</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.html" title="class in org.samo_lego.golfiv.storage">GolfConfig</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#SusLevels--">SusLevels()</a></span> - Constructor for class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.SusLevels</a></dt>
 <dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#suspicionLevelDecreaseTime">suspicionLevelDecreaseTime</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.SusLevels</a></dt>
+<dd>
+<div class="block">Suspicion value decreases by 1 each X
+ seconds.</div>
+</dd>
 </dl>
 <a name="I:T">
 <!--   -->
@@ -783,6 +812,11 @@
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.Logging.html#toConsole">toConsole</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.Logging.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.Logging</a></dt>
 <dd>
 <div class="block">Logs cheat attempts to console.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html#toleratedSuspicionValue">toleratedSuspicionValue</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.SusLevels.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.SusLevels</a></dt>
+<dd>
+<div class="block">Reports below this value won't count
+ (this is to ensure FP reports aren't showing up in cheat log)</div>
 </dd>
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.Logging.html#toOps">toOps</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.Logging.html" title="class in org.samo_lego.golfiv.storage">GolfConfig.Logging</a></dt>
 <dd>
@@ -816,8 +850,6 @@ the order they are declared.</div>
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/casts/NetworkHandlerData.html#wasLLastOnGround--">wasLLastOnGround()</a></span> - Method in interface org.samo_lego.golfiv.casts.<a href="org/samo_lego/golfiv/casts/NetworkHandlerData.html" title="interface in org.samo_lego.golfiv.casts">NetworkHandlerData</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/mixin_checks/movement/ServerPlayNetworkHandlerMixinCast_NetworkHandlerData.html#wasLLastOnGround--">wasLLastOnGround()</a></span> - Method in class org.samo_lego.golfiv.mixin_checks.movement.<a href="org/samo_lego/golfiv/mixin_checks/movement/ServerPlayNetworkHandlerMixinCast_NetworkHandlerData.html" title="class in org.samo_lego.golfiv.mixin_checks.movement">ServerPlayNetworkHandlerMixinCast_NetworkHandlerData</a></dt>
-<dd>&nbsp;</dd>
-<dt><span class="memberNameLink"><a href="org/samo_lego/golfiv/storage/GolfConfig.html#weights">weights</a></span> - Variable in class org.samo_lego.golfiv.storage.<a href="org/samo_lego/golfiv/storage/GolfConfig.html" title="class in org.samo_lego.golfiv.storage">GolfConfig</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <a name="I:X">

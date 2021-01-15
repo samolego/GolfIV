@@ -147,6 +147,18 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#maxKicks">maxKicks</a></span></code>
+<div class="block">After how many kicks player should be banned.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#minBanCheats">minBanCheats</a></span></code>
+<div class="block">How many cheats should player have in the log to in order to be banned.</div>
+</td>
+</tr>
+<tr class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/storage/GolfConfig.Main.html#preventCreativeStrangeItems">preventCreativeStrangeItems</a></span></code>
 <div class="block">Clears NBT items, but still allows block-picking.</div>
@@ -243,11 +255,33 @@ extends java.lang.Object</pre>
 <a name="developerMode">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>developerMode</h4>
 <pre>public&nbsp;boolean developerMode</pre>
 <div class="block">Disables kicks and logs them to console.</div>
+</li>
+</ul>
+<a name="maxKicks">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>maxKicks</h4>
+<pre>public&nbsp;int maxKicks</pre>
+<div class="block">After how many kicks player should be banned.
+
+ Set to -1 to disable.</div>
+</li>
+</ul>
+<a name="minBanCheats">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>minBanCheats</h4>
+<pre>public&nbsp;int minBanCheats</pre>
+<div class="block">How many cheats should player have in the log to in order to be banned.</div>
 </li>
 </ul>
 </li>
