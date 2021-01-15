@@ -27,6 +27,7 @@
     "movement.ServerPlayNetworkHandler_OnGroundCheck",
     "movement.ServerPlayNetworkHandlerMixin_ElytraFlightCheck",
     "movement.ServerPlayNetworkHandlerMixin_FlightCheck",
+    "movement.ServerPlayNetworkHandlerMixin_SafeWalkCheck",
     "movement.ServerPlayNetworkHandlerMixin_SpeedCheck",
     "movement.ServerPlayNetworkHandlerMixinCast_NetworkHandlerData",
     "S2CPacket.ServerPlayNetworkHandlerMixin_EntityEquipment",

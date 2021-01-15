@@ -242,6 +242,7 @@ public class GolfConfig {
         public byte hitThroughWalls = 10;
         public byte nbtItems = 100;
         public byte opCreativeItems = 100;
+        public byte safeWalk = 15;
     }
 
     /**

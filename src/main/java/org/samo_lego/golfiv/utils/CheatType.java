@@ -9,6 +9,7 @@ public enum CheatType {
     FLY_HACK("fly"),
     SPEED_HACK("speed"),
     ELYTRA_FLIGHT("elytra"),
+    SAFE_WALK("safe walk"),
     NO_FALL("no fall"),
     JESUS("Jesus"),
     SKIN_BLINKER("skin blinker"),
