@@ -66,6 +66,8 @@ public class ServerPlayNetworkHandlerMixin_SafeWalkCheck {
 
                 if(((Golfer) player).isNearGround() && air && this.wasAir && this.wasLastAir && col == 0 && ++this.edgeWalk > 4) {
                     ((Golfer) this.player).report(SAFE_WALK, golfConfig.sus.safeWalk);
+
+                    this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
                     ci.cancel();
                 }
                 this.wasLastAir = this.wasAir;
@@ -74,7 +76,5 @@ public class ServerPlayNetworkHandlerMixin_SafeWalkCheck {
             else
                 this.edgeWalk = 0;
         }
-        else
-            this.edgeWalk = 0;
     }
 }
