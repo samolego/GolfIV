@@ -102,6 +102,12 @@ public class GolfConfig {
          * SkinBlinker hack.
          */
         public boolean checkSkinBlink = true;
+
+        /**
+         * Whether to remove original coordinates for the
+         * sound, e.g. when summoning a wither / when lightning bolt strikes.
+         */
+        public boolean pacthSoundExploits = true;
     }
 
     /**

@@ -13,6 +13,7 @@
     "accessors.LivingEntityAccessor",
     "accessors.PlayerInteractEntityC2SPacketAccessor",
     "accessors.PlayerMoveC2SPacketAccessor",
+    "accessors.PlaySoundS2CPacketAccessor",
     "combat.ServerPlayNetworkHandlerMixin_AntiKnockbackCheck",
     "combat.ServerPlayNetworkHandlerMixin_HitCheck",
     "combat.ServerPlayNetworkHandlerMixin_KillauraAccuracyCheck",
@@ -32,7 +33,8 @@
     "movement.ServerPlayNetworkHandlerMixinCast_NetworkHandlerData",
     "S2CPacket.ServerPlayNetworkHandlerMixin_EntityEquipment",
     "S2CPacket.ServerPlayNetworkHandlerMixin_EntityTeleportData",
-    "S2CPacket.ServerPlayNetworkHandlerMixin_HealthTags"
+    "S2CPacket.ServerPlayNetworkHandlerMixin_HealthTags",
+    "S2CPacket.ServerPlayNetworkHandlerMixin_SoundExploit"
   ],
   "injectors": {
     "defaultRequire": 1
