@@ -107,7 +107,7 @@ public class GolfConfig {
          * Whether to remove original coordinates for the
          * sound, e.g. when summoning a wither / when lightning bolt strikes.
          */
-        public boolean pacthSoundExploits = true;
+        public boolean patchSoundExploits = true;
     }
 
     /**
