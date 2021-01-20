@@ -1,5 +1,6 @@
 package org.samo_lego.golfiv.mixin_checks.movement;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -60,16 +61,18 @@ public class ServerPlayNetworkHandlerMixin_FlightCheck {
 
             //System.out.println("top reached: " + !(!wasFalling && falling));
             if (player.hasStatusEffect(StatusEffects.LEVITATION))
-                predictedDeltaY = data.getLastMovement().getY() + (0.05D * (double) player.getStatusEffect(StatusEffects.LEVITATION).getAmplifier() + 1) - data.getLastMovement().getY() * 0.2D;
+                predictedDeltaY = data.getLastMovement().getY() + (0.05D * (double)(player.getStatusEffect(StatusEffects.LEVITATION).getAmplifier() + 1) - data.getLastMovement().getY()) * 0.2D;
             else
                 predictedDeltaY = data.getLastMovement().y - d;
 
             predictedDeltaY *= 0.9800000190734863D;
 
-            //System.out.println(Math.abs(predictedDeltaY - data.getPacketMovement().getY()));
             if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - data.getPacketMovement().getY()) > 0.003D) {
-                if(++this.flyCounter > 4)
+                System.out.println(Math.abs(predictedDeltaY - data.getPacketMovement().getY()));
+                if(++this.flyCounter > 4) {
+                    this.flyCounter = 0;
                     ((Golfer) this.player).report(FLY_HACK, golfConfig.sus.flyHack);
+                }
             }
             else {
                 this.flyCounter += this.flyCounter > 0 ? -1 : 0;
