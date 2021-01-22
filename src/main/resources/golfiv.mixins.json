@@ -4,6 +4,7 @@
   "package": "org.samo_lego.golfiv.mixin_checks",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ServerPlayerEntityMixinCast_Golfer",
     "accessors.EntityAccessor",
     "accessors.EntityEquipmentUpdateS2CPacketAccessor",
     "accessors.EntityPositionS2CPacketAccessor",

@@ -30,8 +30,6 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
 
-    @Shadow protected abstract void closeHandledScreen();
-
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique

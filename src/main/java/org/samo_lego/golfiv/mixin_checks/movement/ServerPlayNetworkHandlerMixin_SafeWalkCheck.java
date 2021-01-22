@@ -53,7 +53,7 @@ public class ServerPlayNetworkHandlerMixin_SafeWalkCheck {
             cancellable = true
     )
     private void checkSafeWalk(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.movement.hazardousWalk && !player.isFallFlying() && !player.isSneaking() && ((PlayerMoveC2SPacketAccessor) packet).changesPosition()) {
+        if(golfConfig.movement.hazardousWalk && !player.isFallFlying() && !player.isSneaking() && ((PlayerMoveC2SPacketAccessor) packet).changesPosition() && !player.isCreative()) {
             Vec3d packetMovement = data.getPacketMovement();
 
             if(packetMovement.getX() == 0 ^ packetMovement.getZ() == 0) {
