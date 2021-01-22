@@ -71,8 +71,6 @@ public class GolfCommand {
         for(ServerPlayerEntity player : targets) {
 
             ListTag cheatLog  = ((Golfer) player).getCheatLog();
-            if(cheatLog == null)
-                continue;
             StringBuilder cheats = new StringBuilder();
 
             if(cheatLog.size() > 0) {

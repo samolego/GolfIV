@@ -31,7 +31,7 @@ import static org.samo_lego.golfiv.utils.CheatType.KILLAURA;
  * Checks for killaura by sending a fake player to client.
  */
 @Mixin(ServerPlayNetworkHandler.class)
-public abstract class ServerPlayNetworkHandlerMixin_KillauraCheck {
+public abstract class ServerPlayNetworkHandlerMixin_KillauraFakePlayerCheck {
 
     @Shadow public ServerPlayerEntity player;
 
@@ -67,7 +67,7 @@ public abstract class ServerPlayNetworkHandlerMixin_KillauraCheck {
                 this.clearFakeVictim();
 
                 if(golfConfig.main.developerMode)
-                    BallLogger.logInfo("Player " + player.getGameProfile().getName() + " hass attacked fake entity.");
+                    BallLogger.logInfo("Player " + player.getGameProfile().getName() + " has attacked fake entity.");
             }
         }
     }

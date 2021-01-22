@@ -70,6 +70,22 @@ public interface Golfer {
     boolean hasOpenGui();
 
     /**
+     * Gets the number of ticks that the player
+     * has had an open GUI while in a nether portal
+     *
+     * @return number of ticks, greater than or equal to 0
+     */
+    int getGuiOpenInPortalTicks();
+
+    /**
+     * Sets the number of ticks that the player
+     * has had an open GUI while in a nether portal
+     *
+     * @param ticks
+     */
+    void setGuiOpenInPortalTicks(int ticks);
+
+    /**
      * Gets the suspicion value for the player.
      *
      * @return suspicion value, higher than 0
@@ -95,4 +111,11 @@ public interface Golfer {
 
     void setHitAccuracy(int entityHits, int handSwings);
     void setHitAccuracy(int accuracy);
+
+    /**
+     * Gets the number of times player has been kicked.
+     *
+     * @return player's number of kicks.
+     */
+    short getKicks();
 }

@@ -68,7 +68,6 @@ public class ServerPlayNetworkHandlerMixin_FlightCheck {
             predictedDeltaY *= 0.9800000190734863D;
 
             if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - data.getPacketMovement().getY()) > 0.003D) {
-                System.out.println(Math.abs(predictedDeltaY - data.getPacketMovement().getY()));
                 if(++this.flyCounter > 4) {
                     this.flyCounter = 0;
                     ((Golfer) this.player).report(FLY_HACK, golfConfig.sus.flyHack);

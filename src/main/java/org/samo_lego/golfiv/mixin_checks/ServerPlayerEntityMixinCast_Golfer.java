@@ -3,13 +3,17 @@ package org.samo_lego.golfiv.mixin_checks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import org.samo_lego.golfiv.casts.Golfer;
+import org.samo_lego.golfiv.mixin_checks.accessors.EntityAccessor;
 import org.samo_lego.golfiv.utils.BallLogger;
 import org.samo_lego.golfiv.utils.CheatType;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,10 +29,11 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 /**
  * Additional methods and fields for PlayerEntities.
  */
-@Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
+@Mixin(ServerPlayerEntity.class)
+public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
 
-    private final PlayerEntity player = (PlayerEntity) (Object) this;
+    @Shadow @Final public MinecraftServer server;
+    private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
     private boolean blockCollisions, entityCollisions, hasOpenScreen;
@@ -45,6 +50,10 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
 
     @Unique
     private int ticks;
+
+    @Unique
+    private int guiOpenInPortalTicks;
+
     @Unique
     private short kicks;
 
@@ -114,6 +123,11 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Override
     public void setSusLevel(int newSusLevel) {
         this.susLevel = newSusLevel;
+    }
+
+    @Override
+    public short getKicks() {
+        return this.kicks;
     }
 
     /**
@@ -191,9 +205,6 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
 
         // Saving cheat log
         LocalDateTime now = LocalDateTime.now();
-        if(cheatLog == null) {
-            cheatLog = new ListTag();
-        }
         if(cheatLog.size() > 0) {
             CompoundTag lastCheat = cheatLog.getCompound(cheatLog.size() - 1);
             if(lastCheat != null && cheatType.getCheat().equals(lastCheat.getString("type"))) {
@@ -219,49 +230,46 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
         }
 
 
-        if(player instanceof ServerPlayerEntity) {
-            final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 
-            if(this.hackAttempts % golfConfig.logging.logEveryXAttempts == 0) {
-                String msg = "§6[GolfIV] §2Suspicion value of §b" + player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
-                Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat() + ", used: " + this.hackAttempts + "x."))));
+        if(this.hackAttempts % golfConfig.logging.logEveryXAttempts == 0) {
+            String msg = "§6[GolfIV] §2Suspicion value of §b" + this.player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
+            Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat() + ", used: " + this.hackAttempts + "x."))));
 
-                if(golfConfig.logging.toOps) {
-                    List<ServerPlayerEntity> players = serverPlayerEntity.getServer().getPlayerManager().getPlayerList();
-                    for(ServerPlayerEntity p : players) {
-                        if(p.hasPermissionLevel(4)) {
-                            p.sendMessage(text, false);
-                        }
+            if(golfConfig.logging.toOps) {
+                List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
+                for(ServerPlayerEntity p : players) {
+                    if(p.hasPermissionLevel(4)) {
+                        p.sendMessage(text, false);
                     }
                 }
-                if(golfConfig.logging.toConsole) {
-                    BallLogger.logInfo(player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
-                }
             }
+            if(golfConfig.logging.toConsole) {
+                BallLogger.logInfo(this.player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
+            }
+        }
 
-            if(this.susLevel > golfConfig.sus.reportSuspicionValue) {
-                this.susLevel = 0;
-                if(this.CHEATS.size() > golfConfig.main.minBanCheats && golfConfig.main.maxKicks != -1 && ++this.kicks > golfConfig.main.maxKicks) {
-                    this.kicks = 0;
-                    if(!golfConfig.main.developerMode)
-                        serverPlayerEntity.networkHandler.disconnect(new LiteralText(
-                                "§c[Ban from GolfIV (not really)]\n§6" +
-                                        golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
-                                        ))
-                        ));
-                    else
-                        BallLogger.logInfo(player.getGameProfile().getName() + " should be BANNED.");
-                }
-                else {
-                    if(!golfConfig.main.developerMode)
-                        serverPlayerEntity.networkHandler.disconnect(new LiteralText(
-                                "§3[GolfIV]\n§a" +
-                                        golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
-                                        ))
-                        ));
-                    else
-                        BallLogger.logInfo(player.getGameProfile().getName() + " should be KICKED.");
-                }
+        if(this.susLevel > golfConfig.sus.reportSuspicionValue) {
+            this.susLevel = 0;
+            if(this.CHEATS.size() > golfConfig.main.minBanCheats && golfConfig.main.maxKicks != -1 && ++this.kicks > golfConfig.main.maxKicks) {
+                this.kicks = 0;
+                if(!golfConfig.main.developerMode)
+                    player.networkHandler.disconnect(new LiteralText(
+                            "§c[Ban from GolfIV (not really)]\n§6" +
+                                    golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
+                                    ))
+                    ));
+                else
+                    BallLogger.logInfo(this.player.getGameProfile().getName() + " should be BANNED.");
+            }
+            else {
+                if(!golfConfig.main.developerMode)
+                    player.networkHandler.disconnect(new LiteralText(
+                            "§3[GolfIV]\n§a" +
+                                    golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
+                                    ))
+                    ));
+                else
+                    BallLogger.logInfo(this.player.getGameProfile().getName() + " should be KICKED.");
             }
         }
     }
@@ -289,6 +297,28 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     }
 
     /**
+     * Gets the number of ticks that the player
+     * has had an open GUI while in a nether portal
+     *
+     * @return number of ticks, greater than or equal to 0
+     */
+    @Override
+    public int getGuiOpenInPortalTicks() {
+        return this.guiOpenInPortalTicks;
+    }
+
+    /**
+     * Sets the number of ticks that the player
+     * has had an open GUI while in a nether portal
+     *
+     * @param ticks
+     */
+    @Override
+    public void setGuiOpenInPortalTicks(int ticks) {
+        this.guiOpenInPortalTicks = ticks;
+    }
+
+    /**
      * Lowers the susLevel by 1 each half a minute.
      *
      * @param ci
@@ -301,6 +331,13 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
         }
         if(this.ticks % (golfConfig.main.cheatListClearSeconds * 20) == 0 && this.CHEATS.size() > 1)
             this.CHEATS.pop();
+    }
+
+    @Inject(method = "copyFrom(Lnet/minecraft/server/network/ServerPlayerEntity;Z)V", at = @At("TAIL"))
+    private void copyFromPlayer(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
+        this.cheatLog = ((Golfer) oldPlayer).getCheatLog();
+        this.susLevel = ((Golfer) oldPlayer).getSusLevel();
+        this.kicks = ((Golfer) oldPlayer).getKicks();
     }
 
     /**
