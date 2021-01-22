@@ -7,9 +7,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import org.samo_lego.golfiv.casts.Golfer;
+import org.samo_lego.golfiv.mixin_checks.accessors.EntityAccessor;
 import org.samo_lego.golfiv.utils.BallLogger;
 import org.samo_lego.golfiv.utils.CheatType;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,6 +30,8 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
 
+    @Shadow protected abstract void closeHandledScreen();
+
     private final PlayerEntity player = (PlayerEntity) (Object) this;
 
     @Unique
@@ -45,6 +49,10 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
 
     @Unique
     private int ticks;
+
+    @Unique
+    private int guiOpenInPortalTicks;
+
     @Unique
     private short kicks;
 
@@ -286,6 +294,28 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
     @Override
     public boolean hasOpenGui() {
         return this.hasOpenScreen;
+    }
+
+    /**
+     * Gets the number of ticks that the player
+     * has had an open GUI while in a nether portal
+     *
+     * @return number of ticks, greater than or equal to 0
+     */
+    @Override
+    public int getGuiOpenInPortalTicks() {
+        return this.guiOpenInPortalTicks;
+    }
+
+    /**
+     * Sets the number of ticks that the player
+     * has had an open GUI while in a nether portal
+     *
+     * @param ticks
+     */
+    @Override
+    public void setGuiOpenInPortalTicks(int ticks) {
+        this.guiOpenInPortalTicks = ticks;
     }
 
     /**

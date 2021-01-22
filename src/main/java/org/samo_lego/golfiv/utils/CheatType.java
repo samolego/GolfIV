@@ -14,6 +14,7 @@ public enum CheatType {
     JESUS("Jesus"),
     SKIN_BLINKER("skin blinker"),
     ILLEGAL_ACTIONS("inventory walk"),
+    PORTAL_HACK("portal hack"),
     KILLAURA("killaura"),
     NO_HAND_SWING("multiaura"),
     ANTIKNOCKBACK("antiknockback"),

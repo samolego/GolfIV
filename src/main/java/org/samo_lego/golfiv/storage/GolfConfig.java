@@ -104,6 +104,12 @@ public class GolfConfig {
         public boolean checkSkinBlink = true;
 
         /**
+         * Whether to check if player is using
+         * Portals hack.
+         */
+        public boolean checkPortalHack = true;
+
+        /**
          * Whether to remove original coordinates for the
          * sound, e.g. when summoning a wither / when lightning bolt strikes.
          */
@@ -241,6 +247,7 @@ public class GolfConfig {
         public byte Jesus = 40;
         public byte skinBlinker = 100;
         public byte inventoryWalk = 20;
+        public byte portalHack = 100;
         public byte killaura = 80;
         public byte noHandSwing = 60;
         public byte antiknockback = 20;
