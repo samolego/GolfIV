@@ -27,12 +27,12 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 /**
  * Additional methods and fields for PlayerEntities.
  */
-@Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
+@Mixin(ServerPlayerEntity.class)
+public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
 
     @Shadow protected abstract void closeHandledScreen();
 
-    private final PlayerEntity player = (PlayerEntity) (Object) this;
+    private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
     private boolean blockCollisions, entityCollisions, hasOpenScreen;
@@ -227,49 +227,46 @@ public abstract class PlayerEntityMixinCast_Golfer implements Golfer {
         }
 
 
-        if(player instanceof ServerPlayerEntity) {
-            final ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 
-            if(this.hackAttempts % golfConfig.logging.logEveryXAttempts == 0) {
-                String msg = "§6[GolfIV] §2Suspicion value of §b" + player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
-                Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat() + ", used: " + this.hackAttempts + "x."))));
+        if(this.hackAttempts % golfConfig.logging.logEveryXAttempts == 0) {
+            String msg = "§6[GolfIV] §2Suspicion value of §b" + this.player.getGameProfile().getName() + "§2 has reached §d" + this.susLevel + "§2.";
+            Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat() + ", used: " + this.hackAttempts + "x."))));
 
-                if(golfConfig.logging.toOps) {
-                    List<ServerPlayerEntity> players = serverPlayerEntity.getServer().getPlayerManager().getPlayerList();
-                    for(ServerPlayerEntity p : players) {
-                        if(p.hasPermissionLevel(4)) {
-                            p.sendMessage(text, false);
-                        }
+            if(golfConfig.logging.toOps) {
+                List<ServerPlayerEntity> players = player.getServer().getPlayerManager().getPlayerList();
+                for(ServerPlayerEntity p : players) {
+                    if(p.hasPermissionLevel(4)) {
+                        p.sendMessage(text, false);
                     }
                 }
-                if(golfConfig.logging.toConsole) {
-                    BallLogger.logInfo(player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
-                }
             }
+            if(golfConfig.logging.toConsole) {
+                BallLogger.logInfo(this.player.getGameProfile().getName() + " is probably using " + cheatType.getCheat() + " hack(s).");
+            }
+        }
 
-            if(this.susLevel > golfConfig.sus.reportSuspicionValue) {
-                this.susLevel = 0;
-                if(this.CHEATS.size() > golfConfig.main.minBanCheats && golfConfig.main.maxKicks != -1 && ++this.kicks > golfConfig.main.maxKicks) {
-                    this.kicks = 0;
-                    if(!golfConfig.main.developerMode)
-                        serverPlayerEntity.networkHandler.disconnect(new LiteralText(
-                                "§c[Ban from GolfIV (not really)]\n§6" +
-                                        golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
-                                        ))
-                        ));
-                    else
-                        BallLogger.logInfo(player.getGameProfile().getName() + " should be BANNED.");
-                }
-                else {
-                    if(!golfConfig.main.developerMode)
-                        serverPlayerEntity.networkHandler.disconnect(new LiteralText(
-                                "§3[GolfIV]\n§a" +
-                                        golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
-                                        ))
-                        ));
-                    else
-                        BallLogger.logInfo(player.getGameProfile().getName() + " should be KICKED.");
-                }
+        if(this.susLevel > golfConfig.sus.reportSuspicionValue) {
+            this.susLevel = 0;
+            if(this.CHEATS.size() > golfConfig.main.minBanCheats && golfConfig.main.maxKicks != -1 && ++this.kicks > golfConfig.main.maxKicks) {
+                this.kicks = 0;
+                if(!golfConfig.main.developerMode)
+                    player.networkHandler.disconnect(new LiteralText(
+                            "§c[Ban from GolfIV (not really)]\n§6" +
+                                    golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
+                                    ))
+                    ));
+                else
+                    BallLogger.logInfo(this.player.getGameProfile().getName() + " should be BANNED.");
+            }
+            else {
+                if(!golfConfig.main.developerMode)
+                    player.networkHandler.disconnect(new LiteralText(
+                            "§3[GolfIV]\n§a" +
+                                    golfConfig.kickMessages.get(new Random().nextInt(golfConfig.kickMessages.size()
+                                    ))
+                    ));
+                else
+                    BallLogger.logInfo(this.player.getGameProfile().getName() + " should be KICKED.");
             }
         }
     }
