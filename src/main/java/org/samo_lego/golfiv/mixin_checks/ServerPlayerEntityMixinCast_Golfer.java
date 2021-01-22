@@ -3,6 +3,7 @@ package org.samo_lego.golfiv.mixin_checks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
@@ -10,6 +11,7 @@ import org.samo_lego.golfiv.casts.Golfer;
 import org.samo_lego.golfiv.mixin_checks.accessors.EntityAccessor;
 import org.samo_lego.golfiv.utils.BallLogger;
 import org.samo_lego.golfiv.utils.CheatType;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -30,6 +32,7 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
 
+    @Shadow @Final public MinecraftServer server;
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
@@ -122,6 +125,11 @@ public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
         this.susLevel = newSusLevel;
     }
 
+    @Override
+    public short getKicks() {
+        return this.kicks;
+    }
+
     /**
      * Real onGround value, which isn't affected
      * by the client packet.
@@ -197,9 +205,6 @@ public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
 
         // Saving cheat log
         LocalDateTime now = LocalDateTime.now();
-        if(cheatLog == null) {
-            cheatLog = new ListTag();
-        }
         if(cheatLog.size() > 0) {
             CompoundTag lastCheat = cheatLog.getCompound(cheatLog.size() - 1);
             if(lastCheat != null && cheatType.getCheat().equals(lastCheat.getString("type"))) {
@@ -231,7 +236,7 @@ public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
             Text text = new LiteralText(msg).styled((style) -> style.withColor(Formatting.GREEN).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("Last cheat: " + cheatType.getCheat() + ", used: " + this.hackAttempts + "x."))));
 
             if(golfConfig.logging.toOps) {
-                List<ServerPlayerEntity> players = player.getServer().getPlayerManager().getPlayerList();
+                List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
                 for(ServerPlayerEntity p : players) {
                     if(p.hasPermissionLevel(4)) {
                         p.sendMessage(text, false);
@@ -326,6 +331,13 @@ public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
         }
         if(this.ticks % (golfConfig.main.cheatListClearSeconds * 20) == 0 && this.CHEATS.size() > 1)
             this.CHEATS.pop();
+    }
+
+    @Inject(method = "copyFrom(Lnet/minecraft/server/network/ServerPlayerEntity;Z)V", at = @At("TAIL"))
+    private void copyFromPlayer(ServerPlayerEntity oldPlayer, boolean alive, CallbackInfo ci) {
+        this.cheatLog = ((Golfer) oldPlayer).getCheatLog();
+        this.susLevel = ((Golfer) oldPlayer).getSusLevel();
+        this.kicks = ((Golfer) oldPlayer).getKicks();
     }
 
     /**

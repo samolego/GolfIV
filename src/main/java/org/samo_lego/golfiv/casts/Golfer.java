@@ -111,4 +111,11 @@ public interface Golfer {
 
     void setHitAccuracy(int entityHits, int handSwings);
     void setHitAccuracy(int accuracy);
+
+    /**
+     * Gets the number of times player has been kicked.
+     *
+     * @return player's number of kicks.
+     */
+    short getKicks();
 }
