@@ -19,7 +19,7 @@
     "combat.ServerPlayNetworkHandlerMixin_HitCheck",
     "combat.ServerPlayNetworkHandlerMixin_KillauraAccuracyCheck",
     "combat.ServerPlayNetworkHandlerMixin_KillauraFakePlayerCheck",
-    "illegalActions.PlayerEntityMixin_PortalsGuiCheck",
+    "illegalActions.ServerPlayerEntityMixin_PortalsGuiCheck",
     "illegalActions.ServerPlayerEntityMixin_InventoryClose",
     "illegalActions.ServerPlayerEntityMixin_SkinBlinkCheck",
     "illegalActions.ServerPlayNetworkHandlerMixin_InventoryWalkCheck",

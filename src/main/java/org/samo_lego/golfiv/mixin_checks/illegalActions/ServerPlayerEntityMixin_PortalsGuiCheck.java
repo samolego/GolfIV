@@ -1,6 +1,6 @@
 package org.samo_lego.golfiv.mixin_checks.illegalActions;
 
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.samo_lego.golfiv.casts.Golfer;
 import org.samo_lego.golfiv.mixin_checks.accessors.EntityAccessor;
 import org.samo_lego.golfiv.utils.CheatType;
@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
-@Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin_PortalsGuiCheck {
+@Mixin(ServerPlayerEntity.class)
+public abstract class ServerPlayerEntityMixin_PortalsGuiCheck {
     @Shadow
-    protected abstract void closeHandledScreen();
+    public abstract void closeHandledScreen();
 
     private final Golfer golfer = (Golfer) this;
 
