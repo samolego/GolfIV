@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -73,13 +73,13 @@ var activeTableTab = "activeTableTab";
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
@@ -121,6 +121,25 @@ implements <a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="i
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Field Summary table, listing fields, and an explanation">
+<caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Field and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>net.minecraft.server.MinecraftServer</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#server">server</a></span></code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.summary">
@@ -174,84 +193,90 @@ implements <a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="i
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#getHitAccuracy--">getHitAccuracy</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code>short</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#getKicks--">getKicks</a></span>()</code>
+<div class="block">Gets the number of times player has been kicked.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#getSusLevel--">getSusLevel</a></span>()</code>
 <div class="block">Gets the suspicion value for the player.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#hasOpenGui--">hasOpenGui</a></span>()</code>
 <div class="block">Tells whether player has open GUI.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#isNearFluid--">isNearFluid</a></span>()</code>
 <div class="block">Tells whether player is near fluid (above).</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#isNearGround--">isNearGround</a></span>()</code>
 <div class="block">Real onGround value, which isn't affected
  by the client packet.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#report-org.samo_lego.golfiv.utils.CheatType-int-">report</a></span>(<a href="../../../../org/samo_lego/golfiv/utils/CheatType.html" title="enum in org.samo_lego.golfiv.utils">CheatType</a>&nbsp;cheatType,
       int&nbsp;susValue)</code>
 <div class="block">Reports player for cheating / kicks them.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#setBlockCollisions-boolean-">setBlockCollisions</a></span>(boolean&nbsp;blockCollisions)</code>
 <div class="block">Sets whether player has block collisions.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#setEntityCollisions-boolean-">setEntityCollisions</a></span>(boolean&nbsp;entityCollisions)</code>
 <div class="block">Sets whether player has entity collisions (e.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#setGuiOpenInPortalTicks-int-">setGuiOpenInPortalTicks</a></span>(int&nbsp;ticks)</code>
 <div class="block">Sets the number of ticks that the player
  has had an open GUI while in a nether portal</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#setHitAccuracy-int-">setHitAccuracy</a></span>(int&nbsp;accuracy)</code>&nbsp;</td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#setHitAccuracy-int-int-">setHitAccuracy</a></span>(int&nbsp;entityHits,
               int&nbsp;handSwings)</code>&nbsp;</td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#setNearFluid-boolean-">setNearFluid</a></span>(boolean&nbsp;nearFluid)</code>
 <div class="block">Sets the nearFluid status.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#setOpenGui-boolean-">setOpenGui</a></span>(boolean&nbsp;openGui)</code>
 <div class="block">Sets whether player has opened GUI.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#setSusLevel-int-">setSusLevel</a></span>(int&nbsp;newSusLevel)</code>
 <div class="block">Sets suspicion value for the player.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/mixin_checks/ServerPlayerEntityMixinCast_Golfer.html#tick-org.spongepowered.asm.mixin.injection.callback.CallbackInfo-">tick</a></span>(org.spongepowered.asm.mixin.injection.callback.CallbackInfo&nbsp;ci)</code>
 <div class="block">Lowers the susLevel by 1 each half a minute.</div>
@@ -273,6 +298,23 @@ implements <a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="i
 <div class="details">
 <ul class="blockList">
 <li class="blockList">
+<!-- ============ FIELD DETAIL =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="field.detail">
+<!--   -->
+</a>
+<h3>Field Detail</h3>
+<a name="server">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>server</h4>
+<pre>public&nbsp;net.minecraft.server.MinecraftServer server</pre>
+</li>
+</ul>
+</li>
+</ul>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <ul class="blockList">
 <li class="blockList"><a name="constructor.detail">
@@ -391,6 +433,23 @@ implements <a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="i
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#setSusLevel-int-">setSusLevel</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="interface in org.samo_lego.golfiv.casts">Golfer</a></code></dd>
+</dl>
+</li>
+</ul>
+<a name="getKicks--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getKicks</h4>
+<pre>public&nbsp;short&nbsp;getKicks()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#getKicks--">Golfer</a></code></span></div>
+<div class="block">Gets the number of times player has been kicked.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html#getKicks--">getKicks</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="interface in org.samo_lego.golfiv.casts">Golfer</a></code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>player's number of kicks.</dd>
 </dl>
 </li>
 </ul>
@@ -628,13 +687,13 @@ implements <a href="../../../../org/samo_lego/golfiv/casts/Golfer.html" title="i
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.detail">Method</a></li>
 </ul>
