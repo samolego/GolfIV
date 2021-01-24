@@ -48,7 +48,7 @@ public class ServerPlayNetworkHandlerMixin_ElytraFlightCheck {
             cancellable = true
     )
     private void checkElytraMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.movement.checkElytraFlight && player.isFallFlying() && data.getLastMovement() != null && data.getPacketMovement().getY() > data.getLastMovement().getY()) {
+        if(golfConfig.movement.checkElytraFlight && player.isFallFlying() && data.getLastMovement() != null && data.getPacketMovement().getY() > data.getLastMovement().getY() && !player.isUsingRiptide()) {
             if(usedRocket) {
                 usedRocket = false;
             }
