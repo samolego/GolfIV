@@ -205,6 +205,9 @@ public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
 
         // Saving cheat log
         LocalDateTime now = LocalDateTime.now();
+        if(cheatLog == null) {
+            cheatLog = new ListTag();
+        }
         if(cheatLog.size() > 0) {
             CompoundTag lastCheat = cheatLog.getCompound(cheatLog.size() - 1);
             if(lastCheat != null && cheatType.getCheat().equals(lastCheat.getString("type"))) {
