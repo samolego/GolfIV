@@ -1,18 +1,10 @@
 package org.samo_lego.golfiv.mixin_checks.S2CPacket;
 
-import net.fabricmc.fabric.impl.networking.ThreadedAnvilChunkStorageTrackingExtensions;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Saddleable;
 import net.minecraft.network.Packet;
-import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerChunkManager;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.server.world.ThreadedAnvilChunkStorage;
 import org.samo_lego.golfiv.mixin_checks.accessors.EntityPositionS2CPacketAccessor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,8 +12,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Collection;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
@@ -31,11 +21,11 @@ public abstract class ServerPlayNetworkHandlerMixin_EntityTeleportData {
     @Shadow
     public ServerPlayerEntity player;
 
-    @Shadow public abstract void sendPacket(Packet<?> packet);
+    @Shadow @Final private MinecraftServer server;
 
     /**
-     * If player teleports out of render distance, we sned the destroy entity
-     * packet instead of teleport one, in order to hide player's coordinates.
+     * If player teleports out of render distance, we modify the coordinates of the
+     * packet, in order to hide player's original TP coordinates.
      *
      * @param packet
      * @param ci
@@ -47,20 +37,19 @@ public abstract class ServerPlayNetworkHandlerMixin_EntityTeleportData {
     )
     private void removeTeleportData(Packet<?> packet, CallbackInfo ci) {
         if(golfConfig.packet.removeTeleportData && packet instanceof EntityPositionS2CPacket) {
-            ServerWorld world = this.player.getServerWorld();
+            EntityPositionS2CPacketAccessor packetAccessor = (EntityPositionS2CPacketAccessor) packet;
 
-            int entityId = ((EntityPositionS2CPacketAccessor) packet).getId();
-            Entity teleporter = world.getEntityById(entityId);
+            // Similar to ServerPlayNetworkHandlerMixin_SoundExploit#patchSoundCoordinates
+            int maxPlayerDistance = server.getPlayerManager().getViewDistance() * 16;
+            double deltaX = player.getX() - packetAccessor.getX();
+            double deltaZ = player.getZ() - packetAccessor.getZ();
 
-            if(teleporter instanceof ServerPlayerEntity) {
-                ThreadedAnvilChunkStorage storage = world.getChunkManager().threadedAnvilChunkStorage;
-                Collection<ServerPlayerEntity> trackers = ((ThreadedAnvilChunkStorageTrackingExtensions) storage).fabric_getTrackingPlayers(this.player);
+            double actualPlayerDistance = deltaX * deltaZ;
 
-                if(!trackers.contains(teleporter)) {
-                    // Can not track this player (teleporter), why send data?
-                    this.sendPacket(new EntitiesDestroyS2CPacket(entityId));
-                    ci.cancel();
-                }
+            if(maxPlayerDistance * maxPlayerDistance < Math.abs(actualPlayerDistance)) {
+                // Can not track this entity (teleporter), why send data?
+                packetAccessor.setX(player.getX() + maxPlayerDistance);
+                packetAccessor.setZ(player.getZ() + maxPlayerDistance);
             }
         }
     }
