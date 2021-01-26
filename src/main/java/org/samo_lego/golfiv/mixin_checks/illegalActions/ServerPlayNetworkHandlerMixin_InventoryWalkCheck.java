@@ -87,7 +87,7 @@ public class ServerPlayNetworkHandlerMixin_InventoryWalkCheck {
                         ci.cancel();
                     }
                 }
-                else if(packetLook.x != 0.0F || packetLook.y != 0.0F) {
+                else if((packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both) && (packetLook.x != 0.0F || packetLook.y != 0.0F)) {
                     if(++this.illegalActionsLookAttempts > 8) {
                         ((Golfer) this.player).report(ILLEGAL_ACTIONS, golfConfig.sus.inventoryWalk);
                         this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
