@@ -39,7 +39,7 @@ public class ServerPlayNetworkHandlerMixin_SpeedCheck {
             cancellable = true
     )
     private void checkAirMovement(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.movement.noSpeed && !player.isFallFlying() && !player.isCreative() && !player.isSpectator() && data.getLastMovement() != null) {
+        if(golfConfig.movement.noSpeed && !player.isFallFlying() && !player.isCreative() && !player.isSpectator() && data.getLastMovement() != null && !((Golfer) player).isNearFluid()) {
             Vec3d packetMovement = data.getPacketMovement();
 
             double predictedDist = data.getLastDist() * 0.91F;

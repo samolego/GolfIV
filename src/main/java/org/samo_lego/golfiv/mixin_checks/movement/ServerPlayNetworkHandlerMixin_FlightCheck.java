@@ -32,8 +32,8 @@ public class ServerPlayNetworkHandlerMixin_FlightCheck {
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/server/network/ServerPlayerEntity;hasVehicle()Z"
-            )
-    )
+            ),
+            cancellable = true)
     private void checkFlight(PlayerMoveC2SPacket packet, CallbackInfo ci) {
         if(
                 golfConfig.movement.checkFlight &&
@@ -68,9 +68,11 @@ public class ServerPlayNetworkHandlerMixin_FlightCheck {
             predictedDeltaY *= 0.9800000190734863D;
 
             if(Math.abs(predictedDeltaY) >= 0.005D && Math.abs(predictedDeltaY - data.getPacketMovement().getY()) > 0.003D) {
-                if(++this.flyCounter > 4) {
+                if(++this.flyCounter > 2) {
                     this.flyCounter = 0;
                     ((Golfer) this.player).report(FLY_HACK, golfConfig.sus.flyHack);
+                    this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
+                    ci.cancel();
                 }
             }
             else {

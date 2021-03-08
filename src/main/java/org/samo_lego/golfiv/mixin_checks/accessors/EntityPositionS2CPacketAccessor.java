@@ -8,4 +8,16 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface EntityPositionS2CPacketAccessor {
     @Accessor("id")
     int getId();
+
+    @Accessor("x")
+    double getX();
+
+    @Accessor("z")
+    double getZ();
+
+    @Accessor("x")
+    void setX(double X);
+
+    @Accessor("z")
+    void setZ(double z);
 }

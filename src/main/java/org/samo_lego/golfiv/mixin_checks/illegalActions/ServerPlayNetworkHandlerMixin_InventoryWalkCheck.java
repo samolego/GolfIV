@@ -6,8 +6,10 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 import org.samo_lego.golfiv.casts.Golfer;
+import org.samo_lego.golfiv.casts.NetworkHandlerData;
 import org.samo_lego.golfiv.mixin_checks.accessors.PlayerMoveC2SPacketAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,6 +33,9 @@ public class ServerPlayNetworkHandlerMixin_InventoryWalkCheck {
     private short illegalActionsMoveAttempts;
     @Unique
     private short illegalActionsLookAttempts;
+
+    @Unique
+    private final NetworkHandlerData data = (NetworkHandlerData) this;
 
 
     /**
@@ -62,17 +67,18 @@ public class ServerPlayNetworkHandlerMixin_InventoryWalkCheck {
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayerEntity;hasVehicle()Z"
+                    target = "Lnet/minecraft/util/math/Vec3d;lengthSquared()D"
             ),
             cancellable = true
     )
     private void checkInventoryWalk(PlayerMoveC2SPacket packet, CallbackInfo ci) {
         if(golfConfig.main.checkIllegalActions) {
-            Vec3d packetMovement = new Vec3d(
-                    packet.getX(this.player.getX()) - this.player.getX(),
-                    packet.getY(this.player.getY()) - this.player.getY(),
-                    packet.getZ(this.player.getZ()) - this.player.getZ()
+            Vec3d packetMovement = data.getPacketMovement();
+            Vec2f packetLook = new Vec2f(
+              packet.getYaw(player.yaw) - player.yaw,
+              packet.getPitch(player.pitch) - player.pitch
             );
+
             if(((Golfer) this.player).hasOpenGui() && !player.isFallFlying() && !player.isInsideWaterOrBubbleColumn()) {
                 if(packet instanceof PlayerMoveC2SPacket.PositionOnly && packetMovement.getY() == 0 && packetMovement.lengthSquared() != 0) {
                     if(++this.illegalActionsMoveAttempts > 40) {
@@ -81,7 +87,7 @@ public class ServerPlayNetworkHandlerMixin_InventoryWalkCheck {
                         ci.cancel();
                     }
                 }
-                else if(packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both && ((PlayerMoveC2SPacketAccessor) packet).changesLook()) {
+                else if((packet instanceof PlayerMoveC2SPacket.LookOnly || packet instanceof PlayerMoveC2SPacket.Both) && (packetLook.x != 0.0F || packetLook.y != 0.0F)) {
                     if(++this.illegalActionsLookAttempts > 8) {
                         ((Golfer) this.player).report(ILLEGAL_ACTIONS, golfConfig.sus.inventoryWalk);
                         this.player.requestTeleport(player.getX(), player.getY(), player.getZ());
