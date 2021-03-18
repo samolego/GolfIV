@@ -20,5 +20,13 @@ public interface EntityInteractPacketCallback {
             return ActionResult.PASS;
      });
 
+    /**
+     * Checks player's interaction with entity.
+     *
+     * @param player player trying to interact with entity.
+     * @param victim entity player is trying to interact with.
+     * @param maxDistanceSquared maximal allowed distance for interaction, squared.
+     * @return {@link ActionResult#FAIL} if player shouldn't be able to interact with the victim, otherwise {@link ActionResult#PASS}
+     */
     ActionResult onEntityInteractPacket(PlayerEntity player, Entity victim, double maxDistanceSquared);
 }

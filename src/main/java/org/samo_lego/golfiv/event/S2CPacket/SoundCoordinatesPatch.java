@@ -13,12 +13,12 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 public class SoundCoordinatesPatch implements S2CPacketCallback {
     public SoundCoordinatesPatch() {
     }
-
     /**
      * Removes certain sound coordinates.
      *
-     * @param packet
-     * @param player
+     * @param packet packet being sent
+     * @param player player getting the packet
+     * @param server Minecraft Server
      */
 
     @Override

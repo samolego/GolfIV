@@ -18,8 +18,9 @@ public class EntityHealthDataPatch implements S2CPacketCallback {
     /**
      * Removes entity health data from packet.
      *
-     * @param packet
-     * @param player
+     * @param packet packet being sent
+     * @param player player getting the packet
+     * @param server Minecraft Server
      */
     @Override
     public void preSendPacket(Packet<?> packet, ServerPlayerEntity player, MinecraftServer server) {

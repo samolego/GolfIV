@@ -15,5 +15,12 @@ public interface S2CPacketCallback {
             }
      });
 
+    /**
+     * Provides option to modify outgoing packets.
+     *
+     * @param packet packet being sent
+     * @param player player getting the packet
+     * @param server Minecraft Server
+     */
     void preSendPacket(Packet<?> packet, ServerPlayerEntity player, MinecraftServer server);
 }

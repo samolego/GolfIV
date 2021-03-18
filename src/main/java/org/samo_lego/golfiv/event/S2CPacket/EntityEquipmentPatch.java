@@ -23,8 +23,9 @@ public class EntityEquipmentPatch implements S2CPacketCallback {
      * Loops through entity equipment packet data
      * and removes attributes that cannot be seen.
      *
-     * @param packet packet to be sent.
-     * @param player player that will receive the packet
+     * @param packet packet being sent
+     * @param player player getting the packet
+     * @param server Minecraft Server
      */
     @Override
     public void preSendPacket(Packet<?> packet, ServerPlayerEntity player, MinecraftServer server) {

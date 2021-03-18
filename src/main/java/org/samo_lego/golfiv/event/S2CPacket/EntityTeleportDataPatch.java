@@ -16,8 +16,9 @@ public class EntityTeleportDataPatch implements S2CPacketCallback {
      * If player teleports out of render distance, we modify the coordinates of the
      * packet, in order to hide player's original TP coordinates.
      *
-     * @param packet
-     * @param player
+     * @param packet packet being sent
+     * @param player player getting the packet
+     * @param server Minecraft Server
      */
 
     @Override

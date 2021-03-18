@@ -18,7 +18,7 @@ public abstract class ServerPlayNetworkHandlerMixin_CreativeItemsCheck {
     /**
      * Clears the CompoundTags from creative items while still allowing pick block function
      *
-     * @param itemStack item stack to be checked
+     * @param itemStack ItemStack to be checked
      * @return "sanitized" ItemStack
      */
     @ModifyVariable(

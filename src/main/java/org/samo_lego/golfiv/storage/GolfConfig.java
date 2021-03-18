@@ -20,15 +20,11 @@ public class GolfConfig {
          * whether they have disallowed enchantments. This
          * can be disabled if you believe that players
          * didn't spawn in illegals.
-         *
-         * Status: working
          */
         public boolean checkForStrangeItems = true;
 
         /**
          * Clears NBT items, but still allows block-picking.
-         *
-         * Status: working
          */
         public boolean preventCreativeStrangeItems = true;
 
@@ -36,39 +32,15 @@ public class GolfConfig {
          * Checks whether is doing actions
          * that cannot be done while having the GUI open.
          * (e. g. hitting, moving, etc.)
-         *
-         * Status: working, waiting for falses to be reported.
          */
         public boolean checkIllegalActions = true;
-
-        /**
-         * Disables kicks and logs them to console.
-         */
-        public boolean developerMode = false;
-
-        /**
-         * After how many kicks player should be banned.
-         *
-         * Set to -1 to disable.
-         */
-        public int maxKicks = 10;
-
-        /**
-         * How many cheats should player have in the log to in order to be banned.
-         */
-        public int minBanCheats = 3;
-
-        /**
-         * How many seconds should pass between clearing each element
-         * from the cheat list
-         */
-        public int cheatListClearSeconds = 100;
     }
 
     /**
      * Outgoing packet settings.
      */
     public static class Packet {
+        public String _comment = "// Patches some outgoing server packets";
         /**
          * Whether to remove the teleport data
          * from packets when entities move out of
@@ -97,12 +69,6 @@ public class GolfConfig {
 
         /**
          * Whether to check if player is using
-         * SkinBlinker hack.
-         */
-        public boolean checkSkinBlink = true;
-
-        /**
-         * Whether to check if player is using
          * Portals hack.
          */
         public boolean checkPortalHack = true;
@@ -118,7 +84,7 @@ public class GolfConfig {
      * Movement checks settings.
      */
     public static class Movement {
-        private final String _comment = "Movement checks settings";
+        private final String _comment = "// Movement checks settings";
         /**
          * Client can tell server its onGround status and
          * server blindly accepts it. This can allow
@@ -129,11 +95,16 @@ public class GolfConfig {
         public boolean yesFall = true;
     }
 
+    public static class Duplication {
+        public String _comment = "// Duplication fixes";
+        public boolean patchGravityBlock = true;
+    }
+
     /**
      * Combat checks settings.
      */
     public static class Combat {
-        private final String _comment = "Combat checks settings.";
+        private final String _comment = "// Combat checks settings.";
         /**
          * Checks if player is hitting entity through wall.
          */
@@ -154,6 +125,7 @@ public class GolfConfig {
     public final GolfConfig.Combat combat = new Combat();
     public final GolfConfig.Packet packet = new Packet();
     public final GolfConfig.Movement movement = new Movement();
+    public final GolfConfig.Duplication duplication = new Duplication();
 
     /**
      * Loads GolfIV config from file.

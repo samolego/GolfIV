@@ -12,6 +12,14 @@ public class AngleCheck implements EntityInteractPacketCallback {
     public AngleCheck() {
     }
 
+    /**
+     * Checks the angle at which player is hitting the entity.
+     *
+     * @param player player trying to interact with entity.
+     * @param victim entity player is trying to interact with.
+     * @param maxDistanceSquared maximal allowed distance for interaction, squared.
+     * @return {@link ActionResult#FAIL} if player shouldn't be able to hit the victim, otherwise {@link ActionResult#PASS}
+     */
     @Override
     public ActionResult onEntityInteractPacket(PlayerEntity player, Entity victim, double maxDistanceSquared) {
         if(golfConfig.combat.checkHitAngle) {
