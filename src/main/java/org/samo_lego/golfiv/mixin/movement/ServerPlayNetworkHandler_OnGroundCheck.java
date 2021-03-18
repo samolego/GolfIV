@@ -45,7 +45,7 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
         if(bottomEntity == null) {
             bottomEntity = player;
         }
-        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packet.getY(player.getY()) - 0.25005D, 0);
+        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packet.getY(player.getY()) - player.getY() - 0.25005D, 0);
 
         Stream<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
         long blockCollisions = collidingBlocks.count();
