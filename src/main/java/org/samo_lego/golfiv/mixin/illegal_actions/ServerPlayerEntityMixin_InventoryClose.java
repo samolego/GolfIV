@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegalActions;
+package org.samo_lego.golfiv.mixin.illegal_actions;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -9,6 +9,7 @@ import org.samo_lego.golfiv.casts.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.OptionalInt;
@@ -21,7 +22,7 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 @Mixin(ServerPlayerEntity.class)
 public class ServerPlayerEntityMixin_InventoryClose {
 
-    private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+    private final Golfer golfer = (Golfer) this;
 
     /**
      * Sets the GUI open status to true
@@ -38,7 +39,7 @@ public class ServerPlayerEntityMixin_InventoryClose {
             )
     )
     private void setOpenGui(@Nullable NamedScreenHandlerFactory factory, CallbackInfoReturnable<OptionalInt> cir) {
-        ((Golfer) player).setOpenGui(golfConfig.main.checkIllegalActions);
+        golfer.setOpenGui(golfConfig.main.checkIllegalActions);
     }
 
     /**
@@ -50,6 +51,11 @@ public class ServerPlayerEntityMixin_InventoryClose {
             at = @At("HEAD")
     )
     private void closeGui(ServerWorld destination, CallbackInfoReturnable<Entity> cir) {
-        ((Golfer) player).setOpenGui(false);
+        golfer.setOpenGui(false);
+    }
+
+    @Inject(method = "closeScreenHandler()V", at = @At("TAIL"))
+    private void closeScreenHandler(CallbackInfo ci) {
+        golfer.setOpenGui(false);
     }
 }

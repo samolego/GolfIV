@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegals;
+package org.samo_lego.golfiv.mixin.illegal_items;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket;

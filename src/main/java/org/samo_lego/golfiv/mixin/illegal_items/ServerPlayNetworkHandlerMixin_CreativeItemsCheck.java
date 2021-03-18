@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegals;
+package org.samo_lego.golfiv.mixin.illegal_items;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
@@ -12,14 +12,14 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
 @Mixin(ServerPlayNetworkHandler.class)
-public abstract class ServerPlayNetworkHandlerMixin_creativeItemsCheck {
+public abstract class ServerPlayNetworkHandlerMixin_CreativeItemsCheck {
     @Shadow public ServerPlayerEntity player;
 
     /**
      * Clears the CompoundTags from creative items while still allowing pick block function
      *
-     * @param itemStack
-     * @return
+     * @param itemStack item stack to be checked
+     * @return "sanitized" ItemStack
      */
     @ModifyVariable(
             method = "onCreativeInventoryAction(Lnet/minecraft/network/packet/c2s/play/CreativeInventoryActionC2SPacket;)V",

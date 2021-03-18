@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegalActions;
+package org.samo_lego.golfiv.mixin.illegal_actions;
 
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;

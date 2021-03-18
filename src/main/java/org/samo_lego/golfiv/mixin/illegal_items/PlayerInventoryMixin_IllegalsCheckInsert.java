@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegals;
+package org.samo_lego.golfiv.mixin.illegal_items;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;

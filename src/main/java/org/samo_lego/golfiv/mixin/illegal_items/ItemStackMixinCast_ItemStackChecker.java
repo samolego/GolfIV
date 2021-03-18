@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegals;
+package org.samo_lego.golfiv.mixin.illegal_items;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -15,7 +15,7 @@ import java.util.Set;
  * Additional methods for checking ItemStack's legality.
  */
 @Mixin(ItemStack.class)
-public abstract class ItemStackMixinCast_itemStackChecker implements ItemStackChecker {
+public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackChecker {
 
     @Shadow private int count;
 

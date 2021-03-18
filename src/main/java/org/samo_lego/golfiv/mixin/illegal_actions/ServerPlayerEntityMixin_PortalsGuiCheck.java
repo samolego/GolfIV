@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin.illegalActions;
+package org.samo_lego.golfiv.mixin.illegal_actions;
 
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.samo_lego.golfiv.casts.Golfer;
