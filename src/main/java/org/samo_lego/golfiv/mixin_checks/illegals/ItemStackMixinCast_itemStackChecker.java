@@ -30,12 +30,9 @@ public abstract class ItemStackMixinCast_itemStackChecker implements ItemStackCh
     /**
      * Sets the appropriate ItemStack size,
      * removes disallowed enchantments.
-     *
-     * @return false if item was already legal, otherwise true
      */
     @Override
-    public boolean makeLegal() {
-        boolean illegal = false;
+    public void makeLegal() {
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.fromTag(this.getEnchantments());
 
         for(Map.Entry<Enchantment, Integer> ench : enchantments.entrySet()) {
@@ -47,14 +44,11 @@ public abstract class ItemStackMixinCast_itemStackChecker implements ItemStackCh
 
             if(!enchantment.isAcceptableItem(this.itemStack) || !EnchantmentHelper.isCompatible(otherEnchants, enchantment) || level > enchantment.getMaxLevel()) {
                 this.removeSubTag("Enchantments");
-                illegal = true;
                 break;
             }
         }
         if(this.count > this.getMaxCount()) {
-            illegal = true;
             this.count = 1;
         }
-        return illegal;
     }
 }

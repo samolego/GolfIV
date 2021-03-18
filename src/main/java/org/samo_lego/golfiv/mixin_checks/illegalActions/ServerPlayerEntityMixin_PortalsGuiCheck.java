@@ -3,14 +3,11 @@ package org.samo_lego.golfiv.mixin_checks.illegalActions;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.samo_lego.golfiv.casts.Golfer;
 import org.samo_lego.golfiv.mixin_checks.accessors.EntityAccessor;
-import org.samo_lego.golfiv.utils.CheatType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin_PortalsGuiCheck {
@@ -32,7 +29,6 @@ public abstract class ServerPlayerEntityMixin_PortalsGuiCheck {
             this.golfer.setGuiOpenInPortalTicks(0);
         }
         if (this.golfer.getGuiOpenInPortalTicks() > 9) {
-            this.golfer.report(CheatType.PORTAL_HACK, golfConfig.sus.portalHack);
             this.closeHandledScreen();
             this.golfer.setOpenGui(false);
         }

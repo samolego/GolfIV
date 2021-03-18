@@ -10,7 +10,7 @@ import java.util.List;
 @Mixin(EntityTrackerUpdateS2CPacket.class)
 public interface EntityTrackerUpdateS2CPacketAccessor {
     @Accessor("id")
-    int getID();
+    int getId();
 
     @Accessor("trackedValues")
     List<DataTracker.Entry<?>> getTrackedValues();

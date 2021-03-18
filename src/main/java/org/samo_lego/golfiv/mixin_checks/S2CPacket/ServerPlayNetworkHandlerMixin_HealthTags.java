@@ -34,7 +34,7 @@ public class ServerPlayNetworkHandlerMixin_HealthTags {
         if(golfConfig.packet.removeHealthTags && packet instanceof EntityTrackerUpdateS2CPacket) {
 
             EntityTrackerUpdateS2CPacketAccessor p = ((EntityTrackerUpdateS2CPacketAccessor) packet);
-            Entity entity = this.player.getServerWorld().getEntityById(p.getID());
+            Entity entity = this.player.getServerWorld().getEntityById(p.getId());
 
             if(entity instanceof LivingEntity && entity.isAlive() && !(entity instanceof Saddleable)) {
                 p.getTrackedValues().removeIf(trackedValue -> trackedValue.getData().getId() == 8);

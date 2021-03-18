@@ -3,7 +3,6 @@ package org.samo_lego.golfiv.mixin_checks.illegals;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import org.samo_lego.golfiv.casts.Golfer;
 import org.samo_lego.golfiv.casts.ItemStackChecker;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
-import static org.samo_lego.golfiv.utils.CheatType.NBT_ITEMS;
 
 /**
  * Checks if the inserted stack is illegal.
@@ -34,10 +32,7 @@ public abstract class PlayerInventoryMixin_IllegalsCheckInsert {
     private ItemStack checkInsertedStack(ItemStack stack) {
         if(golfConfig.main.checkForStrangeItems) {
             //noinspection ConstantConditions
-            boolean illegal = ((ItemStackChecker) (Object) stack).makeLegal();
-            if(illegal) {
-                ((Golfer) player).report(NBT_ITEMS, golfConfig.sus.nbtItems);
-            }
+            ((ItemStackChecker) (Object) stack).makeLegal();
         }
         return stack;
     }

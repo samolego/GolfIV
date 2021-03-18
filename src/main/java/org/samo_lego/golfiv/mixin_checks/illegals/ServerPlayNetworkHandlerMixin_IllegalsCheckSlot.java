@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
-import static org.samo_lego.golfiv.utils.CheatType.NBT_ITEMS;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin_IllegalsCheckSlot {
@@ -43,10 +42,7 @@ public class ServerPlayNetworkHandlerMixin_IllegalsCheckSlot {
             if(packetSlot >= 0) {
                 ItemStack itemStack = this.player.currentScreenHandler.getSlot(packetSlot).getStack();
                 //noinspection ConstantConditions
-                boolean illegal = ((ItemStackChecker) (Object) itemStack).makeLegal();
-                if(illegal) {
-                    ((Golfer) this.player).report(NBT_ITEMS, golfConfig.sus.nbtItems);
-                }
+                ((ItemStackChecker) (Object) itemStack).makeLegal();
             }
         }
     }

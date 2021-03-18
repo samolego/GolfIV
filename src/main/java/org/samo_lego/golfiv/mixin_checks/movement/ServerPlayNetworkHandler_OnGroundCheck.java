@@ -19,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.stream.Stream;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
-import static org.samo_lego.golfiv.utils.CheatType.*;
 
 /**
  * This has a different priority since the data it provides
@@ -76,11 +75,6 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             if(!data.wasLLastOnGround() && !data.wasLastOnGround() && !((Golfer) player).isNearGround() && player.getVelocity().y <= 0.0D && packet.isOnGround() && golfConfig.movement.yesFall) {
                 // Player hasn't been on ground for 3 move packets but client says it is
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
-
-                if(((Golfer) player).isNearFluid())
-                    ((Golfer) this.player).report(JESUS, golfConfig.sus.Jesus);
-                else
-                    ((Golfer) this.player).report(NO_FALL, golfConfig.sus.noFall);
             }
         }
     }

@@ -8,7 +8,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Box;
-import org.samo_lego.golfiv.casts.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
-import static org.samo_lego.golfiv.utils.CheatType.*;
 
 /**
  * Checks for hitting through walls.
@@ -57,7 +55,6 @@ public class ServerPlayNetworkHandlerMixin_HitCheck {
         double victimDistance = Math.sqrt(victimDistanceSquared);
 
         if(golfConfig.combat.checkHitDistance && !player.isCreative() && victimDistanceSquared > 22) {
-            ((Golfer) player).report(REACH, golfConfig.sus.reach);
             ci.cancel();
             return;
         }
@@ -66,7 +63,6 @@ public class ServerPlayNetworkHandlerMixin_HitCheck {
             BlockHitResult blockHit = (BlockHitResult) player.raycast(Math.sqrt(distanceSquared), 0, false);
 
             if(Math.sqrt(blockHit.squaredDistanceTo(player)) + 0.5D < victimDistance) {
-                ((Golfer) player).report(HIT_THROUGH_WALLS, golfConfig.sus.hitThroughWalls);
                 ci.cancel();
                 return;
             }
@@ -80,7 +76,6 @@ public class ServerPlayNetworkHandlerMixin_HitCheck {
             // Checking if victim is behind player
             if(xOffset * victim.getX() + bBox.getXLength() / 2 - xOffset * player.getX() < 0 || zOffset * victim.getZ() + bBox.getZLength() / 2 - zOffset * player.getZ() < 0) {
                 // "Dumb" check
-                ((Golfer) player).report(KILLAURA, 60);
                 ci.cancel();
                 return;
             }
@@ -94,7 +89,6 @@ public class ServerPlayNetworkHandlerMixin_HitCheck {
 
             if(Math.abs(victimDistance * Math.sin(phi)) > allowedAttackSpace / 2 + 0.2D) {
                 // Fine check
-                ((Golfer) player).report(KILLAURA, 20);
                 ci.cancel();
             }
         }
