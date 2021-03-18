@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.S2CPacket;
+package org.samo_lego.golfiv.mixin.S2CPacket;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -7,7 +7,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.samo_lego.golfiv.mixin_checks.accessors.EntityTrackerUpdateS2CPacketAccessor;
+import org.samo_lego.golfiv.mixin.accessors.EntityTrackerUpdateS2CPacketAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

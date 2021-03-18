@@ -1,6 +1,5 @@
-package org.samo_lego.golfiv.mixin_checks.accessors;
+package org.samo_lego.golfiv.mixin.accessors;
 
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;

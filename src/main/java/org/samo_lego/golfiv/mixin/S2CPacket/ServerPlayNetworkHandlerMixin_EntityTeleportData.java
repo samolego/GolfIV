@@ -1,11 +1,11 @@
-package org.samo_lego.golfiv.mixin_checks.S2CPacket;
+package org.samo_lego.golfiv.mixin.S2CPacket;
 
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.samo_lego.golfiv.mixin_checks.accessors.EntityPositionS2CPacketAccessor;
+import org.samo_lego.golfiv.mixin.accessors.EntityPositionS2CPacketAccessor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

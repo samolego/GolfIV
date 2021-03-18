@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.illegalActions;
+package org.samo_lego.golfiv.mixin.illegalActions;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.screen.NamedScreenHandlerFactory;
@@ -9,7 +9,6 @@ import org.samo_lego.golfiv.casts.Golfer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.OptionalInt;

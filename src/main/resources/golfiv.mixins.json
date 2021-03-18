@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "org.samo_lego.golfiv.mixin_checks",
+  "package": "org.samo_lego.golfiv.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "ServerPlayerEntityMixinCast_Golfer",

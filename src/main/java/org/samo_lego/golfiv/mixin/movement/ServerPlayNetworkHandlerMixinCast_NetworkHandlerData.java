@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.movement;
+package org.samo_lego.golfiv.mixin.movement;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;

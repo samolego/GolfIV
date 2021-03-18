@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.accessors;
+package org.samo_lego.golfiv.mixin.accessors;
 
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;

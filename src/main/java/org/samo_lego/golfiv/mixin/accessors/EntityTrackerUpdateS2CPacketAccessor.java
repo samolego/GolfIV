@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.accessors;
+package org.samo_lego.golfiv.mixin.accessors;
 
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;

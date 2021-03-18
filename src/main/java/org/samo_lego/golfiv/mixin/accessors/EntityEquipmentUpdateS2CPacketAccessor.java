@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.accessors;
+package org.samo_lego.golfiv.mixin.accessors;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.entity.EquipmentSlot;

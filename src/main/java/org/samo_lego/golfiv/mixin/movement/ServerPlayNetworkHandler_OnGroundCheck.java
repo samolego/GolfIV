@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.movement;
+package org.samo_lego.golfiv.mixin.movement;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -8,7 +8,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.shape.VoxelShape;
 import org.samo_lego.golfiv.casts.Golfer;
 import org.samo_lego.golfiv.casts.NetworkHandlerData;
-import org.samo_lego.golfiv.mixin_checks.accessors.PlayerMoveC2SPacketAccessor;
+import org.samo_lego.golfiv.mixin.accessors.PlayerMoveC2SPacketAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;

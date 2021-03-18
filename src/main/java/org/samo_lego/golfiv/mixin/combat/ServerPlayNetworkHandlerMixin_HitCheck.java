@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.combat;
+package org.samo_lego.golfiv.mixin.combat;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerInteractEntityC2SPacket;

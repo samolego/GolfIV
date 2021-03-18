@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks;
+package org.samo_lego.golfiv.mixin;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;

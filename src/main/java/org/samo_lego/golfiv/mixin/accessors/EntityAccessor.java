@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin_checks.accessors;
+package org.samo_lego.golfiv.mixin.accessors;
 
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
