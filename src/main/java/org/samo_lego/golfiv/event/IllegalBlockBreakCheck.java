@@ -8,6 +8,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.samo_lego.golfiv.casts.Golfer;
 
+import static org.samo_lego.golfiv.GolfIV.golfConfig;
+
 /**
  * Handles player trying to break the block while having inventory open.
  */
@@ -17,6 +19,6 @@ public class IllegalBlockBreakCheck implements PlayerBlockBreakEvents.Before {
 
     @Override
     public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity) {
-        return !((Golfer) player).hasOpenGui();
+        return !golfConfig.main.checkIllegalActions || !((Golfer) player).hasOpenGui();
     }
 }
