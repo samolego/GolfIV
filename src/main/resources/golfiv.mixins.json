@@ -12,7 +12,6 @@
     "accessors.EntityTrackerUpdateS2CPacketAccessor",
     "accessors.PlayerMoveC2SPacketAccessor",
     "accessors.PlaySoundS2CPacketAccessor",
-
     "duplication.FallingBlockEntityMixin_GravityBlockDupe",
     "duplication.StringTagMixin_StringWriteLimit",
     "illegal_actions.ServerPlayerEntityMixin_InventoryClose",
