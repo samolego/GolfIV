@@ -6,7 +6,6 @@
   "mixins": [
     "ServerPlayerEntityMixinCast_Golfer",
     "ServerPlayNetworkHandlerMixin_PacketEvents",
-
     "accessors.EntityAccessor",
     "accessors.EntityEquipmentUpdateS2CPacketAccessor",
     "accessors.EntityPositionS2CPacketAccessor",
@@ -15,7 +14,7 @@
     "accessors.PlaySoundS2CPacketAccessor",
 
     "duplication.FallingBlockEntityMixin_GravityBlockDupe",
-
+    "duplication.StringTagMixin_StringWriteLimit",
     "illegal_actions.ServerPlayerEntityMixin_InventoryClose",
     "illegal_actions.ServerPlayerEntityMixin_PortalsGuiCheck",
     "illegal_actions.ServerPlayNetworkHandlerMixin_PortalsMessageCheck",
@@ -23,7 +22,6 @@
     "illegal_items.PlayerInventoryMixin_IllegalsCheckInsert",
     "illegal_items.ServerPlayNetworkHandlerMixin_CreativeItemsCheck",
     "illegal_items.ServerPlayNetworkHandlerMixin_IllegalsCheckSlot",
-
     "movement.ServerPlayNetworkHandler_OnGroundCheck"
   ],
   "injectors": {

@@ -97,7 +97,10 @@ public class GolfConfig {
 
     public static class Duplication {
         public String _comment = "// Duplication fixes";
-        public boolean patchGravityBlock = true;
+        public String _comment_patchSaveLimit1 = "// Whether to prevent throwing an error when saving large string data";
+        public String _comment_patchSaveLimit2 = "// This is done by ignoring data after DataOutputStream limit";
+        public String _comment_patchSaveLimit3 = "// Written books can reach that point with hacked clients";
+        public boolean patchSaveLimit = true;
     }
 
     /**
