@@ -27,9 +27,6 @@ public class ServerPlayerEntityMixin_InventoryClose {
     /**
      * Sets the GUI open status to true
      * if enabled in config.
-     *
-     * @param factory
-     * @param cir
      */
     @Inject(
             method = "openHandledScreen(Lnet/minecraft/screen/NamedScreenHandlerFactory;)Ljava/util/OptionalInt;",

@@ -15,15 +15,15 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 public class FallingBlockEntityMixin_GravityBlockDupe {
 
     /**
-     * Before the block is placed, we check if it has been removed.
-     * If so, we don't place it.
-     * @param ci callback info (mixin)
+     * If block has been removed previous tick (or during the tick),
+     * cancel the method.
+     * It will be removed anyways as seen in target mixin value.
      */
     @Inject(
             method = "tick()V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/World;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z"
+                    target = "Lnet/minecraft/entity/FallingBlockEntity;remove()V"
             ),
             cancellable = true
     )

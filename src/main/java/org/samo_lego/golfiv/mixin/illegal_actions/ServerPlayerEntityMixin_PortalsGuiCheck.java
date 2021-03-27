@@ -30,7 +30,6 @@ public abstract class ServerPlayerEntityMixin_PortalsGuiCheck {
         }
         if (this.golfer.getGuiOpenInPortalTicks() > 9) {
             this.closeHandledScreen();
-            this.golfer.setOpenGui(false);
         }
     }
 }
