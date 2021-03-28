@@ -23,7 +23,7 @@ public class WallHitCheck implements EntityInteractPacketCallback {
      */
     @Override
     public ActionResult onEntityInteractPacket(PlayerEntity player, Entity victim, double maxDistanceSquared) {
-        if(golfConfig.combat.checkWallHit) {
+        if(golfConfig.combat.preventWallHit) {
             EntityHitResult entityHit = new EntityHitResult(victim);
             double victimDistanceSquared = entityHit.squaredDistanceTo(player);
             double victimDistance = Math.sqrt(victimDistanceSquared);

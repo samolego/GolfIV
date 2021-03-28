@@ -32,7 +32,7 @@ public class ServerPlayNetworkHandlerMixin_MessageCheck {
             cancellable = true
     )
     private void stopMessageSend(ChatMessageC2SPacket packet, CallbackInfo ci) {
-        if (golfConfig.packet.checkPortalHack && (((EntityAccessor) player).inNetherPortal()) || ((Golfer) player).hasOpenGui()) {
+        if ((golfConfig.main.checkInventoryActions && ((Golfer) player).hasOpenGui()) || (golfConfig.packet.checkPortalHack &&((EntityAccessor) player).inNetherPortal())) {
             ci.cancel();
         }
     }

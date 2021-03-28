@@ -18,7 +18,7 @@ public class GolfConfig {
      */
     public static class Main {
 
-        public String _comment_checkIllegalActions = "// Check if player ";
+        public String _comment_checkIllegalActions = "// Prevents hitting/chatting with open GUI";
         /**
          * Checks whether is doing actions
          * that cannot be done while having the GUI open.
@@ -28,14 +28,14 @@ public class GolfConfig {
     }
 
     public static class IllegalItems {
-        public String _comment_checkForSurvivalStrangeItems = "// Whether to enable 'legalising' survival items";
+        public String _comment_legaliseSurvivalItems = "// Whether to enable 'legalising' survival items";
         /**
          * Checks item picked that come in players inventory,
          * whether they have disallowed enchantments. This
          * can be disabled if you believe that players
          * didn't spawn in illegals.
          */
-        public boolean checkForSurvivalStrangeItems = true;
+        public boolean legaliseSurvivalItems = true;
 
         public String _comment_bannedSurvivalItems = "// Which items should be cleared when clicked in survival inventory";
         public ArrayList<String> bannedSurvivalItems = new ArrayList<>(Arrays.asList(
@@ -50,8 +50,8 @@ public class GolfConfig {
         /**
          * Clears NBT items, but still allows block-picking.
          */
-        public String _comment_preventCreativeStrangeItems = "// Disallow all NBT tags in creative except for pick-block";
-        public boolean preventCreativeStrangeItems = true;
+        public String _comment_removeCreativeNBTTags = "// Disallow all NBT tags in creative except for pick-block";
+        public boolean removeCreativeNBTTags = true;
     }
 
     /**
@@ -131,7 +131,7 @@ public class GolfConfig {
         /**
          * Checks if player is hitting entity through wall.
          */
-        public boolean checkWallHit = true;
+        public boolean preventWallHit = true;
 
         /**
          * Checks if player is using reach hacks.

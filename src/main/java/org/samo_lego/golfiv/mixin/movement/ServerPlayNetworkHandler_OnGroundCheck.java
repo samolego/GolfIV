@@ -18,11 +18,7 @@ import java.util.stream.Stream;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
-/**
- * This has a different priority since the data it provides
- * is used in other checks as well.
- */
-@Mixin(value = ServerPlayNetworkHandler.class, priority = 800)
+@Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandler_OnGroundCheck {
 
     @Shadow public ServerPlayerEntity player;

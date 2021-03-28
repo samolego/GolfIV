@@ -29,7 +29,7 @@ public abstract class ServerPlayNetworkHandlerMixin_CreativeItemsCheck {
             )
     )
     private ItemStack checkCreativeItem(ItemStack itemStack) {
-        if(golfConfig.items.preventCreativeStrangeItems) {
+        if(golfConfig.items.removeCreativeNBTTags) {
             CompoundTag compoundTag = itemStack.getSubTag("BlockEntityTag");
             int amount = itemStack.getCount();
             if(amount > itemStack.getMaxCount()) {
