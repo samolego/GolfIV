@@ -23,6 +23,6 @@ public class InventoryHitCheck implements EntityInteractPacketCallback {
      */
     @Override
     public ActionResult onEntityInteractPacket(PlayerEntity player, Entity victim, double maxDistanceSquared) {
-        return golfConfig.main.checkIllegalActions && ((Golfer) player).hasOpenGui() ? ActionResult.FAIL : ActionResult.PASS;
+        return golfConfig.main.checkInventoryActions && ((Golfer) player).hasOpenGui() ? ActionResult.FAIL : ActionResult.PASS;
     }
 }

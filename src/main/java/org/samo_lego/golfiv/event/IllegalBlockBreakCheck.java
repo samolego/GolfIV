@@ -17,8 +17,17 @@ public class IllegalBlockBreakCheck implements PlayerBlockBreakEvents.Before {
     public IllegalBlockBreakCheck() {
     }
 
+    /**
+     * Disables breaking blocks if player has GUI open.
+     * @param world world event is happening in
+     * @param player player breaking the block
+     * @param blockPos block position of the block being broken
+     * @param blockState blockstate of the block being broken
+     * @param blockEntity block entity if block contains it
+     * @return true if player can break the block, otherwise false
+     */
     @Override
     public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity) {
-        return !golfConfig.main.checkIllegalActions || !((Golfer) player).hasOpenGui();
+        return !golfConfig.main.checkInventoryActions || !((Golfer) player).hasOpenGui();
     }
 }

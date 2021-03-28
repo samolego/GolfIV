@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.samo_lego.golfiv.utils.BallLogger.logError;
 
@@ -15,25 +17,41 @@ public class GolfConfig {
      * Main part of the config.
      */
     public static class Main {
+
+        public String _comment_checkIllegalActions = "// Check if player ";
+        /**
+         * Checks whether is doing actions
+         * that cannot be done while having the GUI open.
+         * (e. g. hitting, typing, etc.)
+         */
+        public boolean checkInventoryActions = true;
+    }
+
+    public static class IllegalItems {
+        public String _comment_checkForSurvivalStrangeItems = "// Whether to enable 'legalising' survival items";
         /**
          * Checks item picked that come in players inventory,
          * whether they have disallowed enchantments. This
          * can be disabled if you believe that players
          * didn't spawn in illegals.
          */
-        public boolean checkForStrangeItems = true;
+        public boolean checkForSurvivalStrangeItems = true;
+
+        public String _comment_bannedSurvivalItems = "// Which items should be cleared when clicked in survival inventory";
+        public ArrayList<String> bannedSurvivalItems = new ArrayList<>(Arrays.asList(
+                "minecraft:barrier",
+                "minecraft:spawner",
+                "minecraft:structure_void",
+                "minecraft:bedrock",
+                "minecraft:command_block",
+                "minecraft:spawn_egg"
+        ));
 
         /**
          * Clears NBT items, but still allows block-picking.
          */
+        public String _comment_preventCreativeStrangeItems = "// Disallow all NBT tags in creative except for pick-block";
         public boolean preventCreativeStrangeItems = true;
-
-        /**
-         * Checks whether is doing actions
-         * that cannot be done while having the GUI open.
-         * (e. g. hitting, moving, etc.)
-         */
-        public boolean checkIllegalActions = true;
     }
 
     /**
@@ -127,6 +145,7 @@ public class GolfConfig {
     }
 
     public final GolfConfig.Main main = new Main();
+    public final GolfConfig.IllegalItems items = new IllegalItems();
     public final GolfConfig.Combat combat = new Combat();
     public final GolfConfig.Packet packet = new Packet();
     public final GolfConfig.Movement movement = new Movement();

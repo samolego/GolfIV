@@ -2,14 +2,23 @@ package org.samo_lego.golfiv.mixin.illegal_items;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.samo_lego.golfiv.casts.ItemStackChecker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
 /**
  * Additional methods for checking ItemStack's legality.
@@ -25,6 +34,8 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
 
     @Shadow public abstract int getMaxCount();
 
+    @Shadow public abstract void setCount(int count);
+
     private final ItemStack itemStack = (ItemStack) (Object) this;
 
     /**
@@ -35,6 +46,7 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
     public void makeLegal() {
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.fromTag(this.getEnchantments());
 
+        // Checks item enchantments
         for(Map.Entry<Enchantment, Integer> ench : enchantments.entrySet()) {
             Enchantment enchantment = ench.getKey();
             int level = ench.getValue();
@@ -47,6 +59,23 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
                 break;
             }
         }
+        // Checks potion
+        if(this.itemStack.getItem() == Items.POTION || this.itemStack.getItem() == Items.SPLASH_POTION || this.itemStack.getItem() == Items.LINGERING_POTION) {
+            List<StatusEffectInstance> effects = PotionUtil.getPotionEffects(this.itemStack);
+            for(StatusEffectInstance effect : effects) {
+                if(effect.getAmplifier() > 1) {
+                    this.removeSubTag("CustomPotionEffects");
+                    this.removeSubTag("Potion");
+                    break;
+                }
+            }
+        }
+
+        Identifier id = Registry.ITEM.getId(this.itemStack.getItem());
+        if(golfConfig.items.bannedSurvivalItems.contains(id.toString()) || (golfConfig.items.bannedSurvivalItems.contains("minecraft:spawn_egg") && this.itemStack.getItem() instanceof SpawnEggItem)) {
+            this.setCount(0);
+        }
+
         if(this.count > this.getMaxCount()) {
             this.count = 1;
         }

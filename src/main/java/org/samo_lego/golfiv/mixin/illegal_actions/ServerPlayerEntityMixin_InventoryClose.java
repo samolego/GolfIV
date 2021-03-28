@@ -36,7 +36,7 @@ public class ServerPlayerEntityMixin_InventoryClose {
             )
     )
     private void setOpenGui(@Nullable NamedScreenHandlerFactory factory, CallbackInfoReturnable<OptionalInt> cir) {
-        golfer.setOpenGui(golfConfig.main.checkIllegalActions);
+        golfer.setOpenGui(golfConfig.main.checkInventoryActions);
     }
 
     /**

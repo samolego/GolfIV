@@ -23,10 +23,7 @@ public class ServerPlayNetworkHandlerMixin_IllegalsCheckSlot {
      * Checks whether the clicked slot contains
      * illegal stack.
      *
-     * Also set the GUI status to open.
-     *
-     * @param packet
-     * @param ci
+     * Also sets the GUI status to open.
      */
     @Inject(
             method = "onClickSlot(Lnet/minecraft/network/packet/c2s/play/ClickSlotC2SPacket;)V",
@@ -36,8 +33,8 @@ public class ServerPlayNetworkHandlerMixin_IllegalsCheckSlot {
             )
     )
     private void checkSlot(ClickSlotC2SPacket packet, CallbackInfo ci) {
-        ((Golfer) player).setOpenGui(golfConfig.main.checkIllegalActions);
-        if(golfConfig.main.checkForStrangeItems) {
+        ((Golfer) player).setOpenGui(golfConfig.main.checkInventoryActions);
+        if(golfConfig.items.checkForSurvivalStrangeItems) {
             int packetSlot = packet.getSlot();
             if(packetSlot >= 0) {
                 ItemStack itemStack = this.player.currentScreenHandler.getSlot(packetSlot).getStack();
