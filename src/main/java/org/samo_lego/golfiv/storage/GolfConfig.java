@@ -121,6 +121,9 @@ public class GolfConfig {
         public boolean patchSaveLimit = true;
         public String _comment_patchGravityBlock = "// Whether to disable gravity block patching.";
         public boolean patchGravityBlock = true;
+        public String _comment_patchDeathDuplication1 = "// Checks if player is connected before applying damage.";
+        public String _comment_patchDeathDuplication2 = "// Prevents duplicating inventory if player dies after disconnect.";
+        public boolean patchDeathDuplication = true;
     }
 
     /**
