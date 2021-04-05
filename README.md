@@ -1,4 +1,9 @@
 # GolfIV
+
+[![GitHub license](https://img.shields.io/github/license/samolego/GolfIV?style=flat-square)](https://github.com/samolego/GolfIV/blob/master/LICENSE)
+[![Server environment](https://img.shields.io/badge/Environment-server-blue?style=flat-square)](https://github.com/samolego/GolfIV)
+[![Singleplayer environment](https://img.shields.io/badge/Environment-singleplayer-yellow?style=flat-square)](https://github.com/samolego/GolfIV)
+
 [![Discord](https://img.shields.io/discord/797713290545332235?logo=discord)](https://discord.gg/9PAesuHFnp)
 
 An anti-exploit attempt for Fabric servers. **For more info, please check [WIKI](https://github.com/samolego/GolfIV/wiki).**
