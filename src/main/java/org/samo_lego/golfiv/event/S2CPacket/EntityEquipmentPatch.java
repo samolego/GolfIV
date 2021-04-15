@@ -13,6 +13,7 @@ import org.samo_lego.golfiv.mixin.accessors.EntityEquipmentUpdateS2CPacketAccess
 import java.util.List;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
+import static org.samo_lego.golfiv.utils.FakeItemConstructor.fakeStack;
 
 public class EntityEquipmentPatch implements S2CPacketCallback {
 
@@ -37,12 +38,7 @@ public class EntityEquipmentPatch implements S2CPacketCallback {
 
             List<Pair<EquipmentSlot, ItemStack>> newEquipment = Lists.newArrayList();
             packetAccessor.getEquipment().forEach(pair -> {
-                ItemStack stack = pair.getSecond();
-
-                ItemStack fakedStack = new ItemStack(stack.getItem(), stack.getMaxCount());
-                if(stack.hasEnchantments())
-                    fakedStack.addEnchantment(null, 0);
-
+                ItemStack fakedStack = fakeStack(pair.getSecond(), pair.getSecond().getMaxCount());
                 newEquipment.add(new Pair<>(pair.getFirst(), fakedStack));
             });
 

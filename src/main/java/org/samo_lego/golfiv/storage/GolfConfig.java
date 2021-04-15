@@ -96,6 +96,18 @@ public class GolfConfig {
          * sound, e.g. when summoning a wither / when lightning bolt strikes.
          */
         public boolean patchSoundExploits = true;
+
+        /**
+         * Whether to remove info about ground items.
+         * Can prevent chunk banning with items that are lying on ground.
+         */
+        public boolean removeDroppedItemInfo = true;
+
+        /**
+         * Whether to cancel out sending too big packets.
+         * Patches "book-banning" and friends.
+         */
+        public boolean patchItemKickExploit = true;
     }
 
     /**
