@@ -17,60 +17,48 @@ public class GolfConfig {
      * Main part of the config.
      */
     public static class Main {
+
+        public String _comment_checkIllegalActions = "// Prevents hitting/chatting with open GUI";
+        /**
+         * Checks whether is doing actions
+         * that cannot be done while having the GUI open.
+         * (e. g. hitting, typing, etc.)
+         */
+        public boolean checkInventoryActions = true;
+    }
+
+    public static class IllegalItems {
+        public String _comment_legaliseSurvivalItems = "// Whether to enable 'legalising' survival items";
         /**
          * Checks item picked that come in players inventory,
          * whether they have disallowed enchantments. This
          * can be disabled if you believe that players
          * didn't spawn in illegals.
-         *
-         * Status: working
          */
-        public boolean checkForStrangeItems = true;
+        public boolean legaliseSurvivalItems = true;
+
+        public String _comment_bannedSurvivalItems = "// Which items should be cleared when clicked in survival inventory";
+        public ArrayList<String> bannedSurvivalItems = new ArrayList<>(Arrays.asList(
+                "minecraft:barrier",
+                "minecraft:spawner",
+                "minecraft:structure_void",
+                "minecraft:bedrock",
+                "minecraft:command_block",
+                "minecraft:spawn_egg"
+        ));
 
         /**
          * Clears NBT items, but still allows block-picking.
-         *
-         * Status: working
          */
-        public boolean preventCreativeStrangeItems = true;
-
-        /**
-         * Checks whether is doing actions
-         * that cannot be done while having the GUI open.
-         * (e. g. hitting, moving, etc.)
-         *
-         * Status: working, waiting for falses to be reported.
-         */
-        public boolean checkIllegalActions = true;
-
-        /**
-         * Disables kicks and logs them to console.
-         */
-        public boolean developerMode = false;
-
-        /**
-         * After how many kicks player should be banned.
-         *
-         * Set to -1 to disable.
-         */
-        public int maxKicks = 10;
-
-        /**
-         * How many cheats should player have in the log to in order to be banned.
-         */
-        public int minBanCheats = 3;
-
-        /**
-         * How many seconds should pass between clearing each element
-         * from the cheat list
-         */
-        public int cheatListClearSeconds = 100;
+        public String _comment_removeCreativeNBTTags = "// Disallow all NBT tags in creative except for pick-block";
+        public boolean removeCreativeNBTTags = true;
     }
 
     /**
      * Outgoing packet settings.
      */
     public static class Packet {
+        public String _comment = "// Patches some outgoing server packets";
         /**
          * Whether to remove the teleport data
          * from packets when entities move out of
@@ -99,12 +87,6 @@ public class GolfConfig {
 
         /**
          * Whether to check if player is using
-         * SkinBlinker hack.
-         */
-        public boolean checkSkinBlink = true;
-
-        /**
-         * Whether to check if player is using
          * Portals hack.
          */
         public boolean checkPortalHack = true;
@@ -114,202 +96,75 @@ public class GolfConfig {
          * sound, e.g. when summoning a wither / when lightning bolt strikes.
          */
         public boolean patchSoundExploits = true;
+
+        /**
+         * Whether to remove info about ground items.
+         * Can prevent chunk banning with items that are lying on ground.
+         */
+        public boolean removeDroppedItemInfo = true;
+
+        /**
+         * Whether to cancel out sending too big packets.
+         * Patches "book-banning" and friends.
+         */
+        public boolean patchItemKickExploit = true;
     }
 
     /**
      * Movement checks settings.
      */
     public static class Movement {
-        private final String _comment = "Movement checks settings";
+        private final String _comment = "// Movement checks settings";
         /**
          * Client can tell server its onGround status and
          * server blindly accepts it. This can allow
          * client to not take any fall damage.
          * This setting re-enables the check server-side
          * and doesn't care about the client's onGround status.
-         *
-         * Status: working (might throw false positives when lagging, not sure)
          */
         public boolean yesFall = true;
-        /**
-         * Detects flight, either it being
-         * a boat-flight or normal player flight
-         *
-         * Status: working, waiting for falses to be reported.
-         */
-        public boolean checkFlight = true;
-        /**
-         * Tries to detect the timer check, which allows
-         * client to speed up the game, in order to move faster or use items
-         * faster.
-         *
-         * Status: working, waiting for falses to be reported.
-         */
-        public boolean antiTimer = true;
-        /**
-         * Tries to detect speed hacks.
-         * Kinda works, but needs overhaul.
-         *
-         * Status: working, waiting for falses to be reported.
-         */
-        public boolean noSpeed = true;
+    }
 
-        /**
-         * Tries detect "fake" elytra movement.
-         *
-         * Status: working, waiting for falses to be reported.
-         */
-        public boolean checkElytraFlight = true;
-
-        /**
-         * Checks for SafeWalk hacks.
-         */
-        public boolean hazardousWalk = true;
+    public static class Duplication {
+        public String _comment = "// Duplication fixes";
+        public String _comment_patchSaveLimit1 = "// Whether to prevent throwing an error when saving large string data.";
+        public String _comment_patchSaveLimit2 = "// This is done by ignoring data after DataOutputStream limit.";
+        public String _comment_patchSaveLimit3 = "// Written books can reach that point with hacked clients.";
+        public boolean patchSaveLimit = true;
+        public String _comment_patchGravityBlock = "// Whether to disable gravity block patching.";
+        public boolean patchGravityBlock = true;
+        public String _comment_patchDeathDuplication1 = "// Checks if player is connected before applying damage.";
+        public String _comment_patchDeathDuplication2 = "// Prevents duplicating inventory if player dies after disconnect.";
+        public boolean patchDeathDuplication = true;
     }
 
     /**
      * Combat checks settings.
      */
     public static class Combat {
-        private final String _comment = "Combat checks settings.";
-        /**
-         * Checks for killaura by summoning a fake player.
-         *
-         * Status: working, waiting for falses to be reported.
-         */
-        public boolean checkKillaura = true;
-
-        /**
-         * Checks for antiknocback hack.
-         *
-         * Status: working, waiting for FPs to be reported.
-         */
-        public boolean checkAntiKnockback = true;
-
+        private final String _comment = "// Combat checks settings.";
         /**
          * Checks if player is hitting entity through wall.
-         *
-         * Status: working, waiting for falses to be reported.
          */
-        public boolean checkWallHit = true;
+        public boolean preventWallHit = true;
 
         /**
          * Checks if player is using reach hacks.
-         *
-         * Status: working, waiting for falses to be reported.
          */
         public boolean checkHitDistance = true;
 
         /**
          * Checks the angle at which player is hitting the entity.
-         *
-         * Status: working, waiting for falses to be reported.
          */
         public boolean checkHitAngle = true;
-
-        /**
-         * What hit accuracy counts as suspicious, in percentage.
-         *
-         * If player is hitting entities with higher accuracy, a fake player will spawn behind
-         * them to check for killaura hacks.
-         */
-        public byte minSuspiciousAccuracy = 80;
     }
-
-    /**
-     * Hack "weights", used when reporting.
-     */
-    public static class SusLevels {
-
-        /**
-         * Suspicion value decreases by 1 each X
-         * seconds.
-         */
-        public int suspicionLevelDecreaseTime = 30;
-
-        /**
-         * Reports below this value won't count
-         * (this is to ensure FP reports aren't showing up in cheat log)
-         */
-        public int toleratedSuspicionValue = 100;
-
-        /**
-         * Players won't be kicked until their sus value reaches this.
-         */
-        public int reportSuspicionValue = 200;
-
-        private final String _comment = "How much should the suspicion value increase per each cheat attempt.";
-        public byte flyHack = 20;
-        public byte speedHack = 15;
-        public byte timer = 20;
-        public byte elytraFlight = 40;
-        public byte noFall = 30;
-        public byte Jesus = 40;
-        public byte skinBlinker = 100;
-        public byte inventoryWalk = 20;
-        public byte portalHack = 100;
-        public byte killaura = 80;
-        public byte noHandSwing = 60;
-        public byte antiknockback = 20;
-        public byte reach = 20;
-        public byte hitThroughWalls = 10;
-        public byte nbtItems = 100;
-        public byte opCreativeItems = 100;
-        public byte safeWalk = 15;
-    }
-
-    /**
-     * Where to log cheaters.
-     */
-    public static class Logging {
-        /**
-         * Logs cheat attempts to console.
-         *
-         * Status: working
-         */
-        public boolean toConsole = true;
-        /**
-         * Logs cheat attempts to ops.
-         *
-         * Status: not yet implemented
-         */
-        public boolean toOps = true;
-
-        /**
-         * How many times a cheat should be recorded before logging it to players/console.
-         *
-         * This is to ensure you don't get spammed.
-         */
-        public int logEveryXAttempts = 20;
-    }
-
-    /**
-     * Which messages should be used when kicking client on cheat attempts.
-     * Messages are chosen randomly.
-     *
-     * Status: working
-     */
-    public ArrayList<String> kickMessages = new ArrayList<>(Arrays.asList(
-            "Only who dares wins!",
-            "Bad Liar ...",
-            "Script kiddo?",
-            "No risk it, no biscuit!",
-            "Playing God? How about no?",
-            "Who flies high falls low",
-            "If you cheat, you only cheat yourself.",
-            "I'm not upset that you lied to me,\n I'm upset that from now on I can't believe you.",
-            "Hax bad.",
-            "You better check your client. It seems to be lying.",
-            "Impossible = cannot be done. But it was done by you?",
-            "If you have great power, you should\n use it with even greater responsibility."
-    ));
 
     public final GolfConfig.Main main = new Main();
+    public final GolfConfig.IllegalItems items = new IllegalItems();
     public final GolfConfig.Combat combat = new Combat();
     public final GolfConfig.Packet packet = new Packet();
     public final GolfConfig.Movement movement = new Movement();
-    public final GolfConfig.Logging logging = new Logging();
-    public final GolfConfig.SusLevels sus = new SusLevels();
+    public final GolfConfig.Duplication duplication = new Duplication();
 
     /**
      * Loads GolfIV config from file.

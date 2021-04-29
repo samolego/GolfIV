@@ -1,5 +1,10 @@
+import com.modrinth.minotaur.TaskModrinthUpload
+
+
 plugins {
-	id 'fabric-loom' version '0.5-SNAPSHOT'
+	id 'fabric-loom' version '0.6-SNAPSHOT'
+	id 'com.matthewprenger.cursegradle' version '1.4.0'
+	id "com.modrinth.minotaur" version "1.1.0"
 	id 'maven-publish'
 	id 'java'
 }
@@ -32,8 +37,11 @@ dependencies {
 	doclava "com.google.doclava:doclava:1.0.6"
 
 
+	modRuntime "com.github.CaffeineMC:hydrogen-fabric:mc1.16.5-v0.2.0"
+	modRuntime "com.github.astei:lazydfu:0.1.2"
+
 	//modImplementation 'com.github.jellysquid3:lithium-fabric:1.16.x-0.4.5'
-	modImplementation "com.github.gnembon:fabric-carpet:master-SNAPSHOT"
+	modRuntime "com.github.gnembon:fabric-carpet:master-SNAPSHOT"
 	//modImplementation 'com.github.jellysquid3:cadmium-fabric:1.15.x/dev-SNAPSHOT'
 }
 
@@ -104,4 +112,49 @@ publishing {
 	repositories {
 		// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	}
+}
+
+// from FAPI https://github.com/FabricMC/fabric/blob/1.16/build.gradle
+def ENV = System.getenv()
+curseforge {
+	if (ENV.CURSEFORGE_API_KEY) {
+		apiKey = ENV.CURSEFORGE_API_KEY
+	}
+
+	project {
+		id = "462519"
+		changelog = "A changelog can be found at https://github.com/samolego/GolfIV/commits/"
+		releaseType = "release"
+		addGameVersion "${project.minecraft_version}"
+		addGameVersion "Fabric"
+
+		mainArtifact(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) {
+			displayName = "[${project.minecraft_version}] GolfIV ${version}"
+		}
+
+		afterEvaluate {
+			uploadTask.dependsOn("remapJar")
+		}
+	}
+
+	options {
+		forgeGradleIntegration = false
+	}
+}
+
+task modrinth(type: TaskModrinthUpload, dependsOn: remapJar) {
+	onlyIf {
+		ENV.MODRINTH_TOKEN
+	}
+
+	token = ENV.MODRINTH_TOKEN
+	projectId = "PfKYAJGk"
+	versionNumber = version
+	versionName = "[${project.minecraft_version}] GolfIV ${version}"
+	releaseType = "release"
+
+	uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
+
+	addGameVersion("${project.minecraft_version}")
+	addLoader('fabric')
 }

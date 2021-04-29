@@ -13,7 +13,7 @@
     "sources": "https://github.com/samolego/GolfIV"
   },
 
-  "license": "GPL-3.0",
+  "license": "MIT",
   "icon": "assets/golfiv/icon.png",
 
   "environment": "*",

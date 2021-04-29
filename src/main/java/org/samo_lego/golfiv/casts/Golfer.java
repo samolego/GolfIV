@@ -1,15 +1,9 @@
 package org.samo_lego.golfiv.casts;
 
-import net.minecraft.nbt.ListTag;
-import org.samo_lego.golfiv.utils.CheatType;
-
 /**
  * Additional methods for player data tracking / logging.
  */
 public interface Golfer {
-    /*void setLies(int newLies);
-    int getLies();*/
-
     /**
      * Real onGround value, which isn't affected
      * by the client packet.
@@ -47,13 +41,6 @@ public interface Golfer {
     void setNearFluid(boolean nearFluid);
 
     /**
-     * Reports player for cheating.
-     *
-     * @param cheatType type of the cheat player has used.
-     */
-    void report(CheatType cheatType, int susValue);
-
-    /**
      * Sets whether player has opened GUI.
      * Doesn't catch opening their own inventory.
      *
@@ -84,38 +71,4 @@ public interface Golfer {
      * @param ticks
      */
     void setGuiOpenInPortalTicks(int ticks);
-
-    /**
-     * Gets the suspicion value for the player.
-     *
-     * @return suspicion value, higher than 0
-     */
-    int getSusLevel();
-
-    /**
-     * Sets suspicion value for the player.
-     */
-    void setSusLevel(int newSusLevel);
-
-    /**
-     * Clears cheat log from the player.
-     */
-    void clearCheatLog();
-
-    /**
-     * Gets cheat log for the player.
-     */
-    ListTag getCheatLog();
-
-    int getHitAccuracy();
-
-    void setHitAccuracy(int entityHits, int handSwings);
-    void setHitAccuracy(int accuracy);
-
-    /**
-     * Gets the number of times player has been kicked.
-     *
-     * @return player's number of kicks.
-     */
-    short getKicks();
 }

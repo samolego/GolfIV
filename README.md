@@ -1,10 +1,13 @@
-# Hey there!
-This is super non-production ready!
-It contains [STDOUT]s in code that may eat your log.
-Just kidding, but really make sure you don't use it in production.
-False positives are still a thing, your players might get falsely kicked.
+# GolfIV
 
-# Ok, I get it, but how do I get the mod?
+[![GitHub license](https://img.shields.io/github/license/samolego/GolfIV?style=flat-square)](https://github.com/samolego/GolfIV/blob/master/LICENSE)
+[![Server environment](https://img.shields.io/badge/Environment-server-blue?style=flat-square)](https://github.com/samolego/GolfIV)
+[![Singleplayer environment](https://img.shields.io/badge/Environment-singleplayer-yellow?style=flat-square)](https://github.com/samolego/GolfIV)
+
+[![Discord](https://img.shields.io/discord/797713290545332235?logo=discord)](https://discord.gg/9PAesuHFnp)
+
+An anti-exploit attempt for Fabric servers. **For more info, please check [WIKI](https://github.com/samolego/GolfIV/wiki).**
+
 
 ## Downloading it from GH actions
 1. Go to [GH actions](https://github.com/samolego/GolfIV/actions?query=workflow%3Abuild) and click on the latest commit.
@@ -23,12 +26,3 @@ git clone https://github.com/samolego/GolfIV.git
 ```
 ./gradlew build
 ```
-
-**Please** test before using!
-
-# GolfIV
-[![Discord](https://img.shields.io/discord/797713290545332235?logo=discord)](https://discord.gg/9PAesuHFnp)
-
-An anticheat attempt for Fabric servers. For more info, check [wiki](https://github.com/samolego/GolfIV/wiki).
-
-Thanks to [Johnan's tutorials](https://www.youtube.com/user/jonhanpvp) for ideas.
