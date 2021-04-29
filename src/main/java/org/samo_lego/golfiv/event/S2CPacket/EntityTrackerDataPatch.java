@@ -14,7 +14,7 @@ import org.samo_lego.golfiv.mixin.accessors.EntityTrackerUpdateS2CPacketAccessor
 import org.samo_lego.golfiv.mixin.accessors.ItemEntityAccessor;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
-import static org.samo_lego.golfiv.utils.FakeItemConstructor.fakeStack;
+import static org.samo_lego.golfiv.casts.ItemStackChecker.fakeStack;
 
 public class EntityTrackerDataPatch implements S2CPacketCallback {
 

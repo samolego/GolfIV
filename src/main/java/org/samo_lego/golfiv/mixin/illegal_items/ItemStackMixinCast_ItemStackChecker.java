@@ -6,10 +6,12 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Nullable;
 import org.samo_lego.golfiv.casts.ItemStackChecker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,6 +38,8 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
 
     @Shadow public abstract void setCount(int count);
 
+    @Shadow @Nullable public abstract CompoundTag getSubTag(String key);
+
     private final ItemStack itemStack = (ItemStack) (Object) this;
 
     /**
@@ -43,7 +47,7 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
      * removes disallowed enchantments.
      */
     @Override
-    public void makeLegal() {
+    public void makeLegal(boolean survival) {
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.fromTag(this.getEnchantments());
 
         // Checks item enchantments
@@ -59,6 +63,7 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
                 break;
             }
         }
+
         // Checks potion
         if(this.itemStack.getItem() == Items.POTION || this.itemStack.getItem() == Items.SPLASH_POTION || this.itemStack.getItem() == Items.LINGERING_POTION) {
             List<StatusEffectInstance> effects = PotionUtil.getPotionEffects(this.itemStack);
@@ -72,7 +77,7 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
         }
 
         Identifier id = Registry.ITEM.getId(this.itemStack.getItem());
-        if(golfConfig.items.bannedSurvivalItems.contains(id.toString()) || (golfConfig.items.bannedSurvivalItems.contains("minecraft:spawn_egg") && this.itemStack.getItem() instanceof SpawnEggItem)) {
+        if(survival && (golfConfig.items.survival.bannedItems.contains(id.toString()) || (golfConfig.items.survival.bannedItems.contains("minecraft:spawn_egg") && this.itemStack.getItem() instanceof SpawnEggItem))) {
             this.setCount(0);
         }
 

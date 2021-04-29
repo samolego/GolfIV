@@ -21,10 +21,6 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
-configurations {
-	doclava
-}
-
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -33,9 +29,6 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-	doclava "com.google.doclava:doclava:1.0.6"
-
 
 	modRuntime "com.github.CaffeineMC:hydrogen-fabric:mc1.16.5-v0.2.0"
 	modRuntime "com.github.astei:lazydfu:0.1.2"

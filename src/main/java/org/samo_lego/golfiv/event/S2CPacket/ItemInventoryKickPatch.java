@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
-import static org.samo_lego.golfiv.utils.FakeItemConstructor.fakeStack;
+import static org.samo_lego.golfiv.casts.ItemStackChecker.fakeStack;
 
 public class ItemInventoryKickPatch implements S2CPacketCallback {
 
