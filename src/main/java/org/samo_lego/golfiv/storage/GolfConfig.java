@@ -11,14 +11,17 @@ import java.util.Arrays;
 import static org.samo_lego.golfiv.utils.BallLogger.logError;
 
 public class GolfConfig {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .disableHtmlEscaping()
+            .create();
 
     /**
      * Main part of the config.
      */
     public static class Main {
 
-        public String _comment_checkIllegalActions = "// Prevents hitting/chatting with open GUI";
+        public final String _comment_checkInventoryActions = "// Prevents hitting/chatting with open GUI";
         /**
          * Checks whether is doing actions
          * that cannot be done while having the GUI open.
@@ -28,37 +31,54 @@ public class GolfConfig {
     }
 
     public static class IllegalItems {
-        public String _comment_legaliseSurvivalItems = "// Whether to enable 'legalising' survival items";
-        /**
-         * Checks item picked that come in players inventory,
-         * whether they have disallowed enchantments. This
-         * can be disabled if you believe that players
-         * didn't spawn in illegals.
-         */
-        public boolean legaliseSurvivalItems = true;
+        public static class Survival {
+            public final String _comment_legalise = "// Whether to enable 'legalising' survival items.";
+            /**
+             * Checks item picked that come in players inventory,
+             * whether they have disallowed enchantments. This
+             * can be disabled if you believe that players
+             * didn't spawn in illegals.
+             */
+            public boolean legalise = true;
 
-        public String _comment_bannedSurvivalItems = "// Which items should be cleared when clicked in survival inventory";
-        public ArrayList<String> bannedSurvivalItems = new ArrayList<>(Arrays.asList(
-                "minecraft:barrier",
-                "minecraft:spawner",
-                "minecraft:structure_void",
-                "minecraft:bedrock",
-                "minecraft:command_block",
-                "minecraft:spawn_egg"
-        ));
+            public final String _comment_bannedSurvivalItems = "// Which items should be cleared when clicked in survival inventory";
+            public ArrayList<String> bannedItems = new ArrayList<>(Arrays.asList(
+                    "minecraft:barrier",
+                    "minecraft:spawner",
+                    "minecraft:structure_void",
+                    "minecraft:bedrock",
+                    "minecraft:command_block",
+                    "minecraft:spawn_egg"
+            ));
+        }
+        public static class Creative {
 
-        /**
-         * Clears NBT items, but still allows block-picking.
-         */
-        public String _comment_removeCreativeNBTTags = "// Disallow all NBT tags in creative except for pick-block";
-        public boolean removeCreativeNBTTags = true;
+            public final String _comment_whitelistedNBT = "// Which NBT shouldn't be cleared";
+            public ArrayList<String> whitelistedNBT = new ArrayList<>(Arrays.asList(
+                "EntityTag",
+                "Enchantments",
+                "StoredEnchantments",
+                "BlockEntityTag",
+                "Damage",
+                "Potion",
+                "display"
+            ));
+            /**
+             * Clears NBT items, but still allows block-picking.
+             */
+            public final String _comment_removeCreativeNBTTags = "// Disallow all NBT tags in creative which aren't in whitelist section.";
+            public boolean removeCreativeNBTTags = true;
+        }
+
+        public Survival survival = new Survival();
+        public Creative creative = new Creative();
     }
 
     /**
      * Outgoing packet settings.
      */
     public static class Packet {
-        public String _comment = "// Patches some outgoing server packets";
+        public final String _comment = "// Patches some outgoing server packets";
         /**
          * Whether to remove the teleport data
          * from packets when entities move out of
@@ -126,15 +146,15 @@ public class GolfConfig {
     }
 
     public static class Duplication {
-        public String _comment = "// Duplication fixes";
-        public String _comment_patchSaveLimit1 = "// Whether to prevent throwing an error when saving large string data.";
-        public String _comment_patchSaveLimit2 = "// This is done by ignoring data after DataOutputStream limit.";
-        public String _comment_patchSaveLimit3 = "// Written books can reach that point with hacked clients.";
+        public final String _comment = "// Duplication fixes";
+        public final String _comment_patchSaveLimit1 = "// Whether to prevent throwing an error when saving large string data.";
+        public final String _comment_patchSaveLimit2 = "// This is done by ignoring data after DataOutputStream limit.";
+        public final String _comment_patchSaveLimit3 = "// Written books can reach that point with hacked clients.";
         public boolean patchSaveLimit = true;
-        public String _comment_patchGravityBlock = "// Whether to disable gravity block patching.";
+        public final String _comment_patchGravityBlock = "// Whether to disable gravity block duping.";
         public boolean patchGravityBlock = true;
-        public String _comment_patchDeathDuplication1 = "// Checks if player is connected before applying damage.";
-        public String _comment_patchDeathDuplication2 = "// Prevents duplicating inventory if player dies after disconnect.";
+        public final String _comment_patchDeathDuplication1 = "// Checks if player is connected before applying damage.";
+        public final String _comment_patchDeathDuplication2 = "// Prevents duplicating inventory if player dies after disconnect.";
         public boolean patchDeathDuplication = true;
     }
 

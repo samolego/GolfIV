@@ -30,9 +30,9 @@ public abstract class PlayerInventoryMixin_IllegalsCheckInsert {
      */
     @ModifyVariable(method = "insertStack(ILnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isDamaged()Z"))
     private ItemStack checkInsertedStack(ItemStack stack) {
-        if(golfConfig.items.legaliseSurvivalItems) {
+        if(golfConfig.items.survival.legalise) {
             //noinspection ConstantConditions
-            ((ItemStackChecker) (Object) stack).makeLegal();
+            ((ItemStackChecker) (Object) stack).makeLegal(!this.player.isCreative());
         }
         return stack;
     }
