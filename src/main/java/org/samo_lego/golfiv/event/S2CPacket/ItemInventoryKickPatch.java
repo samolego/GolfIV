@@ -38,7 +38,7 @@ public class ItemInventoryKickPatch implements S2CPacketCallback {
             List<ItemStack> fakedContents = contents.stream().map(stack -> {
                 CompoundTag tag = stack.getTag();
                 if(tag != null) {
-                    stack = fakeStack(stack, stack.getCount());
+                    stack = fakeStack(stack, false);
                 }
 
                 return stack;
@@ -50,7 +50,7 @@ public class ItemInventoryKickPatch implements S2CPacketCallback {
             if(stack.getTag() != null) {
                 PacketByteBuf testBuf = new PacketByteBuf(Unpooled.buffer());
                 if(testBuf.writeItemStack(stack).readableBytes() > 2097140) {
-                    ((ScreenHandlerSlotUpdateS2CPacketAccessor) packet).setStack(fakeStack(stack, stack.getCount()));
+                    ((ScreenHandlerSlotUpdateS2CPacketAccessor) packet).setStack(fakeStack(stack, false));
                 }
             }
         }

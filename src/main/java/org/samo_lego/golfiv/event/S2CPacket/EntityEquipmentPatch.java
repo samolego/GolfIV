@@ -38,7 +38,7 @@ public class EntityEquipmentPatch implements S2CPacketCallback {
 
             List<Pair<EquipmentSlot, ItemStack>> newEquipment = Lists.newArrayList();
             packetAccessor.getEquipment().forEach(pair -> {
-                ItemStack fakedStack = fakeStack(pair.getSecond(), pair.getSecond().getMaxCount());
+                ItemStack fakedStack = fakeStack(pair.getSecond(), true);
                 newEquipment.add(new Pair<>(pair.getFirst(), fakedStack));
             });
 

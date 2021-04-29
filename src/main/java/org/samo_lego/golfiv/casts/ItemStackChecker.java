@@ -19,9 +19,15 @@ public interface ItemStackChecker {
      *
      * E.g. removes enchantment info, stack size, etc.
      * Used on ground ItemEntities / opponent's stacks etc.
+     *
+     * @param original the original ItemStack
+     * @param spoofCount whether or not the item count should be faked
+     * @return the faked ItemStack
      */
-    static ItemStack fakeStack(ItemStack original, int count) {
-        ItemStack fakedStack = new ItemStack(original.getItem(), count);
+    static ItemStack fakeStack(ItemStack original, boolean spoofCount) {
+        ItemStack fakedStack = spoofCount ?
+                new ItemStack(original.getItem(), original.getMaxCount()) :
+                new ItemStack(original.getItem(), original.getCount());
 
         if(original.hasEnchantments())
             fakedStack.addEnchantment(null, 0);
