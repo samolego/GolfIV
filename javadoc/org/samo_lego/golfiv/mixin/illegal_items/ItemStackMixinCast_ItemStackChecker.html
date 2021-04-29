@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6,"i1":6,"i2":10,"i3":6,"i4":6};
+var methods = {"i0":6,"i1":6,"i2":6,"i3":10,"i4":6,"i5":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -159,17 +159,21 @@ implements <a href="../../../../../org/samo_lego/golfiv/casts/ItemStackChecker.h
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/samo_lego/golfiv/mixin/illegal_items/ItemStackMixinCast_ItemStackChecker.html#getMaxCount--">getMaxCount</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>abstract @Nullable net.minecraft.nbt.CompoundTag</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/samo_lego/golfiv/mixin/illegal_items/ItemStackMixinCast_ItemStackChecker.html#getSubTag-java.lang.String-">getSubTag</a></span>(java.lang.String&nbsp;key)</code>&nbsp;</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/samo_lego/golfiv/mixin/illegal_items/ItemStackMixinCast_ItemStackChecker.html#makeLegal--">makeLegal</a></span>()</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/samo_lego/golfiv/mixin/illegal_items/ItemStackMixinCast_ItemStackChecker.html#makeLegal-boolean-">makeLegal</a></span>(boolean&nbsp;survival)</code>
 <div class="block">Sets the appropriate ItemStack size,
  removes disallowed enchantments.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>abstract void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/samo_lego/golfiv/mixin/illegal_items/ItemStackMixinCast_ItemStackChecker.html#removeSubTag-java.lang.String-">removeSubTag</a></span>(java.lang.String&nbsp;key)</code>&nbsp;</td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>abstract void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../../org/samo_lego/golfiv/mixin/illegal_items/ItemStackMixinCast_ItemStackChecker.html#setCount-int-">setCount</a></span>(int&nbsp;count)</code>&nbsp;</td>
 </tr>
@@ -180,6 +184,13 @@ implements <a href="../../../../../org/samo_lego/golfiv/casts/ItemStackChecker.h
 </a>
 <h3>Methods inherited from class&nbsp;java.lang.Object</h3>
 <code>clone, equals, finalize, getClass, hashCode, notify, notifyAll, toString, wait, wait, wait</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a name="methods.inherited.from.class.org.samo_lego.golfiv.casts.ItemStackChecker">
+<!--   -->
+</a>
+<h3>Methods inherited from interface&nbsp;org.samo_lego.golfiv.casts.<a href="../../../../../org/samo_lego/golfiv/casts/ItemStackChecker.html" title="interface in org.samo_lego.golfiv.casts">ItemStackChecker</a></h3>
+<code><a href="../../../../../org/samo_lego/golfiv/casts/ItemStackChecker.html#fakeStack-net.minecraft.item.ItemStack-int-">fakeStack</a></code></li>
 </ul>
 </li>
 </ul>
@@ -248,18 +259,28 @@ implements <a href="../../../../../org/samo_lego/golfiv/casts/ItemStackChecker.h
 <pre>public abstract&nbsp;void&nbsp;setCount(int&nbsp;count)</pre>
 </li>
 </ul>
-<a name="makeLegal--">
+<a name="getSubTag-java.lang.String-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getSubTag</h4>
+<pre>@Nullable
+public abstract&nbsp;@Nullable net.minecraft.nbt.CompoundTag&nbsp;getSubTag(java.lang.String&nbsp;key)</pre>
+</li>
+</ul>
+<a name="makeLegal-boolean-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>makeLegal</h4>
-<pre>public&nbsp;void&nbsp;makeLegal()</pre>
+<pre>public&nbsp;void&nbsp;makeLegal(boolean&nbsp;survival)</pre>
 <div class="block">Sets the appropriate ItemStack size,
  removes disallowed enchantments.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../../../org/samo_lego/golfiv/casts/ItemStackChecker.html#makeLegal--">makeLegal</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/samo_lego/golfiv/casts/ItemStackChecker.html" title="interface in org.samo_lego.golfiv.casts">ItemStackChecker</a></code></dd>
+<dd><code><a href="../../../../../org/samo_lego/golfiv/casts/ItemStackChecker.html#makeLegal-boolean-">makeLegal</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/samo_lego/golfiv/casts/ItemStackChecker.html" title="interface in org.samo_lego.golfiv.casts">ItemStackChecker</a></code></dd>
 </dl>
 </li>
 </ul>

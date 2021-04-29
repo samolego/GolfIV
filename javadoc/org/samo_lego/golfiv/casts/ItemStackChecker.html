@@ -17,8 +17,8 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":6};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
+var methods = {"i0":17,"i1":6};
+var tabs = {65535:["t0","All Methods"],1:["t1","Static Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],16:["t5","Default Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
 var tableTab = "tableTab";
@@ -118,14 +118,22 @@ var activeTableTab = "activeTableTab";
 </a>
 <h3>Method Summary</h3>
 <table class="memberSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t1" class="tableTab"><span><a href="javascript:show(1);">Static Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t5" class="tableTab"><span><a href="javascript:show(16);">Default Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
 <tr>
 <th class="colFirst" scope="col">Modifier and Type</th>
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>static net.minecraft.item.ItemStack</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/ItemStackChecker.html#fakeStack-net.minecraft.item.ItemStack-int-">fakeStack</a></span>(net.minecraft.item.ItemStack&nbsp;original,
+         int&nbsp;count)</code>
+<div class="block">Creates a fake ItemStack based on the
+ provided stack.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/ItemStackChecker.html#makeLegal--">makeLegal</a></span>()</code>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/samo_lego/golfiv/casts/ItemStackChecker.html#makeLegal-boolean-">makeLegal</a></span>(boolean&nbsp;survival)</code>
 <div class="block">Checks the ItemStack and makes it legal.</div>
 </td>
 </tr>
@@ -144,16 +152,31 @@ var activeTableTab = "activeTableTab";
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="makeLegal--">
+<a name="makeLegal-boolean-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>makeLegal</h4>
+<pre>void&nbsp;makeLegal(boolean&nbsp;survival)</pre>
+<div class="block">Checks the ItemStack and makes it legal.
+ Removes all enchantments if they are incompatible or
+ have too high level.</div>
+</li>
+</ul>
+<a name="fakeStack-net.minecraft.item.ItemStack-int-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>makeLegal</h4>
-<pre>void&nbsp;makeLegal()</pre>
-<div class="block">Checks the ItemStack and makes it legal.
- Removes all enchantments if they are incompatible or
- have too high level.</div>
+<h4>fakeStack</h4>
+<pre>static&nbsp;net.minecraft.item.ItemStack&nbsp;fakeStack(net.minecraft.item.ItemStack&nbsp;original,
+                                              int&nbsp;count)</pre>
+<div class="block">Creates a fake ItemStack based on the
+ provided stack.
+
+ E.g. removes enchantment info, stack size, etc.
+ Used on ground ItemEntities / opponent's stacks etc.</div>
 </li>
 </ul>
 </li>
