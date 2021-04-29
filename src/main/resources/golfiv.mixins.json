@@ -21,6 +21,7 @@
     "illegal_actions.ServerPlayerEntityMixin_InventoryClose",
     "illegal_actions.ServerPlayerEntityMixin_PortalsGuiCheck",
     "illegal_actions.ServerPlayNetworkHandlerMixin_MessageCheck",
+    "illegal_items.InventoryMixin_IllegalsCheckInvenUpdates",
     "illegal_items.ItemStackMixinCast_ItemStackChecker",
     "illegal_items.PlayerInventoryMixin_IllegalsCheckInsert",
     "illegal_items.ServerPlayNetworkHandlerMixin_CreativeItemsCheck",

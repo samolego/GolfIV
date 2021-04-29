@@ -44,7 +44,7 @@ public class EntityTrackerDataPatch implements S2CPacketCallback {
                 if(removed) {
                     ItemStack original = ((ItemEntity) entity).getStack();
 
-                    DataTracker.Entry<ItemStack> fakeEntry = new DataTracker.Entry<>(ItemEntityAccessor.getSTACK(), fakeStack(original, original.getCount()));
+                    DataTracker.Entry<ItemStack> fakeEntry = new DataTracker.Entry<>(ItemEntityAccessor.getSTACK(), fakeStack(original, false));
                     p.getTrackedValues().add(fakeEntry);
                 }
             }

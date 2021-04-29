@@ -45,6 +45,8 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
     /**
      * Sets the appropriate ItemStack size,
      * removes disallowed enchantments.
+     *
+     * @param survival w
      */
     @Override
     public void makeLegal(boolean survival) {
