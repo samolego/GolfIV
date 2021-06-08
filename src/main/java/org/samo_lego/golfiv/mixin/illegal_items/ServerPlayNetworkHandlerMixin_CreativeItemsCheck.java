@@ -1,7 +1,7 @@
 package org.samo_lego.golfiv.mixin.illegal_items;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.samo_lego.golfiv.casts.ItemStackChecker;
@@ -26,13 +26,13 @@ public abstract class ServerPlayNetworkHandlerMixin_CreativeItemsCheck {
             method = "onCreativeInventoryAction(Lnet/minecraft/network/packet/c2s/play/CreativeInventoryActionC2SPacket;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/item/ItemStack;getSubTag(Ljava/lang/String;)Lnet/minecraft/nbt/CompoundTag;"
+                    target = "Lnet/minecraft/item/ItemStack;getSubTag(Ljava/lang/String;)Lnet/minecraft/nbt/NbtCompound;"
             )
     )
     private ItemStack checkCreativeItem(ItemStack itemStack) {
         if(golfConfig.items.creative.removeCreativeNBTTags) {
-            CompoundTag compoundTag = itemStack.getTag();
-            CompoundTag newData = new CompoundTag();
+            NbtCompound compoundTag = itemStack.getTag();
+            NbtCompound newData = new NbtCompound();
             if(compoundTag != null) {
                 golfConfig.items.creative.whitelistedNBT.forEach(tag -> {
                     if(compoundTag.contains(tag)) {

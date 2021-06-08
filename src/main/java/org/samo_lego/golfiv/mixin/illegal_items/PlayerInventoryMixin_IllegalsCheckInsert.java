@@ -10,8 +10,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import static org.samo_lego.golfiv.GolfIV.golfConfig;
-
 /**
  * Checks if the inserted stack is illegal.
  */
@@ -30,10 +28,8 @@ public abstract class PlayerInventoryMixin_IllegalsCheckInsert {
      */
     @ModifyVariable(method = "insertStack(ILnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isDamaged()Z"))
     private ItemStack checkInsertedStack(ItemStack stack) {
-        if(golfConfig.items.survival.legalise) {
-            //noinspection ConstantConditions
-            ((ItemStackChecker) (Object) stack).makeLegal(!this.player.isCreative());
-        }
+        //noinspection ConstantConditions
+        ((ItemStackChecker) (Object) stack).makeLegal(!this.player.isCreative());
         return stack;
     }
 }

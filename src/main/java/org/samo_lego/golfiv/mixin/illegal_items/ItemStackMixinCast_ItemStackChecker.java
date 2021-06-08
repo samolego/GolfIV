@@ -6,12 +6,10 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.Nullable;
 import org.samo_lego.golfiv.casts.ItemStackChecker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,15 +28,13 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
 
     @Shadow private int count;
 
-    @Shadow public abstract ListTag getEnchantments();
+    @Shadow public abstract NbtList getEnchantments();
 
     @Shadow public abstract void removeSubTag(String key);
 
     @Shadow public abstract int getMaxCount();
 
     @Shadow public abstract void setCount(int count);
-
-    @Shadow @Nullable public abstract CompoundTag getSubTag(String key);
 
     private final ItemStack itemStack = (ItemStack) (Object) this;
 
@@ -50,24 +46,35 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
      */
     @Override
     public void makeLegal(boolean survival) {
-        Map<Enchantment, Integer> enchantments = EnchantmentHelper.fromTag(this.getEnchantments());
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.fromNbt(this.getEnchantments());
 
         // Checks item enchantments
-        for(Map.Entry<Enchantment, Integer> ench : enchantments.entrySet()) {
-            Enchantment enchantment = ench.getKey();
-            int level = ench.getValue();
+        if((survival && golfConfig.items.survival.checkEnchants) || (!survival && golfConfig.items.creative.checkEnchants))
+            for(Map.Entry<Enchantment, Integer> ench : enchantments.entrySet()) {
+                Enchantment enchantment = ench.getKey();
+                int level = ench.getValue();
 
-            Set<Enchantment> otherEnchants = EnchantmentHelper.get(this.itemStack).keySet();
-            otherEnchants.remove(enchantment);
+                Set<Enchantment> otherEnchants = EnchantmentHelper.get(this.itemStack).keySet();
+                otherEnchants.remove(enchantment);
 
-            if(!enchantment.isAcceptableItem(this.itemStack) || !EnchantmentHelper.isCompatible(otherEnchants, enchantment) || level > enchantment.getMaxLevel()) {
-                this.removeSubTag("Enchantments");
-                break;
+                if(!enchantment.isAcceptableItem(this.itemStack) || !EnchantmentHelper.isCompatible(otherEnchants, enchantment) || level > enchantment.getMaxLevel()) {
+                    this.removeSubTag("Enchantments");
+                    break;
+                }
             }
-        }
 
         // Checks potion
-        if(this.itemStack.getItem() == Items.POTION || this.itemStack.getItem() == Items.SPLASH_POTION || this.itemStack.getItem() == Items.LINGERING_POTION) {
+        if(
+                (
+                    (survival && golfConfig.items.survival.checkPotionLevels) ||
+                    (!survival && golfConfig.items.creative.checkPotionLevels)
+                ) &&
+                (
+                    this.itemStack.getItem() == Items.POTION ||
+                    this.itemStack.getItem() == Items.SPLASH_POTION ||
+                    this.itemStack.getItem() == Items.LINGERING_POTION
+                )
+        ) {
             List<StatusEffectInstance> effects = PotionUtil.getPotionEffects(this.itemStack);
             for(StatusEffectInstance effect : effects) {
                 if(effect.getAmplifier() > 1) {
@@ -83,7 +90,13 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
             this.setCount(0);
         }
 
-        if(this.count > this.getMaxCount()) {
+        if(
+            (
+                (survival && golfConfig.items.survival.checkItemCount) ||
+                (!survival && golfConfig.items.creative.checkItemCount)
+            ) &&
+            this.count > this.getMaxCount()
+        ) {
             this.count = 1;
         }
     }

@@ -2,7 +2,7 @@ import com.modrinth.minotaur.TaskModrinthUpload
 
 
 plugins {
-	id 'fabric-loom' version '0.6-SNAPSHOT'
+	id 'fabric-loom' version '0.8-SNAPSHOT'
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
 	id "com.modrinth.minotaur" version "1.1.0"
 	id 'maven-publish'
@@ -14,8 +14,8 @@ repositories {
 	mavenCentral()
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -30,11 +30,11 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modRuntime "com.github.CaffeineMC:hydrogen-fabric:mc1.16.5-v0.2.0"
-	modRuntime "com.github.astei:lazydfu:0.1.2"
+	//modRuntime "com.github.CaffeineMC:hydrogen-fabric:mc1.16.5-v0.2.0"
+	//modRuntime "com.github.astei:lazydfu:0.1.2"
 
 	//modImplementation 'com.github.jellysquid3:lithium-fabric:1.16.x-0.4.5'
-	modRuntime "com.github.gnembon:fabric-carpet:master-SNAPSHOT"
+	//modRuntime "com.github.gnembon:fabric-carpet:master-SNAPSHOT"
 	//modImplementation 'com.github.jellysquid3:cadmium-fabric:1.15.x/dev-SNAPSHOT'
 }
 

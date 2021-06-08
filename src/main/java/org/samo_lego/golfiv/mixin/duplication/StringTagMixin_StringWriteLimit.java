@@ -1,6 +1,6 @@
 package org.samo_lego.golfiv.mixin.duplication;
 
-import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.NbtString;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
-@Mixin(StringTag.class)
+@Mixin(NbtString.class)
 public class StringTagMixin_StringWriteLimit {
     @Mutable
     @Shadow @Final private String value;

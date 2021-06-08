@@ -41,7 +41,7 @@ public class AngleCheck implements EntityInteractPacketCallback {
             double deltaZ = victim.getZ() - player.getZ();
             double beta = Math.atan2(deltaZ, deltaX) - Math.PI / 2;
 
-            double phi = beta - Math.toRadians(player.yaw);
+            double phi = beta - Math.toRadians(player.getYaw());
             //todo can be improved?
             double allowedAttackSpace = Math.sqrt(bBox.getXLength() * bBox.getXLength() + bBox.getZLength() * bBox.getZLength());
 

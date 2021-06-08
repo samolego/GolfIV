@@ -2,7 +2,7 @@ package org.samo_lego.golfiv.event.S2CPacket;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
@@ -36,7 +36,7 @@ public class ItemInventoryKickPatch implements S2CPacketCallback {
         if(golfConfig.packet.patchItemKickExploit && packet instanceof InventoryS2CPacket) {
             List<ItemStack> contents = ((InventoryS2CPacketAccessor) packet).getContents();
             List<ItemStack> fakedContents = contents.stream().map(stack -> {
-                CompoundTag tag = stack.getTag();
+                NbtCompound tag = stack.getTag();
                 if(tag != null) {
                     stack = fakeStack(stack, false);
                 }

@@ -61,7 +61,7 @@ public abstract class ServerPlayNetworkHandlerMixin_PacketEvents {
             method = "onPlayerInteractEntity(Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket;getHand()Lnet/minecraft/util/Hand;"
+                    target = "Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket;handle(Lnet/minecraft/network/packet/c2s/play/PlayerInteractEntityC2SPacket$Handler;)V"
             ),
             locals = LocalCapture.CAPTURE_FAILHARD,
             cancellable = true

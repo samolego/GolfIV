@@ -30,16 +30,15 @@ public class GolfConfig {
         public boolean checkInventoryActions = true;
     }
 
+    /**
+     * Checks item picked that come in players inventory,
+     * whether they have disallowed enchantments. This
+     * can be disabled if you believe that players
+     * didn't spawn in illegals.
+     */
     public static class IllegalItems {
         public static class Survival {
             public final String _comment_legalise = "// Whether to enable 'legalising' survival items.";
-            /**
-             * Checks item picked that come in players inventory,
-             * whether they have disallowed enchantments. This
-             * can be disabled if you believe that players
-             * didn't spawn in illegals.
-             */
-            public boolean legalise = true;
 
             public final String _comment_bannedSurvivalItems = "// Which items should be cleared when clicked in survival inventory";
             public ArrayList<String> bannedItems = new ArrayList<>(Arrays.asList(
@@ -50,6 +49,9 @@ public class GolfConfig {
                     "minecraft:command_block",
                     "minecraft:spawn_egg"
             ));
+            public boolean checkEnchants = true;
+            public boolean checkPotionLevels = true;
+            public boolean checkItemCount = true;
         }
         public static class Creative {
 
@@ -68,6 +70,9 @@ public class GolfConfig {
              */
             public final String _comment_removeCreativeNBTTags = "// Disallow all NBT tags in creative which aren't in whitelist section.";
             public boolean removeCreativeNBTTags = true;
+            public boolean checkEnchants = true;
+            public boolean checkPotionLevels = true;
+            public boolean checkItemCount = true;
         }
 
         public Survival survival = new Survival();

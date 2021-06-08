@@ -23,12 +23,12 @@ public class FallingBlockEntityMixin_GravityBlockDupe {
             method = "tick()V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/FallingBlockEntity;remove()V"
+                    target = "Lnet/minecraft/entity/FallingBlockEntity;discard()V"
             ),
             cancellable = true
     )
     private void midTick(CallbackInfo ci) {
-        if(golfConfig.duplication.patchGravityBlock && ((FallingBlockEntity) (Object) this).removed)
+        if(golfConfig.duplication.patchGravityBlock && ((FallingBlockEntity) (Object) this).isRemoved())
             ci.cancel();
     }
 
