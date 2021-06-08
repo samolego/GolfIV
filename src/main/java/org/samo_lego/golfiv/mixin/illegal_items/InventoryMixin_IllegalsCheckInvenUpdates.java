@@ -3,7 +3,7 @@ package org.samo_lego.golfiv.mixin.illegal_items;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.collection.DefaultedList;
 import org.samo_lego.golfiv.casts.ItemStackChecker;
 import org.spongepowered.asm.mixin.Final;
@@ -41,8 +41,8 @@ abstract class InventoryMixin_IllegalsCheckInvenUpdates {
      * @param tag the tag it is deserializing
      * @param ci callback info
      */
-    @Inject(method = "deserialize", at = @At("TAIL"))
-    private void onDeserialize(ListTag tag, CallbackInfo ci) {
+    @Inject(method = "readNbt(Lnet/minecraft/nbt/NbtList;)V", at = @At("TAIL"))
+    private void onDeserialize(NbtList tag, CallbackInfo ci) {
         legaliseInventory();
     }
 

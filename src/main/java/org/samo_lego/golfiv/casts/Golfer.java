@@ -26,19 +26,6 @@ public interface Golfer {
      */
     void setEntityCollisions(boolean entityCollisions);
 
-    /**
-     * Tells whether player is near fluid (above).
-     *
-     * @return true if player is near fluid collisions, otherwise false.
-     */
-    boolean isNearFluid();
-
-    /**
-     * Sets the nearFluid status.
-     *
-     * @param nearFluid if player is near (above) fluid
-     */
-    void setNearFluid(boolean nearFluid);
 
     /**
      * Sets whether player has opened GUI.

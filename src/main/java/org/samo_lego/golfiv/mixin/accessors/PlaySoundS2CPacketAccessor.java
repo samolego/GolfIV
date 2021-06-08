@@ -1,10 +1,12 @@
 package org.samo_lego.golfiv.mixin.accessors;
 
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.sound.SoundEvent;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket.class)
+@Mixin(PlaySoundS2CPacket.class)
 public interface PlaySoundS2CPacketAccessor {
     @Accessor("fixedX")
     int getX();
@@ -12,9 +14,11 @@ public interface PlaySoundS2CPacketAccessor {
     @Accessor("fixedZ")
     int getZ();
 
+    @Mutable
     @Accessor("fixedX")
     void setX(int x);
 
+    @Mutable
     @Accessor("fixedZ")
     void setZ(int z);
 

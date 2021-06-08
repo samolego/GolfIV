@@ -34,13 +34,11 @@ public class ServerPlayNetworkHandlerMixin_IllegalsCheckSlot {
     )
     private void checkSlot(ClickSlotC2SPacket packet, CallbackInfo ci) {
         ((Golfer) player).setOpenGui(golfConfig.main.checkInventoryActions);
-        if(golfConfig.items.survival.legalise) {
-            int packetSlot = packet.getSlot();
-            if(packetSlot >= 0) {
-                ItemStack itemStack = this.player.currentScreenHandler.getSlot(packetSlot).getStack();
-                //noinspection ConstantConditions
-                ((ItemStackChecker) (Object) itemStack).makeLegal(!this.player.isCreative());
-            }
+        int packetSlot = packet.getSlot();
+        if(packetSlot >= 0) {
+            ItemStack itemStack = this.player.currentScreenHandler.getSlot(packetSlot).getStack();
+            //noinspection ConstantConditions
+            ((ItemStackChecker) (Object) itemStack).makeLegal(!this.player.isCreative());
         }
     }
 }

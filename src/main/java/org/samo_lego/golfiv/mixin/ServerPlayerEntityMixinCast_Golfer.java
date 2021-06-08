@@ -22,9 +22,6 @@ public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
     @Unique
     private int guiOpenInPortalTicks;
 
-    @Unique
-    private boolean nearFluid;
-
     /**
      * Real onGround value, which isn't affected
      * by the client packet.
@@ -54,26 +51,6 @@ public abstract class ServerPlayerEntityMixinCast_Golfer implements Golfer {
     @Override
     public void setEntityCollisions(boolean entityCollisions) {
         this.entityCollisions = entityCollisions;
-    }
-
-    /**
-     * Tells whether player is near fluid (above).
-     *
-     * @return true if player is near fluid collisions, otherwise false.
-     */
-    @Override
-    public boolean isNearFluid() {
-        return this.nearFluid;
-    }
-
-    /**
-     * Sets the nearFluid status.
-     *
-     * @param nearFluid if player is near (above) fluid
-     */
-    @Override
-    public void setNearFluid(boolean nearFluid) {
-        this.nearFluid = nearFluid;
     }
 
     /**
