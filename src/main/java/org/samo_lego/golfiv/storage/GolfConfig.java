@@ -28,6 +28,10 @@ public class GolfConfig {
          * (e. g. hitting, typing, etc.)
          */
         public boolean checkInventoryActions = true;
+
+        public final String _comment_preventDestructionByPiston = "// Prevents headless pistons from destroying blocks that are not piston extensions.";
+
+        public boolean preventDestructionByHeadlessPistons = true;
     }
 
     /**
@@ -203,7 +207,7 @@ public class GolfConfig {
             try(
                     FileInputStream fileInputStream = new FileInputStream(configFile);
                     InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, StandardCharsets.UTF_8);
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader)
             ) {
                 golfConfig = GSON.fromJson(bufferedReader, GolfConfig.class);
             }
