@@ -2,8 +2,8 @@ org.samo_lego.golfiv
 org.samo_lego.golfiv.casts
 org.samo_lego.golfiv.commands
 org.samo_lego.golfiv.event
-org.samo_lego.golfiv.event.S2CPacket
 org.samo_lego.golfiv.event.combat
+org.samo_lego.golfiv.event.S2CPacket
 org.samo_lego.golfiv.mixin
 org.samo_lego.golfiv.mixin.accessors
 org.samo_lego.golfiv.mixin.duplication
