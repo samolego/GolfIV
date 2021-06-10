@@ -1,6 +1,9 @@
 package org.samo_lego.golfiv.casts;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.PotionItem;
+import net.minecraft.item.TippedArrowItem;
+import net.minecraft.potion.PotionUtil;
 
 /**
  * Checks iItemStacks.
@@ -31,6 +34,10 @@ public interface ItemStackChecker {
 
         if(original.hasEnchantments())
             fakedStack.addEnchantment(null, 0);
+
+        if(original.getItem() instanceof PotionItem || original.getItem() instanceof TippedArrowItem) {
+            fakedStack.getOrCreateTag().putInt("CustomPotionColor", PotionUtil.getColor(original));
+        }
 
         return fakedStack;
     }
