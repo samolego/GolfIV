@@ -4,6 +4,7 @@
   "package": "org.samo_lego.golfiv.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "PistonMixin_PreventDestruction",
     "ServerPlayerEntityMixinCast_Golfer",
     "ServerPlayNetworkHandlerMixin_PacketEvents",
     "accessors.EntityAccessor",
