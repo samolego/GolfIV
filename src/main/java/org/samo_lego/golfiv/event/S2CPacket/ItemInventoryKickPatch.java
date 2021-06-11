@@ -167,6 +167,14 @@ public class ItemInventoryKickPatch implements S2CPacketCallback {
                         if(tag.contains("author", NbtElement.STRING_TYPE)) fake.putSubTag("author", tag.get("author"));
                         if(tag.contains("generation", NbtElement.INT_TYPE)) fake.putSubTag("generation", tag.get("generation"));
                         // FIXME: Pages need to be present for the book to work. Force update on selection?
+                        // Prevents issues with other mods expecting pages to be present.
+                        fake.putSubTag("pages", new NbtList());
+                    }
+
+                    if(item instanceof WritableBookItem) {
+                        // FIXME: Pages need to be present for the book to work. Force update on selection?
+                        // Prevents issues with other mods expecting pages to be present.
+                        fake.putSubTag("pages", new NbtList());
                     }
 
                     return fake;
