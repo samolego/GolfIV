@@ -1,8 +1,7 @@
 package org.samo_lego.golfiv.casts;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.PotionItem;
-import net.minecraft.item.TippedArrowItem;
+import net.minecraft.item.*;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.potion.PotionUtil;
 
 /**
@@ -35,8 +34,15 @@ public interface ItemStackChecker {
         if(original.hasEnchantments())
             fakedStack.addEnchantment(null, 0);
 
-        if(original.getItem() instanceof PotionItem || original.getItem() instanceof TippedArrowItem) {
+        Item item = original.getItem();
+        if(item instanceof PotionItem || item instanceof TippedArrowItem) {
+            // Lets dropping potions and arrows to be less of a 'surprising' change.
             fakedStack.getOrCreateTag().putInt("CustomPotionColor", PotionUtil.getColor(original));
+        }
+
+        if(item instanceof WritableBookItem || item instanceof WrittenBookItem) {
+            // Prevents issues with other mods expecting pages to be present.
+            fakedStack.putSubTag("pages", new NbtList());
         }
 
         return fakedStack;
