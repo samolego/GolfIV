@@ -51,6 +51,11 @@ public interface ItemStackChecker {
             fakedStack.putSubTag("pages", new NbtList());
         }
 
+        if(item instanceof BannerItem) {
+            // Lets dropping banners not be a surprising change, and for illager patrol leaders to have a proper banner.
+            cleanBanner(original.getSubTag("BlockEntityTag"), fakedStack);
+        }
+
         return fakedStack;
     }
 
@@ -117,26 +122,7 @@ public interface ItemStackChecker {
             boolean flag = true;
             if(item instanceof BannerItem) {
                 flag = false;
-                NbtCompound blockEntity = stack.getSubTag("BlockEntityTag");
-                if (blockEntity != null && blockEntity.contains("Patterns", NbtElement.LIST_TYPE)) {
-                    NbtList fakePatterns = new NbtList();
-                    for(NbtElement pattern : blockEntity.getList("Patterns", NbtElement.COMPOUND_TYPE)) {
-                        if(!(pattern instanceof NbtCompound)) continue;
-                        NbtCompound oldPattern = (NbtCompound) pattern;
-                        if (oldPattern.contains("Color", NbtElement.INT_TYPE) &&
-                                oldPattern.contains("Pattern", NbtElement.STRING_TYPE)) {
-                            if(oldPattern.getSize() == 2) {
-                                fakePatterns.add(oldPattern);
-                            } else {
-                                NbtCompound fakePattern = new NbtCompound();
-                                fakePattern.put("Color", oldPattern.get("Color"));
-                                fakePattern.put("Pattern", oldPattern.get("Pattern"));
-                                fakePatterns.add(fakePattern);
-                            }
-                        }
-                    }
-                    fake.getOrCreateSubTag("BlockEntityTag").put("Patterns", fakePatterns);
-                }
+                cleanBanner(stack.getSubTag("BlockEntityTag"), fake);
             }
 
             if(flag) {
@@ -205,5 +191,39 @@ public interface ItemStackChecker {
         }
 
         return fake;
+    }
+
+    /**
+     * Minimally copies over the banner NBT based on the provided blockEntity data.
+     *
+     * Only the NBT required to render a layer is copied over.
+     *
+     * @param blockEntity The original block entity tag. May be null.
+     * @param faked The faked ItemStack to copy to.
+     * */
+    static void cleanBanner(NbtCompound blockEntity, ItemStack faked) {
+        if (blockEntity != null && blockEntity.contains("Patterns", NbtElement.LIST_TYPE)) {
+            NbtList fakePatterns = new NbtList();
+            int i = 0;
+            for(NbtElement pattern : blockEntity.getList("Patterns", NbtElement.COMPOUND_TYPE)) {
+                if(!(pattern instanceof NbtCompound)) continue;
+                // A 12 layer cap on the rewriting is primarily to prevent
+                // the faked stack from becoming the kicking item.
+                if(i++ >= 12) break;
+                NbtCompound oldPattern = (NbtCompound) pattern;
+                if (oldPattern.contains("Color", NbtElement.INT_TYPE) &&
+                        oldPattern.contains("Pattern", NbtElement.STRING_TYPE)) {
+                    if(oldPattern.getSize() == 2) {
+                        fakePatterns.add(oldPattern);
+                    } else {
+                        NbtCompound fakePattern = new NbtCompound();
+                        fakePattern.put("Color", oldPattern.get("Color"));
+                        fakePattern.put("Pattern", oldPattern.get("Pattern"));
+                        fakePatterns.add(fakePattern);
+                    }
+                }
+            }
+            faked.getOrCreateSubTag("BlockEntityTag").put("Patterns", fakePatterns);
+        }
     }
 }
