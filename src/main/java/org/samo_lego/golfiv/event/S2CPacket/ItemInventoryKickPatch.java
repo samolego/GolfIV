@@ -2,13 +2,13 @@ package org.samo_lego.golfiv.event.S2CPacket;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.samo_lego.golfiv.casts.ItemStackChecker;
 import org.samo_lego.golfiv.mixin.accessors.InventoryS2CPacketAccessor;
 import org.samo_lego.golfiv.mixin.accessors.ScreenHandlerSlotUpdateS2CPacketAccessor;
 
@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 import static org.samo_lego.golfiv.casts.ItemStackChecker.fakeStack;
-import static org.samo_lego.golfiv.casts.ItemStackChecker.inventoryStack;
 
 public class ItemInventoryKickPatch implements S2CPacketCallback {
 
@@ -35,17 +34,15 @@ public class ItemInventoryKickPatch implements S2CPacketCallback {
     @Override
     public void preSendPacket(Packet<?> packet, ServerPlayerEntity player, MinecraftServer server) {
         if(golfConfig.packet.patchItemKickExploit && packet instanceof InventoryS2CPacket) {
-            List<ItemStack> contents = ((InventoryS2CPacketAccessor) packet).getContents();
-            List<ItemStack> fakedContents = contents.stream().map(stack -> {
-                NbtCompound tag = stack.getTag();
-                if(tag != null) {
-                    return inventoryStack(stack);
-                }
+            PacketByteBuf testBuf = new PacketByteBuf(Unpooled.buffer());
+            packet.write(testBuf);
+            if(testBuf.readableBytes() > 2097140) {
+                List<ItemStack> contents = ((InventoryS2CPacketAccessor) packet).getContents();
+                List<ItemStack> fakedContents = contents.stream().map(ItemStackChecker::inventoryStack).collect(Collectors.toList());
 
-                return stack;
-            }).collect(Collectors.toList());
-
-            ((InventoryS2CPacketAccessor) packet).setContents(fakedContents);
+                ((InventoryS2CPacketAccessor) packet).setContents(fakedContents);
+            }
+            testBuf.release();
         } else if(golfConfig.packet.patchItemKickExploit && packet instanceof ScreenHandlerSlotUpdateS2CPacket) {
             ItemStack stack = ((ScreenHandlerSlotUpdateS2CPacketAccessor) packet).getStack();
             if(stack.getTag() != null) {
