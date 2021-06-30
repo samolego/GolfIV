@@ -190,6 +190,10 @@ public interface ItemStackChecker {
             fake.putSubTag("pages", new NbtList());
         }
 
+        if(item instanceof FilledMapItem) {
+            fake.getOrCreateTag().putInt("map", tag.getInt("map"));
+        }
+
         return fake;
     }
 
