@@ -41,6 +41,13 @@ public interface ItemStackChecker {
             fakedStack.addEnchantment(null, 0);
 
         Item item = original.getItem();
+        if(item instanceof DyeableItem) {
+            DyeableItem dyeable = (DyeableItem) item;
+            if(dyeable.hasColor(original)) {
+                dyeable.setColor(fakedStack, dyeable.getColor(original));
+            }
+        }
+
         if(item instanceof PotionItem || item instanceof TippedArrowItem) {
             // Lets dropping potions and arrows to be less of a 'surprising' change.
             fakedStack.getOrCreateTag().putInt("CustomPotionColor", PotionUtil.getColor(original));
