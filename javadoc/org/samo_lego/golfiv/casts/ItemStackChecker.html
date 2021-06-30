@@ -95,9 +95,21 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static net.minecraft.item.ItemStack</code></div>
-<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#fakeStack(net.minecraft.item.ItemStack,boolean)">fakeStack</a></span>&#8203;(net.minecraft.item.ItemStack&nbsp;original,
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#cleanBanner(net.minecraft.nbt.NbtCompound,net.minecraft.item.ItemStack)">cleanBanner</a></span>&#8203;(net.minecraft.nbt.NbtCompound&nbsp;blockEntity,
+ net.minecraft.item.ItemStack&nbsp;faked)</code></div>
+<div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Minimally copies over the banner NBT based on the provided blockEntity data.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table-tab1 method-summary-table"><code>static net.minecraft.item.ItemStack</code></div>
+<div class="col-second odd-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#fakeStack(net.minecraft.item.ItemStack,boolean)">fakeStack</a></span>&#8203;(net.minecraft.item.ItemStack&nbsp;original,
  boolean&nbsp;spoofCount)</code></div>
+<div class="col-last odd-row-color method-summary-table-tab1 method-summary-table">
+<div class="block">Creates a fake ItemStack based on the
+ provided stack.</div>
+</div>
+<div class="col-first even-row-color method-summary-table-tab1 method-summary-table"><code>static net.minecraft.item.ItemStack</code></div>
+<div class="col-second even-row-color method-summary-table-tab1 method-summary-table"><code><span class="member-name-link"><a href="#inventoryStack(net.minecraft.item.ItemStack)">inventoryStack</a></span>&#8203;(net.minecraft.item.ItemStack&nbsp;stack)</code></div>
 <div class="col-last even-row-color method-summary-table-tab1 method-summary-table">
 <div class="block">Creates a fake ItemStack based on the
  provided stack.</div>
@@ -146,6 +158,38 @@ loadScripts(document, 'script');</script>
 <dd><code>spoofCount</code> - whether or not the item count should be faked</dd>
 <dt>Returns:</dt>
 <dd>the faked ItemStack</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="inventoryStack(net.minecraft.item.ItemStack)">
+<h3>inventoryStack</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">net.minecraft.item.ItemStack</span>&nbsp;<span class="element-name">inventoryStack</span>&#8203;<span class="parameters">(net.minecraft.item.ItemStack&nbsp;stack)</span></div>
+<div class="block">Creates a fake ItemStack based on the
+ provided stack.
+
+ Changes the tag to be the minimal required
+ NBT to render in an inventory.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>stack</code> - The original ItemStack.</dd>
+<dt>Returns:</dt>
+<dd>The faked ItemStack</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="cleanBanner(net.minecraft.nbt.NbtCompound,net.minecraft.item.ItemStack)">
+<h3>cleanBanner</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">cleanBanner</span>&#8203;<span class="parameters">(net.minecraft.nbt.NbtCompound&nbsp;blockEntity,
+ net.minecraft.item.ItemStack&nbsp;faked)</span></div>
+<div class="block">Minimally copies over the banner NBT based on the provided blockEntity data.
+
+ Only the NBT required to render a layer is copied over.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>blockEntity</code> - The original block entity tag. May be null.</dd>
+<dd><code>faked</code> - The faked ItemStack to copy to.</dd>
 </dl>
 </section>
 </li>
