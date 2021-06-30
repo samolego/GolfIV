@@ -13,6 +13,8 @@
     "accessors.EntityTrackerUpdateS2CPacketAccessor",
     "accessors.InventoryS2CPacketAccessor",
     "accessors.ItemEntityAccessor",
+    "accessors.LivingEntityAccessor",
+    "accessors.PlayerEntityAccessor",
     "accessors.PlayerMoveC2SPacketAccessor",
     "accessors.PlaySoundS2CPacketAccessor",
     "accessors.ScreenHandlerSlotUpdateS2CPacketAccessor",
