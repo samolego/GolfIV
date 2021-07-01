@@ -6,11 +6,10 @@
   "mixins": [
     "PistonMixin_PreventDestruction",
     "ServerPlayerEntityMixinCast_Golfer",
-    "ServerPlayNetworkHandlerMixin_PacketEvents",
+    "accessors.DataTrackerAccessor",
     "accessors.EntityAccessor",
     "accessors.EntityEquipmentUpdateS2CPacketAccessor",
     "accessors.EntityPositionS2CPacketAccessor",
-    "accessors.EntityTrackerUpdateS2CPacketAccessor",
     "accessors.InventoryS2CPacketAccessor",
     "accessors.ItemEntityAccessor",
     "accessors.LivingEntityAccessor",
@@ -29,7 +28,9 @@
     "illegal_items.PlayerInventoryMixin_IllegalsCheckInsert",
     "illegal_items.ServerPlayNetworkHandlerMixin_CreativeItemsCheck",
     "illegal_items.ServerPlayNetworkHandlerMixin_IllegalsCheckSlot",
-    "movement.ServerPlayNetworkHandler_OnGroundCheck"
+    "movement.ServerPlayNetworkHandler_OnGroundCheck",
+    "packets.EntityTrackerUpdateS2CPacketMixin_DataPatch",
+    "packets.ServerPlayNetworkHandlerMixin_PacketEvents"
   ],
   "injectors": {
     "defaultRequire": 1
