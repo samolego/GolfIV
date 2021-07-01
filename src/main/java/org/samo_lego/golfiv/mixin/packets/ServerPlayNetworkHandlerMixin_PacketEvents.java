@@ -1,4 +1,4 @@
-package org.samo_lego.golfiv.mixin;
+package org.samo_lego.golfiv.mixin.packets;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
