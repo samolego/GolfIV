@@ -10,5 +10,6 @@ org.samo_lego.golfiv.mixin.duplication
 org.samo_lego.golfiv.mixin.illegal_actions
 org.samo_lego.golfiv.mixin.illegal_items
 org.samo_lego.golfiv.mixin.movement
+org.samo_lego.golfiv.mixin.packets
 org.samo_lego.golfiv.storage
 org.samo_lego.golfiv.utils
