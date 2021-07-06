@@ -75,7 +75,7 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
                     this.itemStack.getItem() == Items.LINGERING_POTION
                 )
         ) {
-            List<StatusEffectInstance> effects = PotionUtil.getPotionEffects(this.itemStack);
+            List<StatusEffectInstance> effects = PotionUtil.getCustomPotionEffects(this.itemStack);
             for(StatusEffectInstance effect : effects) {
                 if(effect.getAmplifier() > 1) {
                     this.removeSubTag("CustomPotionEffects");
