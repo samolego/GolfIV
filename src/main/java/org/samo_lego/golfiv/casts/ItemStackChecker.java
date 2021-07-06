@@ -2,6 +2,8 @@ package org.samo_lego.golfiv.casts;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ShulkerBoxBlock;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -10,10 +12,18 @@ import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Checks iItemStacks.
  */
 public interface ItemStackChecker {
+    /**
+     * Cached unluck singleton
+     */
+    Collection<StatusEffectInstance> UNLUCK = Collections.singleton(new StatusEffectInstance(StatusEffects.UNLUCK, 6000));
+
     /**
      * Checks the ItemStack and makes it legal.
      * Removes all enchantments if they are incompatible or
@@ -51,6 +61,9 @@ public interface ItemStackChecker {
         if(item instanceof PotionItem || item instanceof TippedArrowItem) {
             // Lets dropping potions and arrows to be less of a 'surprising' change.
             fakedStack.getOrCreateTag().putInt("CustomPotionColor", PotionUtil.getColor(original));
+            if (item.hasGlint(original)) {
+                PotionUtil.setCustomPotionEffects(fakedStack, UNLUCK);
+            }
         }
 
         if(item instanceof WritableBookItem || item instanceof WrittenBookItem) {
