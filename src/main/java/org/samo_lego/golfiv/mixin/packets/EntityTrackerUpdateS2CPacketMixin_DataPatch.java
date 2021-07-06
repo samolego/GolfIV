@@ -54,8 +54,8 @@ public class EntityTrackerUpdateS2CPacketMixin_DataPatch {
         Entity entity = ((DataTrackerAccessor) tracker).getTrackedEntity();
 
         if (golfConfig.packet.removeHealthTags && entity instanceof LivingEntity && entity.isAlive() && !(entity instanceof Saddleable)) {
-            trackedValues.removeIf(trackedValue -> trackedValue.getData().equals(LIVING_ENTITY_HEALTH));
-            trackedValues.removeIf(trackedValue -> trackedValue.getData().equals(PLAYER_ENTITY_ABSORPTION));
+            trackedValues.removeIf(trackedValue -> trackedValue.getData() == LIVING_ENTITY_HEALTH);
+            trackedValues.removeIf(trackedValue -> trackedValue.getData() == PLAYER_ENTITY_ABSORPTION);
 
             if (entity instanceof IronGolemEntity || entity instanceof WitherEntity) {
                 // Reinjects the health data aligned to quarters.
@@ -70,7 +70,7 @@ public class EntityTrackerUpdateS2CPacketMixin_DataPatch {
                 trackedValues.add(fakeEntry);
             }
         } else if (golfConfig.packet.removeDroppedItemInfo && entity instanceof ItemEntity) {
-            boolean removed = trackedValues.removeIf(entry -> entry.getData().equals(ITEM_ENTITY_STACK)); // Original item
+            boolean removed = trackedValues.removeIf(entry -> entry.getData() == ITEM_ENTITY_STACK); // Original item
             if (removed) {
                 ItemStack original = ((ItemEntity) entity).getStack();
 
