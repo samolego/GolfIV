@@ -115,7 +115,7 @@ curseforge {
 
 	project {
 		id = "462519"
-		changelog = "A changelog can be found at https://github.com/samolego/GolfIV/commits/"
+		changelog = "A changelog can be found at https://github.com/samolego/GolfIV/releases/latest"
 		releaseType = "release"
 		addGameVersion "${project.minecraft_version}"
 		addGameVersion "Fabric"
@@ -144,6 +144,7 @@ task modrinth(type: TaskModrinthUpload, dependsOn: remapJar) {
 	versionNumber = version
 	versionName = "[${project.minecraft_version}] GolfIV ${version}"
 	releaseType = "release"
+	changelog = "A changelog can be found at https://github.com/samolego/GolfIV/releases/latest"
 
 	uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
 
