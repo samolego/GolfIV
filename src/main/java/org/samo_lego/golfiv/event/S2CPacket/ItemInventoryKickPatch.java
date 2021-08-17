@@ -45,7 +45,7 @@ public class ItemInventoryKickPatch implements S2CPacketCallback {
             testBuf.release();
         } else if(golfConfig.packet.patchItemKickExploit && packet instanceof ScreenHandlerSlotUpdateS2CPacket) {
             ItemStack stack = ((ScreenHandlerSlotUpdateS2CPacketAccessor) packet).getStack();
-            if(stack.getTag() != null) {
+            if(stack.getNbt() != null) {
                 PacketByteBuf testBuf = new PacketByteBuf(Unpooled.buffer());
                 if(testBuf.writeItemStack(stack).readableBytes() > 2097140) {
                     ((ScreenHandlerSlotUpdateS2CPacketAccessor) packet).setStack(fakeStack(stack, false));

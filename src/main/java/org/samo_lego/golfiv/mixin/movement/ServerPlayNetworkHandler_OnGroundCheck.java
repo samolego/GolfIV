@@ -37,32 +37,34 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             )
     )
     private void checkOnGround(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        Entity bottomEntity = player.getRootVehicle();
-        if(bottomEntity == null) {
-            bottomEntity = player;
-        }
-        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packet.getY(player.getY()) - player.getY() - 0.25005D, 0);
+        if(golfConfig.movement.yesFall) {
+            Entity bottomEntity = player.getRootVehicle();
+            if(bottomEntity == null) {
+                bottomEntity = player;
+            }
+            final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packet.getY(player.getY()) - player.getY() - 0.25005D, 0);
 
-        Stream<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
-        long blockCollisions = collidingBlocks.count();
+            Stream<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+            long blockCollisions = collidingBlocks.count();
 
-        if(blockCollisions != 0) {
-            // Preferring block collisions over entity ones
-            ((Golfer) player).setEntityCollisions(false);
-            ((Golfer) player).setBlockCollisions(true);
-        }
-        else {
-            Entity finalBottomEntity = bottomEntity;
-            Stream<VoxelShape> collidingEntities = player.getEntityWorld().getEntityCollisions(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
-            long entityCollisions = collidingEntities.count();
+            if(blockCollisions != 0) {
+                // Preferring block collisions over entity ones
+                ((Golfer) player).setEntityCollisions(false);
+                ((Golfer) player).setBlockCollisions(true);
+            }
+            else {
+                Entity finalBottomEntity = bottomEntity;
+                Stream<VoxelShape> collidingEntities = player.getEntityWorld().getEntityCollisions(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
+                long entityCollisions = collidingEntities.count();
 
-            ((Golfer) player).setEntityCollisions(entityCollisions != 0);
-            ((Golfer) player).setBlockCollisions(false);
-        }
+                ((Golfer) player).setEntityCollisions(entityCollisions != 0);
+                ((Golfer) player).setBlockCollisions(false);
+            }
 
-        if(!((Golfer) player).isNearGround() && packet.isOnGround() && golfConfig.movement.yesFall) {
-            // Player isn't on ground packets but client says it is
-            ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
+            if(!((Golfer) player).isNearGround() && packet.isOnGround()) {
+                // Player isn't on ground packets but client says it is
+                ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
+            }
         }
     }
 }

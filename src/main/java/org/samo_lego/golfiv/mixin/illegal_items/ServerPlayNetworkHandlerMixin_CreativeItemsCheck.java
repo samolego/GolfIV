@@ -26,12 +26,12 @@ public abstract class ServerPlayNetworkHandlerMixin_CreativeItemsCheck {
             method = "onCreativeInventoryAction(Lnet/minecraft/network/packet/c2s/play/CreativeInventoryActionC2SPacket;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/item/ItemStack;getSubTag(Ljava/lang/String;)Lnet/minecraft/nbt/NbtCompound;"
+                    target = "Lnet/minecraft/item/ItemStack;getSubNbt(Ljava/lang/String;)Lnet/minecraft/nbt/NbtCompound;"
             )
     )
     private ItemStack checkCreativeItem(ItemStack itemStack) {
         if(golfConfig.items.creative.removeCreativeNBTTags) {
-            NbtCompound compoundTag = itemStack.getTag();
+            NbtCompound compoundTag = itemStack.getNbt();
             NbtCompound newData = new NbtCompound();
             if(compoundTag != null) {
                 golfConfig.items.creative.whitelistedNBT.forEach(tag -> {
@@ -40,7 +40,7 @@ public abstract class ServerPlayNetworkHandlerMixin_CreativeItemsCheck {
                     }
                 });
             }
-            itemStack.setTag(newData);
+            itemStack.setNbt(newData);
             //noinspection ConstantConditions
             ((ItemStackChecker) (Object) itemStack).makeLegal(false);
         }

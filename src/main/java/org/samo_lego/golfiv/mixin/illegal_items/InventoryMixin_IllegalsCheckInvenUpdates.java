@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
+import static org.samo_lego.golfiv.GolfIV.golfConfig;
+
 /**
  * Legalizes the entire inventory after certain large inventory updates
  */
@@ -50,9 +52,13 @@ abstract class InventoryMixin_IllegalsCheckInvenUpdates {
      * Legalizes the entire inventory
      */
     private void legaliseInventory() {
-        for (DefaultedList<ItemStack> stacks : this.combinedInventory) {
-            legaliseMany(stacks, !this.player.isCreative());
-        }
+        if(
+            (golfConfig.items.survival.legaliseWholeInventory && !this.player.isCreative()) ||
+            (golfConfig.items.creative.legaliseWholeInventory && this.player.isCreative())
+        )
+            for (DefaultedList<ItemStack> stacks : this.combinedInventory) {
+                legaliseMany(stacks, !this.player.isCreative());
+            }
     }
 
     /**
@@ -63,6 +69,7 @@ abstract class InventoryMixin_IllegalsCheckInvenUpdates {
      */
     private void legaliseMany(DefaultedList<ItemStack> stacks, boolean survival) {
         for (ItemStack itemStack : stacks) {
+            //noinspection ConstantConditions
             ((ItemStackChecker) (Object) itemStack).makeLegal(survival);
         }
     }
