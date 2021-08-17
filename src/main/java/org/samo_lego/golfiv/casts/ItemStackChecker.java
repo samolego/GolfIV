@@ -51,8 +51,7 @@ public interface ItemStackChecker {
             fakedStack.addEnchantment(null, 0);
 
         Item item = original.getItem();
-        if(item instanceof DyeableItem) {
-            DyeableItem dyeable = (DyeableItem) item;
+        if(item instanceof DyeableItem dyeable) {
             if(dyeable.hasColor(original)) {
                 dyeable.setColor(fakedStack, dyeable.getColor(original));
             }
@@ -60,7 +59,7 @@ public interface ItemStackChecker {
 
         if(item instanceof PotionItem || item instanceof TippedArrowItem) {
             // Lets dropping potions and arrows to be less of a 'surprising' change.
-            fakedStack.getOrCreateTag().putInt("CustomPotionColor", PotionUtil.getColor(original));
+            fakedStack.getOrCreateNbt().putInt("CustomPotionColor", PotionUtil.getColor(original));
             if (item.hasGlint(original)) {
                 PotionUtil.setCustomPotionEffects(fakedStack, UNLUCK);
             }
@@ -68,12 +67,12 @@ public interface ItemStackChecker {
 
         if(item instanceof WritableBookItem || item instanceof WrittenBookItem) {
             // Prevents issues with other mods expecting pages to be present.
-            fakedStack.putSubTag("pages", new NbtList());
+            fakedStack.setSubNbt("pages", new NbtList());
         }
 
         if(item instanceof BannerItem) {
             // Lets dropping banners not be a surprising change, and for illager patrol leaders to have a proper banner.
-            cleanBanner(original.getSubTag("BlockEntityTag"), fakedStack);
+            cleanBanner(original.getSubNbt("BlockEntityTag"), fakedStack);
         }
 
         return fakedStack;
@@ -92,7 +91,7 @@ public interface ItemStackChecker {
     static ItemStack inventoryStack(ItemStack stack) {
         // TODO: Perhaps take a more dynamic approach to this?
         //  This is not really flexible as is and may leave modded items broken.
-        NbtCompound tag = stack.getTag();
+        NbtCompound tag = stack.getNbt();
         if(tag == null || tag.isEmpty()) {
             // Sanitization isn't necessary when it's already empty.
             return stack;
@@ -110,26 +109,27 @@ public interface ItemStackChecker {
             if(display.contains(ItemStack.COLOR_KEY)) fakeDisplay.put(ItemStack.COLOR_KEY, display.get(ItemStack.COLOR_KEY));
             NbtElement lore = display.get(ItemStack.LORE_KEY);
             if(lore != null) fakeDisplay.put(ItemStack.LORE_KEY, lore);
-            fake.putSubTag(ItemStack.DISPLAY_KEY, fakeDisplay);
+            fake.setSubNbt(ItemStack.DISPLAY_KEY, fakeDisplay);
         }
 
         // Rewrite enchantments.
         if(stack.hasEnchantments()) {
             NbtList enchants = new NbtList();
+            final String ID_KEY = "id";
+            final String LVL_KEY = "lvl";
             for(NbtElement enchant : stack.getEnchantments()) {
-                if(enchant instanceof NbtCompound) {
-                    NbtCompound compound = (NbtCompound) enchant;
-                    String id = compound.getString(ItemStack.ID_KEY);
-                    int lvl = compound.getInt(ItemStack.LVL_KEY);
+                if(enchant instanceof NbtCompound compound) {
+                    String id = compound.getString(ID_KEY);
+                    int lvl = compound.getInt(LVL_KEY);
                     if(Registry.ENCHANTMENT.containsId(new Identifier(id))) {
                         NbtCompound minimalEnchant = new NbtCompound();
-                        minimalEnchant.putString(ItemStack.ID_KEY, id);
-                        minimalEnchant.putInt(ItemStack.LVL_KEY, lvl);
+                        minimalEnchant.putString(ID_KEY, id);
+                        minimalEnchant.putInt(LVL_KEY, lvl);
                         enchants.add(minimalEnchant);
                     }
                 }
             }
-            fake.putSubTag(ItemStack.ENCHANTMENTS_KEY, enchants);
+            fake.setSubNbt(ItemStack.ENCHANTMENTS_KEY, enchants);
         }
 
         // Rewrite damage if it is damageable.
@@ -142,7 +142,7 @@ public interface ItemStackChecker {
             boolean flag = true;
             if(item instanceof BannerItem) {
                 flag = false;
-                cleanBanner(stack.getSubTag("BlockEntityTag"), fake);
+                cleanBanner(stack.getSubNbt("BlockEntityTag"), fake);
             }
 
             if(flag) {
@@ -150,9 +150,9 @@ public interface ItemStackChecker {
 
                 // Rewrite shulker items
                 if (block instanceof ShulkerBoxBlock) {
-                    NbtCompound blockEntity = stack.getSubTag("BlockEntityTag");
+                    NbtCompound blockEntity = stack.getSubNbt("BlockEntityTag");
                     if(blockEntity != null) {
-                        NbtCompound fakeEntity = fake.getOrCreateSubTag("BlockEntityTag");
+                        NbtCompound fakeEntity = fake.getOrCreateSubNbt("BlockEntityTag");
                         if(blockEntity.contains("LootTable", NbtElement.STRING_TYPE)) {
                             fakeEntity.put("LootTable", blockEntity.get("LootTable"));
                         }
@@ -177,8 +177,8 @@ public interface ItemStackChecker {
 
         // Rewrite potion effects.
         if(item instanceof PotionItem || item instanceof TippedArrowItem) {
-            if(tag.contains("Potion", NbtElement.STRING_TYPE)) fake.putSubTag("Potion", tag.get("Potion"));
-            if(tag.contains("CustomPotionColor", NbtElement.INT_TYPE)) fake.putSubTag("CustomPotionColor", tag.get("CustomPotionColor"));
+            if(tag.contains("Potion", NbtElement.STRING_TYPE)) fake.setSubNbt("Potion", tag.get("Potion"));
+            if(tag.contains("CustomPotionColor", NbtElement.INT_TYPE)) fake.setSubNbt("CustomPotionColor", tag.get("CustomPotionColor"));
             if(tag.contains("CustomPotionEffects", NbtElement.LIST_TYPE)) {
                 NbtList fakeEffects = new NbtList();
                 for(NbtElement effect : tag.getList("CustomPotionEffects", NbtElement.COMPOUND_TYPE)) {
@@ -190,28 +190,28 @@ public interface ItemStackChecker {
                     if(oldEffect.contains("Duration", NbtElement.INT_TYPE)) fakeEffect.put("Duration", oldEffect.get("Duration"));
                     fakeEffects.add(fakeEffect);
                 }
-                fake.putSubTag("CustomPotionEffects", fakeEffects);
+                fake.setSubNbt("CustomPotionEffects", fakeEffects);
             }
         }
 
         // Brokenly rewrites written books.
         if(item instanceof WrittenBookItem) {
-            if(tag.contains("title", NbtElement.STRING_TYPE)) fake.putSubTag("title", tag.get("title"));
-            if(tag.contains("author", NbtElement.STRING_TYPE)) fake.putSubTag("author", tag.get("author"));
-            if(tag.contains("generation", NbtElement.INT_TYPE)) fake.putSubTag("generation", tag.get("generation"));
+            if(tag.contains("title", NbtElement.STRING_TYPE)) fake.setSubNbt("title", tag.get("title"));
+            if(tag.contains("author", NbtElement.STRING_TYPE)) fake.setSubNbt("author", tag.get("author"));
+            if(tag.contains("generation", NbtElement.INT_TYPE)) fake.setSubNbt("generation", tag.get("generation"));
             // FIXME: Pages need to be present for the book to work. Force update on selection?
             // Prevents issues with other mods expecting pages to be present.
-            fake.putSubTag("pages", new NbtList());
+            fake.setSubNbt("pages", new NbtList());
         }
 
         if(item instanceof WritableBookItem) {
             // FIXME: Pages need to be present for the book to work. Force update on selection?
             // Prevents issues with other mods expecting pages to be present.
-            fake.putSubTag("pages", new NbtList());
+            fake.setSubNbt("pages", new NbtList());
         }
 
         if(item instanceof FilledMapItem) {
-            fake.getOrCreateTag().putInt("map", tag.getInt("map"));
+            fake.getOrCreateNbt().putInt("map", tag.getInt("map"));
         }
 
         return fake;
@@ -247,7 +247,7 @@ public interface ItemStackChecker {
                     }
                 }
             }
-            faked.getOrCreateSubTag("BlockEntityTag").put("Patterns", fakePatterns);
+            faked.getOrCreateSubNbt("BlockEntityTag").put("Patterns", fakePatterns);
         }
     }
 }

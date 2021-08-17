@@ -44,6 +44,9 @@ public class GolfConfig {
         public static class Survival {
             public final String _comment_legalise = "// Whether to enable 'legalising' survival items.";
 
+            public final String _comment_legaliseWholeInventory = "// Whether to check whole inventory when connecting / changing dimensions, etc.";
+            public boolean legaliseWholeInventory = true;
+
             public final String _comment_bannedSurvivalItems = "// Which items should be cleared when clicked in survival inventory";
             public ArrayList<String> bannedItems = new ArrayList<>(Arrays.asList(
                     "minecraft:barrier",
@@ -58,6 +61,8 @@ public class GolfConfig {
             public boolean checkItemCount = true;
         }
         public static class Creative {
+            public final String _comment_legaliseWholeInventory = "// Whether to check whole inventory when connecting / changing dimensions, etc.";
+            public boolean legaliseWholeInventory = true;
 
             public final String _comment_whitelistedNBT = "// Which NBT shouldn't be cleared";
             public ArrayList<String> whitelistedNBT = new ArrayList<>(Arrays.asList(

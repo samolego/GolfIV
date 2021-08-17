@@ -30,11 +30,11 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
 
     @Shadow public abstract NbtList getEnchantments();
 
-    @Shadow public abstract void removeSubTag(String key);
-
     @Shadow public abstract int getMaxCount();
 
     @Shadow public abstract void setCount(int count);
+
+    @Shadow public abstract void removeSubNbt(String key);
 
     private final ItemStack itemStack = (ItemStack) (Object) this;
 
@@ -58,7 +58,7 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
                 otherEnchants.remove(enchantment);
 
                 if(!enchantment.isAcceptableItem(this.itemStack) || !EnchantmentHelper.isCompatible(otherEnchants, enchantment) || level > enchantment.getMaxLevel()) {
-                    this.removeSubTag("Enchantments");
+                    this.removeSubNbt("Enchantments");
                     break;
                 }
             }
@@ -78,8 +78,8 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
             List<StatusEffectInstance> effects = PotionUtil.getCustomPotionEffects(this.itemStack);
             for(StatusEffectInstance effect : effects) {
                 if(effect.getAmplifier() > 1) {
-                    this.removeSubTag("CustomPotionEffects");
-                    this.removeSubTag("Potion");
+                    this.removeSubNbt("CustomPotionEffects");
+                    this.removeSubNbt("Potion");
                     break;
                 }
             }
