@@ -17,7 +17,7 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
  **/
 @Mixin(PistonBlock.class)
 public class PistonMixin_PreventDestruction {
-    @Redirect(method = "onSyncedBlockEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;removeBlock(Lnet/minecraft/util/math/BlockPos;Z)Z"))
+    @Redirect(method = "onSyncedBlockEvent", require = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;removeBlock(Lnet/minecraft/util/math/BlockPos;Z)Z"))
     private boolean redirectWorld(World world, BlockPos pos, boolean move) {
         if(!golfConfig.main.preventDestructionByHeadlessPistons || world.getBlockState(pos).isOf(Blocks.PISTON_HEAD)) {
             return world.removeBlock(pos, move);
