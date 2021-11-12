@@ -27,12 +27,12 @@ public class ServerPlayNetworkHandlerMixin_MessageCheck {
      * while in nether portals / having GUI open.
      */
     @Inject(
-            method = "onGameMessage(Lnet/minecraft/network/packet/c2s/play/ChatMessageC2SPacket;)V",
+            method = "onChatMessage(Lnet/minecraft/network/packet/c2s/play/ChatMessageC2SPacket;)V",
             at = @At("HEAD"),
             cancellable = true
     )
     private void stopMessageSend(ChatMessageC2SPacket packet, CallbackInfo ci) {
-        if ((golfConfig.main.checkInventoryActions && ((Golfer) player).hasOpenGui()) || (golfConfig.packet.checkPortalHack &&((EntityAccessor) player).inNetherPortal())) {
+        if ((golfConfig.main.checkInventoryActions && ((Golfer) player).hasOpenGui()) || (golfConfig.packet.checkPortalHack && ((EntityAccessor) player).inNetherPortal())) {
             ci.cancel();
         }
     }
