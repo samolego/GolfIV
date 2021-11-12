@@ -2,6 +2,7 @@ package org.samo_lego.golfiv.storage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -170,6 +171,10 @@ public class GolfConfig {
         public final String _comment_patchDeathDuplication1 = "// Checks if player is connected before applying damage.";
         public final String _comment_patchDeathDuplication2 = "// Prevents duplicating inventory if player dies after disconnect.";
         public boolean patchDeathDuplication = true;
+
+        @SerializedName("// Whether to set item stack size to 0 after writing it on disk.")
+        public final String _comment_patchItemSave = "";
+        public boolean patchItemSave = true;
     }
 
     /**

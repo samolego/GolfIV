@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
@@ -37,32 +38,31 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             )
     )
     private void checkOnGround(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.movement.yesFall) {
+        if(golfConfig.movement.yesFall && packet.isOnGround()) {
             Entity bottomEntity = player.getRootVehicle();
             if(bottomEntity == null) {
                 bottomEntity = player;
             }
             final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packet.getY(player.getY()) - player.getY() - 0.25005D, 0);
 
-            Stream<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
-            long blockCollisions = collidingBlocks.count();
+            Iterable<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+            boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
-            if(blockCollisions != 0) {
+            if(blockCollisions) {
                 // Preferring block collisions over entity ones
                 ((Golfer) player).setEntityCollisions(false);
                 ((Golfer) player).setBlockCollisions(true);
             }
             else {
                 Entity finalBottomEntity = bottomEntity;
-                Stream<VoxelShape> collidingEntities = player.getEntityWorld().getEntityCollisions(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
-                long entityCollisions = collidingEntities.count();
+                List<Entity> collidingEntities = player.getEntityWorld().getOtherEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
 
-                ((Golfer) player).setEntityCollisions(entityCollisions != 0);
+                ((Golfer) player).setEntityCollisions(!collidingEntities.isEmpty());
                 ((Golfer) player).setBlockCollisions(false);
             }
 
-            if(!((Golfer) player).isNearGround() && packet.isOnGround()) {
-                // Player isn't on ground packets but client says it is
+            if(!((Golfer) player).isNearGround()) {
+                // Player isn't on ground but client packet says it is
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
             }
         }
