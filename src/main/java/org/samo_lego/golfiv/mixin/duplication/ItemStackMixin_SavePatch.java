@@ -17,21 +17,13 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 public abstract class ItemStackMixin_SavePatch {
     @Shadow public abstract void setCount(int count);
 
-    @Shadow public abstract String getTranslationKey();
-
     @Shadow public abstract Item getItem();
-
-    @Shadow public abstract int getCount();
 
     @Inject(method = "writeNbt(Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/nbt/NbtCompound;", at = @At("HEAD"), cancellable = true)
     private void writeStack(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
         if(golfConfig.duplication.patchItemSave) {
-            System.out.println("Saving " + this.getTranslationKey());
-
             ItemStack copy = ((ItemStack) (Object) this).copy();
             this.setCount(0);
-
-            System.out.println("This: " + this.getCount() + " vs copy: " + copy);
 
             Identifier identifier = Registry.ITEM.getId(copy.getItem());
             nbt.putString("id", identifier.toString());
@@ -39,8 +31,6 @@ public abstract class ItemStackMixin_SavePatch {
             if (copy.getNbt() != null) {
                 nbt.put("tag", copy.getNbt().copy());
             }
-
-            System.out.println(nbt);
 
             cir.setReturnValue(nbt);
         }
