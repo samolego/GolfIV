@@ -17,9 +17,6 @@ repositories {
 	}
 }
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
-
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
@@ -107,7 +104,7 @@ curseforge {
 
 	project {
 		id = "462519"
-		changelog = "A changelog can be found at https://github.com/samolego/GolfIV/releases/latest"
+		changelog = ENV.CHANGELOG ?: "A changelog can be found at https://github.com/samolego/GolfIV/releases/tag/${version}"
 		releaseType = "release"
 		addGameVersion "${project.minecraft_version}"
 		addGameVersion "Fabric"
@@ -136,7 +133,7 @@ task modrinth(type: TaskModrinthUpload, dependsOn: remapJar) {
 	versionNumber = version
 	versionName = "[${project.minecraft_version}] GolfIV ${version}"
 	releaseType = "release"
-	changelog = "A changelog can be found at https://github.com/samolego/GolfIV/releases/latest"
+	changelog = ENV.CHANGELOG ?: "A changelog can be found at https://github.com/samolego/GolfIV/releases/tag/${version}"
 
 	uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
 
