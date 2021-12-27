@@ -18,7 +18,6 @@
     "accessors.PlaySoundS2CPacketAccessor",
     "accessors.ScreenHandlerSlotUpdateS2CPacketAccessor",
     "duplication.FallingBlockEntityMixin_GravityBlockDupe",
-    "duplication.ItemStackMixin_SavePatch",
     "duplication.ServerPlayerEntityMixin_NoConnectionDeath",
     "duplication.StringTagMixin_StringWriteLimit",
     "illegal_actions.ServerPlayerEntityMixin_InventoryClose",
