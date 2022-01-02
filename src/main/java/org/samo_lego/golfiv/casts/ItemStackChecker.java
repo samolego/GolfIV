@@ -75,6 +75,11 @@ public interface ItemStackChecker {
             cleanBanner(original.getSubNbt("BlockEntityTag"), fakedStack);
         }
 
+        if (item instanceof SkullItem) {
+            // Lets dropping player heads not be a surprising change, and for wearing heads to show the actual skin.
+            cleanSkull(original.getSubNbt(SkullItem.SKULL_OWNER_KEY), fakedStack);
+        }
+
         return fakedStack;
     }
 
@@ -143,6 +148,12 @@ public interface ItemStackChecker {
             if(item instanceof BannerItem) {
                 flag = false;
                 cleanBanner(stack.getSubNbt("BlockEntityTag"), fake);
+            }
+
+            // Transfer SkullProperties.
+            if (item instanceof SkullItem) {
+                flag = false;
+                cleanSkull(stack.getSubNbt(SkullItem.SKULL_OWNER_KEY), fake);
             }
 
             if(flag) {
@@ -215,6 +226,38 @@ public interface ItemStackChecker {
         }
 
         return fake;
+    }
+
+    /**
+     * Minimally copies over the skull data based on the provided SkullOwner data.
+     * <p>
+     * Only the NBT required to render the skull is copied over.
+     *
+     * @param skullOwner The SkullOwner NBT compound. May be null.
+     * @param faked      The faked ItemStack to copy to.
+     */
+    static void cleanSkull(NbtCompound skullOwner, ItemStack faked) {
+        if (skullOwner != null) {
+            NbtCompound fakeSkullOwner = faked.getOrCreateSubNbt(SkullItem.SKULL_OWNER_KEY);
+            if (skullOwner.containsUuid("Id")) fakeSkullOwner.putUuid("Id", skullOwner.getUuid("Id"));
+            if (skullOwner.contains("Properties", NbtElement.COMPOUND_TYPE)) {
+                NbtCompound skullProperties = skullOwner.getCompound("Properties");
+                if (skullProperties.contains("textures", NbtElement.LIST_TYPE)) {
+                    NbtList skullTextures = skullProperties.getList("textures", NbtElement.COMPOUND_TYPE);
+                    if (!skullTextures.isEmpty()) {
+                        NbtCompound skullValueContainer = skullTextures.getCompound(0);
+                        String skullTexture = skullValueContainer.getString("Value");
+                        NbtCompound fakeProperties = new NbtCompound();
+                        NbtList fakeTextures = new NbtList();
+                        NbtCompound fakeTexture = new NbtCompound();
+                        fakeTexture.putString("Value", skullTexture);
+                        fakeTextures.add(fakeTexture);
+                        fakeProperties.put("textures", fakeTextures);
+                        fakeSkullOwner.put("Properties", fakeProperties);
+                    }
+                }
+            }
+        }
     }
 
     /**
