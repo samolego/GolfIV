@@ -7,6 +7,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtInt;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Identifier;
@@ -81,6 +82,23 @@ public interface ItemStackChecker {
         }
 
         return fakedStack;
+    }
+
+    /**
+     * This is for keeping creative from getting inadvertently sanitised,
+     * as creative has the property of allowing one to summon any item at will,
+     * including freely mutating the inventory.
+     *
+     * @param stack The original ItemStack.
+     * @return The faked ItemStack, with a GolfIV pointer injected.
+     * @author Ampflower
+     * @see #inventoryStack(ItemStack)
+     */
+    static ItemStack creativeInventoryStack(ItemStack stack) {
+        ItemStack fake = inventoryStack(stack);
+        if (stack.hasNbt()) //noinspection ConstantConditions
+            fake.setSubNbt("GolfIV", NbtInt.of(stack.getNbt().hashCode()));
+        return fake;
     }
 
     /**
