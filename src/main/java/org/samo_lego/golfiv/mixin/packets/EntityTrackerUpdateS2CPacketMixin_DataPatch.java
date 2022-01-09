@@ -4,10 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Saddleable;
-import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
 import net.minecraft.util.math.MathHelper;
@@ -53,26 +51,28 @@ public class EntityTrackerUpdateS2CPacketMixin_DataPatch {
 
         Entity entity = ((DataTrackerAccessor) tracker).getTrackedEntity();
 
-        if (golfConfig.packet.removeHealthTags && entity instanceof LivingEntity && entity.isAlive() && !(entity instanceof Saddleable)) {
+        if (golfConfig.packet.removeHealthTags && entity instanceof LivingEntity livingEntity && entity.isAlive() && !(entity instanceof Saddleable)) {
             trackedValues.removeIf(trackedValue -> trackedValue.getData() == LIVING_ENTITY_HEALTH);
             trackedValues.removeIf(trackedValue -> trackedValue.getData() == PLAYER_ENTITY_ABSORPTION);
 
-            if (entity instanceof IronGolemEntity || entity instanceof WitherEntity) {
-                // Reinjects the health data aligned to quarters.
-                LivingEntity livingEntity = (LivingEntity) entity;
+            // This allows for iron golems to be visually broken, withers to have their shields,
+            // and wolves to show their health, while still spoofing the health to a variable degree.
+            // This is editable in GolfConfig as allowHealthTags.
+            if (golfConfig.packet.allowedHealthTags.containsKey(entity.getType())) {
+                float percentage = golfConfig.packet.allowedHealthTags.getFloat(entity.getType());
+                float divider = livingEntity.getMaxHealth() * percentage;
 
-                // This takes away 1, divides by 25, floors, multiplies and add 1,
-                // spoofing health to be within 25 of the actual value.
-                // This allows for the iron golem to be visually broken, and for the wither to have its shield.
-                Float newHealth = MathHelper.floor((livingEntity.getHealth() - 1F) / 25F) * 25F + 1F;
+                // Shortcuts to livingEntity.getHealth on <= 1F.
+                Float newHealth = divider <= 1F ? livingEntity.getHealth() :
+                        MathHelper.floor((livingEntity.getHealth() - 1F) / divider) * divider + 1F;
 
                 DataTracker.Entry<Float> fakeEntry = new DataTracker.Entry<>(LIVING_ENTITY_HEALTH, newHealth);
                 trackedValues.add(fakeEntry);
             }
-        } else if (golfConfig.packet.removeDroppedItemInfo && entity instanceof ItemEntity) {
+        } else if (golfConfig.packet.removeDroppedItemInfo && entity instanceof ItemEntity itemEntity) {
             boolean removed = trackedValues.removeIf(entry -> entry.getData() == ITEM_ENTITY_STACK); // Original item
             if (removed) {
-                ItemStack original = ((ItemEntity) entity).getStack();
+                ItemStack original = itemEntity.getStack();
 
                 DataTracker.Entry<ItemStack> fakeEntry = new DataTracker.Entry<>(ITEM_ENTITY_STACK, fakeStack(original, false));
                 trackedValues.add(fakeEntry);
