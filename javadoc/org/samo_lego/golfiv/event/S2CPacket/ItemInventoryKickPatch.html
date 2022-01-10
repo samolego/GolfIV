@@ -123,8 +123,8 @@ implements <a href="S2CPacketCallback.html" title="interface in org.samo_lego.go
  net.minecraft.server.network.ServerPlayerEntity&nbsp;player,
  net.minecraft.server.MinecraftServer&nbsp;server)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Changes ItemStacks in <code>InventoryS2CPacket</code>
- to not include tags, as they get sent additionally by <code>ScreenHandlerSlotUpdateS2CPacket</code></div>
+<div class="block">Removes non-critical tags from item stacks in the event of a
+ creative player and packet overflows.</div>
 </div>
 </div>
 </div>
@@ -163,8 +163,13 @@ implements <a href="S2CPacketCallback.html" title="interface in org.samo_lego.go
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">preSendPacket</span><wbr><span class="parameters">(net.minecraft.network.Packet&lt;?&gt;&nbsp;packet,
  net.minecraft.server.network.ServerPlayerEntity&nbsp;player,
  net.minecraft.server.MinecraftServer&nbsp;server)</span></div>
-<div class="block">Changes ItemStacks in <code>InventoryS2CPacket</code>
- to not include tags, as they get sent additionally by <code>ScreenHandlerSlotUpdateS2CPacket</code></div>
+<div class="block">Removes non-critical tags from item stacks in the event of a
+ creative player and packet overflows.
+ <p>
+ Creative players will additionally also get a <code>GolfIV</code> tag
+ injected as a hash of the original NBT to prevent Creative inventory
+ management from unexpectedly mangling the item either by just opening
+ the inventory or by <a href="../../storage/GolfConfig.IllegalItems.Creative.html#removeCreativeNBTTags"><code>Remove Creative NBT Tags</code></a>.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="S2CPacketCallback.html#preSendPacket(net.minecraft.network.Packet,net.minecraft.server.network.ServerPlayerEntity,net.minecraft.server.MinecraftServer)">preSendPacket</a></code>&nbsp;in interface&nbsp;<code><a href="S2CPacketCallback.html" title="interface in org.samo_lego.golfiv.event.S2CPacket">S2CPacketCallback</a></code></dd>
@@ -172,6 +177,14 @@ implements <a href="S2CPacketCallback.html" title="interface in org.samo_lego.go
 <dd><code>packet</code> - packet being sent</dd>
 <dd><code>player</code> - player getting the packet</dd>
 <dd><code>server</code> - Minecraft Server</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list-long">
+<li><a href="../../casts/ItemStackChecker.html#fakeStack(net.minecraft.item.ItemStack,boolean)"><code>ItemStackChecker.fakeStack(ItemStack, boolean)</code></a></li>
+<li><a href="../../casts/ItemStackChecker.html#inventoryStack(net.minecraft.item.ItemStack)"><code>ItemStackChecker.inventoryStack(ItemStack)</code></a></li>
+<li><a href="../../mixin/illegal_items/ServerPlayNetworkHandlerMixin_CreativeItemsCheck.html" title="class in org.samo_lego.golfiv.mixin.illegal_items"><code>ServerPlayNetworkHandlerMixin_CreativeItemsCheck</code></a></li>
+</ul>
+</dd>
 </dl>
 </section>
 </li>

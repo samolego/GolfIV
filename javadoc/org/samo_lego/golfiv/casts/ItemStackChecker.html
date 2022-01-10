@@ -115,22 +115,42 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Minimally copies over the banner NBT based on the provided blockEntity data.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static net.minecraft.item.ItemStack</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#fakeStack(net.minecraft.item.ItemStack,boolean)" class="member-name-link">fakeStack</a><wbr>(net.minecraft.item.ItemStack&nbsp;original,
- boolean&nbsp;spoofCount)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#cleanCrossbow(net.minecraft.nbt.NbtCompound,net.minecraft.item.ItemStack,boolean)" class="member-name-link">cleanCrossbow</a><wbr>(net.minecraft.nbt.NbtCompound&nbsp;crossbow,
+ net.minecraft.item.ItemStack&nbsp;faked,
+ boolean&nbsp;isInventory)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
-<div class="block">Creates a fake ItemStack based on the
- provided stack.</div>
+<div class="block">Minimally copies over the crossbow data based on the provided Crossbow data.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#cleanSkull(net.minecraft.nbt.NbtCompound,net.minecraft.item.ItemStack)" class="member-name-link">cleanSkull</a><wbr>(net.minecraft.nbt.NbtCompound&nbsp;skullOwner,
+ net.minecraft.item.ItemStack&nbsp;faked)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Minimally copies over the skull data based on the provided SkullOwner data.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static net.minecraft.item.ItemStack</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#creativeInventoryStack(net.minecraft.item.ItemStack)" class="member-name-link">creativeInventoryStack</a><wbr>(net.minecraft.item.ItemStack&nbsp;stack)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="block">This is for keeping creative from getting inadvertently sanitised,
+ as creative has the property of allowing one to summon any item at will,
+ including freely mutating the inventory.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static net.minecraft.item.ItemStack</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#inventoryStack(net.minecraft.item.ItemStack)" class="member-name-link">inventoryStack</a><wbr>(net.minecraft.item.ItemStack&nbsp;stack)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#fakeStack(net.minecraft.item.ItemStack,boolean)" class="member-name-link">fakeStack</a><wbr>(net.minecraft.item.ItemStack&nbsp;original,
+ boolean&nbsp;spoofCount)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Creates a fake ItemStack based on the
  provided stack.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#makeLegal(boolean)" class="member-name-link">makeLegal</a><wbr>(boolean&nbsp;survival)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static net.minecraft.item.ItemStack</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#inventoryStack(net.minecraft.item.ItemStack)" class="member-name-link">inventoryStack</a><wbr>(net.minecraft.item.ItemStack&nbsp;stack)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Creates a fake ItemStack based on the
+ provided stack.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#makeLegal(boolean)" class="member-name-link">makeLegal</a><wbr>(boolean&nbsp;survival)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Checks the ItemStack and makes it legal.</div>
 </div>
 </div>
@@ -178,7 +198,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;spoofCount)</span></div>
 <div class="block">Creates a fake ItemStack based on the
  provided stack.
-
+ <p>
  E.g. removes enchantment info, stack size, etc.
  Used on ground ItemEntities / opponent's stacks etc.</div>
 <dl class="notes">
@@ -191,12 +211,33 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="creativeInventoryStack(net.minecraft.item.ItemStack)">
+<h3>creativeInventoryStack</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">net.minecraft.item.ItemStack</span>&nbsp;<span class="element-name">creativeInventoryStack</span><wbr><span class="parameters">(net.minecraft.item.ItemStack&nbsp;stack)</span></div>
+<div class="block">This is for keeping creative from getting inadvertently sanitised,
+ as creative has the property of allowing one to summon any item at will,
+ including freely mutating the inventory.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>stack</code> - The original ItemStack.</dd>
+<dt>Returns:</dt>
+<dd>The faked ItemStack, with a GolfIV pointer injected.</dd>
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="#inventoryStack(net.minecraft.item.ItemStack)"><code>inventoryStack(ItemStack)</code></a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="inventoryStack(net.minecraft.item.ItemStack)">
 <h3>inventoryStack</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">net.minecraft.item.ItemStack</span>&nbsp;<span class="element-name">inventoryStack</span><wbr><span class="parameters">(net.minecraft.item.ItemStack&nbsp;stack)</span></div>
 <div class="block">Creates a fake ItemStack based on the
  provided stack.
-
+ <p>
  Changes the tag to be the minimal required
  NBT to render in an inventory.</div>
 <dl class="notes">
@@ -208,12 +249,44 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="cleanCrossbow(net.minecraft.nbt.NbtCompound,net.minecraft.item.ItemStack,boolean)">
+<h3>cleanCrossbow</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">cleanCrossbow</span><wbr><span class="parameters">(net.minecraft.nbt.NbtCompound&nbsp;crossbow,
+ net.minecraft.item.ItemStack&nbsp;faked,
+ boolean&nbsp;isInventory)</span></div>
+<div class="block">Minimally copies over the crossbow data based on the provided Crossbow data.
+ <p>
+ Only the NBT required to render the crossbow, including rocket, is copied over.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>crossbow</code> - The raw crossbow NBT.</dd>
+<dd><code>faked</code> - The faked ItemStack to copy to.</dd>
+<dd><code>isInventory</code> - Whether to send the raw item or not.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="cleanSkull(net.minecraft.nbt.NbtCompound,net.minecraft.item.ItemStack)">
+<h3>cleanSkull</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">cleanSkull</span><wbr><span class="parameters">(net.minecraft.nbt.NbtCompound&nbsp;skullOwner,
+ net.minecraft.item.ItemStack&nbsp;faked)</span></div>
+<div class="block">Minimally copies over the skull data based on the provided SkullOwner data.
+ <p>
+ Only the NBT required to render the skull is copied over.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>skullOwner</code> - The SkullOwner NBT compound. May be null.</dd>
+<dd><code>faked</code> - The faked ItemStack to copy to.</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="cleanBanner(net.minecraft.nbt.NbtCompound,net.minecraft.item.ItemStack)">
 <h3>cleanBanner</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">cleanBanner</span><wbr><span class="parameters">(net.minecraft.nbt.NbtCompound&nbsp;blockEntity,
  net.minecraft.item.ItemStack&nbsp;faked)</span></div>
 <div class="block">Minimally copies over the banner NBT based on the provided blockEntity data.
-
+ <p>
  Only the NBT required to render a layer is copied over.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
