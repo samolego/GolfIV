@@ -5,10 +5,7 @@ import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtInt;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.*;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -79,6 +76,10 @@ public interface ItemStackChecker {
         if (item instanceof SkullItem) {
             // Lets dropping player heads not be a surprising change, and for wearing heads to show the actual skin.
             cleanSkull(original.getSubNbt(SkullItem.SKULL_OWNER_KEY), fakedStack);
+        }
+
+        if (item instanceof CrossbowItem && CrossbowItem.isCharged(original)) {
+            cleanCrossbow(original.getNbt(), fakedStack, false);
         }
 
         return fakedStack;
@@ -237,7 +238,7 @@ public interface ItemStackChecker {
             fake.setSubNbt("pages", new NbtList());
         }
 
-        if(item instanceof WritableBookItem) {
+        if (item instanceof WritableBookItem) {
             // FIXME: Pages need to be present for the book to work. Force update on selection?
             // Prevents issues with other mods expecting pages to be present.
             fake.setSubNbt("pages", new NbtList());
@@ -247,7 +248,42 @@ public interface ItemStackChecker {
             fake.getOrCreateNbt().putInt("map", tag.getInt("map"));
         }
 
+        if (item instanceof CrossbowItem && CrossbowItem.isCharged(stack)) {
+            cleanCrossbow(stack.getNbt(), fake, true);
+        }
+
         return fake;
+    }
+
+    /**
+     * Minimally copies over the crossbow data based on the provided Crossbow data.
+     * <p>
+     * Only the NBT required to render the crossbow, including rocket, is copied over.
+     *
+     * @param crossbow    The raw crossbow NBT.
+     * @param faked       The faked ItemStack to copy to.
+     * @param isInventory Whether to send the raw item or not.
+     */
+    static void cleanCrossbow(NbtCompound crossbow, ItemStack faked, boolean isInventory) {
+        if (crossbow == null) return;
+        NbtList originalProjectiles = crossbow.getList("ChargedProjectiles", NbtElement.COMPOUND_TYPE);
+        if (originalProjectiles.isEmpty()) return;
+        String originalProjectile = originalProjectiles.getCompound(0).getString("id");
+        String projectile;
+
+        if (isInventory || "minecraft:firework".equals(originalProjectile)) {
+            projectile = originalProjectile;
+        } else {
+            projectile = "minecraft:arrow";
+        }
+
+        NbtCompound projectileStack = new NbtCompound();
+        projectileStack.putByte("Count", (byte) 1);
+        projectileStack.putString("id", projectile);
+        NbtList projectiles = new NbtList();
+        projectiles.add(projectileStack);
+        faked.setSubNbt("ChargedProjectiles", projectiles);
+        faked.setSubNbt("Charged", NbtByte.of(true));
     }
 
     /**
