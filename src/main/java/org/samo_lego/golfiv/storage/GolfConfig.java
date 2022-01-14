@@ -2,15 +2,15 @@ package org.samo_lego.golfiv.storage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import it.unimi.dsi.fastutil.objects.Object2FloatMaps;
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
+import net.minecraft.entity.EntityType;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,16 +112,33 @@ public class GolfConfig {
         /**
          * Removes entity health data from packets
          * sent to client.
-         *
+         * <p>
          * Status: working.
          */
         public boolean removeHealthTags = true;
+
+        public final String _comment_allowedHealthTags_1 = "// Allows health tags for certain entities.";
+        public final String _comment_allowedHealthTags_2 = "// This maps entity ID to percentage as decimal.";
+
+        /**
+         * Entities that must have health sent to render correctly.
+         * <p>
+         * K -> Entities to allow health of.
+         * V -> Increments by percentage of health to allow.
+         * <p>
+         * Implied by default is 1F, or alive and dead.
+         */
+        @JsonAdapter(UnnecessaryEntityTypeMapAdapter.class)
+        public Object2FloatOpenHashMap<EntityType<?>> allowedHealthTags = new Object2FloatOpenHashMap<>(
+                new EntityType<?>[]{EntityType.WOLF, EntityType.WITHER, EntityType.IRON_GOLEM},
+                new float[]{0F, 0.5F, 0.25F}
+        );
 
         /**
          * Removes entity equipment tags from
          * packets. Players will still see if item is enchanted,
          * but won't get the durability or stack size information.
-         *
+         * <p>
          * Status: working.
          */
         public boolean removeEquipmentTags = true;
@@ -248,6 +265,41 @@ public class GolfConfig {
             GSON.toJson(this, writer);
         } catch (IOException e) {
             logError("Problem occurred when saving config: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Adapts {@link EntityType} between it and the identifier.
+     * <p>
+     * Unnecessary, as map-level shouldn't be needed to begin with,
+     * yet arbitrary unforeseen restrictions require this anyways.
+     *
+     * @author KJP12
+     */
+    private static final class UnnecessaryEntityTypeMapAdapter extends TypeAdapter<Object2FloatOpenHashMap<EntityType<?>>> {
+
+        @Override
+        public void write(JsonWriter out, Object2FloatOpenHashMap<EntityType<?>> value) throws IOException {
+            out.beginObject();
+            var itr = Object2FloatMaps.fastIterator(value);
+            while (itr.hasNext()) {
+                var entry = itr.next();
+                out.name(EntityType.getId(entry.getKey()).toString());
+                out.value(entry.getFloatValue());
+            }
+            out.endObject();
+        }
+
+        @Override
+        public Object2FloatOpenHashMap<EntityType<?>> read(JsonReader in) throws IOException {
+            in.beginObject();
+            var map = new Object2FloatOpenHashMap<EntityType<?>>();
+            while (in.hasNext()) {
+                map.put(EntityType.get(in.nextName()).orElseThrow(() -> new IOException("Invalid entity type.")),
+                        (float) in.nextDouble());
+            }
+            in.endObject();
+            return map;
         }
     }
 }
