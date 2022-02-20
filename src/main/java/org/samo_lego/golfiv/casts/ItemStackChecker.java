@@ -18,6 +18,11 @@ import java.util.Collections;
  */
 public interface ItemStackChecker {
     /**
+     * NBT Key {@code BlockEntityTag} for {@link BlockItem BlockItems} containing block entities.
+     */
+    String BLOCK_ENTITY_TAG_KEY = "BlockEntityTag";
+
+    /**
      * Cached unluck singleton
      */
     Collection<StatusEffectInstance> UNLUCK = Collections.singleton(new StatusEffectInstance(StatusEffects.UNLUCK, 6000));
@@ -70,7 +75,7 @@ public interface ItemStackChecker {
 
         if (item instanceof BannerItem) {
             // Lets dropping banners not be a surprising change, and for illager patrol leaders to have a proper banner.
-            cleanBanner(original.getSubNbt(BlockItem.BLOCK_STATE_TAG_KEY), fakedStack);
+            cleanBanner(original.getSubNbt(BLOCK_ENTITY_TAG_KEY), fakedStack);
         }
 
         if (item instanceof SkullItem) {
@@ -167,7 +172,7 @@ public interface ItemStackChecker {
             boolean flag = true;
             if (item instanceof BannerItem) {
                 flag = false;
-                cleanBanner(stack.getSubNbt(BlockItem.BLOCK_STATE_TAG_KEY), fake);
+                cleanBanner(stack.getSubNbt(BLOCK_ENTITY_TAG_KEY), fake);
             }
 
             // Transfer SkullProperties.
@@ -181,9 +186,9 @@ public interface ItemStackChecker {
 
                 // Rewrite shulker items
                 if (block instanceof ShulkerBoxBlock) {
-                    NbtCompound blockEntity = stack.getSubNbt(BlockItem.BLOCK_STATE_TAG_KEY);
+                    NbtCompound blockEntity = stack.getSubNbt(BLOCK_ENTITY_TAG_KEY);
                     if (blockEntity != null) {
-                        NbtCompound fakeEntity = fake.getOrCreateSubNbt(BlockItem.BLOCK_STATE_TAG_KEY);
+                        NbtCompound fakeEntity = fake.getOrCreateSubNbt(BLOCK_ENTITY_TAG_KEY);
                         if (blockEntity.contains("LootTable", NbtElement.STRING_TYPE)) {
                             fakeEntity.put("LootTable", blockEntity.get("LootTable"));
                         }
@@ -348,7 +353,7 @@ public interface ItemStackChecker {
                     }
                 }
             }
-            faked.getOrCreateSubNbt(BlockItem.BLOCK_STATE_TAG_KEY).put("Patterns", fakePatterns);
+            faked.getOrCreateSubNbt(BLOCK_ENTITY_TAG_KEY).put("Patterns", fakePatterns);
         }
     }
 }
