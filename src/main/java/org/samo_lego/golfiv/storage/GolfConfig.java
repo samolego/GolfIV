@@ -8,12 +8,15 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import it.unimi.dsi.fastutil.objects.Object2FloatMaps;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 import static org.samo_lego.golfiv.utils.BallLogger.logError;
 
@@ -39,6 +42,17 @@ public class GolfConfig {
         public final String _comment_preventDestructionByPiston = "// Prevents headless pistons from destroying blocks that are not piston extensions.";
 
         public boolean preventDestructionByHeadlessPistons = true;
+
+        public final String _comment_allowedDestructibleByPiston_1 = "// Allows headless pistons to destroy certain blocks when preventing destruction is enabled.";
+        public final String _comment_allowedDestructibleByPiston_2 = "// Useful to allow only breaking of bedrock but denying destruction of barriers.";
+
+        /**
+         * Allows headless pistons to destroy certain blocks when {@link #preventDestructionByHeadlessPistons} is enabled.
+         * <p>
+         * Useful to allow only breaking of bedrock but denying destruction of barriers, chests and other blocks.
+         */
+        @JsonAdapter(BlockSetAdapter.class)
+        public Set<Block> allowedDestructibleByHeadlessPistons = Collections.singleton(Blocks.PISTON_HEAD);
     }
 
     /**
@@ -265,6 +279,36 @@ public class GolfConfig {
             GSON.toJson(this, writer);
         } catch (IOException e) {
             logError("Problem occurred when saving config: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Adapts {@link Block} between it and the identifier.
+     *
+     * @author Ampflower
+     */
+    private static final class BlockSetAdapter extends TypeAdapter<Set<Block>> {
+
+        @Override
+        public void write(JsonWriter out, Set<Block> value) throws IOException {
+            out.beginArray();
+            var reg = Registry.BLOCK;
+            for (var block : value) {
+                out.value(reg.getId(block).toString());
+            }
+            out.endArray();
+        }
+
+        @Override
+        public Set<Block> read(JsonReader in) throws IOException {
+            in.beginArray();
+            var reg = Registry.BLOCK;
+            var set = new HashSet<Block>();
+            while (in.hasNext()) {
+                set.add(reg.get(Identifier.tryParse(in.nextString())));
+            }
+            in.endArray();
+            return set;
         }
     }
 
