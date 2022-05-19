@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.samo_lego.golfiv.storage.GolfConfig;
 
@@ -29,7 +29,7 @@ public class GolfCommand {
 
         if(source != null)
             source.sendFeedback(
-                    new LiteralText("Reloaded the config file!")
+                    Text.literal("Reloaded the config file!")
                         .formatted(Formatting.GREEN),
                     false
             );

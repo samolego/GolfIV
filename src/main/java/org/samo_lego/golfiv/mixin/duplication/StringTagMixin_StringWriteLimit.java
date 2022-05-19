@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.DataOutput;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
@@ -18,14 +17,16 @@ import static org.samo_lego.golfiv.GolfIV.golfConfig;
 @Mixin(NbtString.class)
 public class StringTagMixin_StringWriteLimit {
     @Mutable
-    @Shadow @Final private String value;
+    @Shadow
+    @Final
+    private String value;
 
-    @Inject(method = "write(Ljava/io/DataOutput;)V", at = @At("HEAD"), cancellable = true)
-    private void raiseStringLimit(DataOutput output, CallbackInfo ci) throws IOException {
-        if(golfConfig.duplication.patchSaveLimit) {
+    @Inject(method = "write(Ljava/io/DataOutput;)V", at = @At("HEAD"))
+    private void raiseStringLimit(DataOutput output, CallbackInfo ci) {
+        if (golfConfig.duplication.patchSaveLimit) {
             byte[] data = this.value.getBytes(StandardCharsets.UTF_8);
 
-            if(data.length > 65535) // DataOutputStream limit
+            if (data.length > 65535) // DataOutputStream limit
                 this.value = new String(data, 0, 65534);
         }
     }
