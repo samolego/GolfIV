@@ -28,6 +28,7 @@
     "illegal_items.PlayerInventoryMixin_IllegalsCheckInsert",
     "illegal_items.ServerPlayNetworkHandlerMixin_CreativeItemsCheck",
     "illegal_items.ServerPlayNetworkHandlerMixin_IllegalsCheckSlot",
+    "movement.EntityMixin_NetherRoofDamage",
     "movement.ServerPlayNetworkHandler_OnGroundCheck",
     "packets.EntityTrackerUpdateS2CPacketMixin_DataPatch",
     "packets.ServerPlayerEntityMixin_CreativeInventoryPatch",
