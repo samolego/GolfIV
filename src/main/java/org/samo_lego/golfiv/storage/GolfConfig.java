@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import it.unimi.dsi.fastutil.objects.Object2FloatMaps;
@@ -14,9 +15,20 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.samo_lego.golfiv.utils.BallLogger.logError;
 
@@ -53,6 +65,10 @@ public class GolfConfig {
          */
         @JsonAdapter(BlockSetAdapter.class)
         public Set<Block> allowedDestructibleByHeadlessPistons = Collections.singleton(Blocks.PISTON_HEAD);
+
+        @SerializedName("// What altitude in the nether should start inflicting void damage (e.g. 128). -1 disables it.")
+        public final String _comment_inflictNetherRoofDamage = "";
+        public int inflictNetherRoofDamage = -1;
     }
 
     /**
