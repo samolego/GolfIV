@@ -76,12 +76,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="EntityInteractPacketCallback.html" title="interface in org.samo_lego.golfiv.event.combat">EntityInteractPacketCallback</a></code></dd>
+<dd><code>net.fabricmc.fabric.api.event.player.AttackEntityCallback</code>, <code>net.fabricmc.fabric.api.event.player.UseEntityCallback</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AngleCheck</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="EntityInteractPacketCallback.html" title="interface in org.samo_lego.golfiv.event.combat">EntityInteractPacketCallback</a></span></div>
+implements net.fabricmc.fabric.api.event.player.UseEntityCallback, net.fabricmc.fabric.api.event.player.AttackEntityCallback</span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -90,8 +90,11 @@ implements <a href="EntityInteractPacketCallback.html" title="interface in org.s
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.samo_lego.golfiv.event.combat.EntityInteractPacketCallback">Fields inherited from interface&nbsp;org.samo_lego.golfiv.event.combat.<a href="EntityInteractPacketCallback.html" title="interface in org.samo_lego.golfiv.event.combat">EntityInteractPacketCallback</a></h3>
-<code><a href="EntityInteractPacketCallback.html#EVENT">EVENT</a></code></div>
+<h3 id="fields-inherited-from-class-net.fabricmc.fabric.api.event.player.AttackEntityCallback">Fields inherited from interface&nbsp;net.fabricmc.fabric.api.event.player.AttackEntityCallback</h3>
+<code>EVENT</code></div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-net.fabricmc.fabric.api.event.player.UseEntityCallback">Fields inherited from interface&nbsp;net.fabricmc.fabric.api.event.player.UseEntityCallback</h3>
+<code>EVENT</code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -119,9 +122,11 @@ implements <a href="EntityInteractPacketCallback.html" title="interface in org.s
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>net.minecraft.util.ActionResult</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onEntityInteractPacket(net.minecraft.entity.player.PlayerEntity,net.minecraft.entity.Entity,double)" class="member-name-link">onEntityInteractPacket</a><wbr>(net.minecraft.entity.player.PlayerEntity&nbsp;player,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#interact(net.minecraft.entity.player.PlayerEntity,net.minecraft.world.World,net.minecraft.util.Hand,net.minecraft.entity.Entity,net.minecraft.util.hit.EntityHitResult)" class="member-name-link">interact</a><wbr>(net.minecraft.entity.player.PlayerEntity&nbsp;player,
+ net.minecraft.world.World&nbsp;world,
+ net.minecraft.util.Hand&nbsp;hand,
  net.minecraft.entity.Entity&nbsp;victim,
- double&nbsp;maxDistanceSquared)</code></div>
+ @Nullable net.minecraft.util.hit.EntityHitResult&nbsp;hitResult)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Checks the angle at which player is hitting the entity.</div>
 </div>
@@ -157,19 +162,23 @@ implements <a href="EntityInteractPacketCallback.html" title="interface in org.s
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="onEntityInteractPacket(net.minecraft.entity.player.PlayerEntity,net.minecraft.entity.Entity,double)">
-<h3>onEntityInteractPacket</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">net.minecraft.util.ActionResult</span>&nbsp;<span class="element-name">onEntityInteractPacket</span><wbr><span class="parameters">(net.minecraft.entity.player.PlayerEntity&nbsp;player,
+<section class="detail" id="interact(net.minecraft.entity.player.PlayerEntity,net.minecraft.world.World,net.minecraft.util.Hand,net.minecraft.entity.Entity,net.minecraft.util.hit.EntityHitResult)">
+<h3>interact</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">net.minecraft.util.ActionResult</span>&nbsp;<span class="element-name">interact</span><wbr><span class="parameters">(net.minecraft.entity.player.PlayerEntity&nbsp;player,
+ net.minecraft.world.World&nbsp;world,
+ net.minecraft.util.Hand&nbsp;hand,
  net.minecraft.entity.Entity&nbsp;victim,
- double&nbsp;maxDistanceSquared)</span></div>
+ @Nullable
+ @Nullable net.minecraft.util.hit.EntityHitResult&nbsp;hitResult)</span></div>
 <div class="block">Checks the angle at which player is hitting the entity.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="EntityInteractPacketCallback.html#onEntityInteractPacket(net.minecraft.entity.player.PlayerEntity,net.minecraft.entity.Entity,double)">onEntityInteractPacket</a></code>&nbsp;in interface&nbsp;<code><a href="EntityInteractPacketCallback.html" title="interface in org.samo_lego.golfiv.event.combat">EntityInteractPacketCallback</a></code></dd>
+<dd><code>interact</code>&nbsp;in interface&nbsp;<code>net.fabricmc.fabric.api.event.player.AttackEntityCallback</code></dd>
+<dt>Specified by:</dt>
+<dd><code>interact</code>&nbsp;in interface&nbsp;<code>net.fabricmc.fabric.api.event.player.UseEntityCallback</code></dd>
 <dt>Parameters:</dt>
 <dd><code>player</code> - player trying to interact with entity.</dd>
 <dd><code>victim</code> - entity player is trying to interact with.</dd>
-<dd><code>maxDistanceSquared</code> - maximal allowed distance for interaction, squared.</dd>
 <dt>Returns:</dt>
 <dd><code>ActionResult.FAIL</code> if player shouldn't be able to hit the victim, otherwise <code>ActionResult.PASS</code></dd>
 </dl>
