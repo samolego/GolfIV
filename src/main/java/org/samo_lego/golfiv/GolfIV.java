@@ -1,7 +1,7 @@
 package org.samo_lego.golfiv;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.samo_lego.golfiv.commands.GolfCommand;
@@ -26,9 +26,8 @@ public class GolfIV implements ModInitializer {
 	public void onInitialize() {
 		golfConfig = GolfConfig.loadConfig(new File(FabricLoader.getInstance().getConfigDir() + "/GolfIV_config.json"));
 
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
-			GolfCommand.registerCommand(dispatcher);
-		});
+		CommandRegistrationCallback.EVENT.register((dispatcher, ignored, ignored1) ->
+				GolfCommand.registerCommand(dispatcher));
 
 		// Events
 		CombatModule.registerEvents();

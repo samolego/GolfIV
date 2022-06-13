@@ -2,9 +2,8 @@
   "schemaVersion": 1,
   "id": "golfiv",
   "version": "${version}",
-
   "name": "Golf IV",
-  "description": "An anticheat attempt for Fabric",
+  "description": "An anti-exploit attempt for Fabric",
   "authors": [
     "samo_lego"
   ],
@@ -12,7 +11,6 @@
     "homepage": "https://samolego.github.io/",
     "sources": "https://github.com/samolego/GolfIV"
   },
-
   "license": "MIT",
   "icon": "assets/golfiv/icon.png",
 
@@ -27,7 +25,6 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.14.5",
-    "fabric": "*"
+    "fabricloader": ">=0.14.5"
   }
 }
