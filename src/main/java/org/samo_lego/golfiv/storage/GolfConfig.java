@@ -12,23 +12,12 @@ import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.samo_lego.golfiv.utils.BallLogger.logError;
 
@@ -38,12 +27,16 @@ public class GolfConfig {
             .disableHtmlEscaping()
             .create();
 
+    @SerializedName("// Patches some outgoing server packets")
+    public final String _comment_packet = "";
+
     /**
      * Main part of the config.
      */
     public static class Main {
 
-        public final String _comment_checkInventoryActions = "// Prevents hitting/chatting with open GUI";
+        @SerializedName("// Prevents hitting/chatting with open GUI")
+        public final String _comment_checkInventoryActions = "";
         /**
          * Checks whether is doing actions
          * that cannot be done while having the GUI open.
@@ -51,12 +44,16 @@ public class GolfConfig {
          */
         public boolean checkInventoryActions = true;
 
-        public final String _comment_preventDestructionByPiston = "// Prevents headless pistons from destroying blocks that are not piston extensions.";
+        @SerializedName("// Prevents headless pistons from destroying blocks that are not piston extensions.")
+        public final String _comment_preventDestructionByPiston = "";
 
         public boolean preventDestructionByHeadlessPistons = true;
 
-        public final String _comment_allowedDestructibleByPiston_1 = "// Allows headless pistons to destroy certain blocks when preventing destruction is enabled.";
-        public final String _comment_allowedDestructibleByPiston_2 = "// Useful to allow only breaking of bedrock but denying destruction of barriers.";
+        @SerializedName("// Allows headless pistons to destroy certain blocks when preventing destruction is enabled.")
+        public final String _comment_allowedDestructibleByPiston_1 = "";
+
+        @SerializedName("// Useful to allow only breaking of bedrock but denying destruction of barriers.")
+        public final String _comment_allowedDestructibleByPiston_2 = "";
 
         /**
          * Allows headless pistons to destroy certain blocks when {@link #preventDestructionByHeadlessPistons} is enabled.
@@ -79,12 +76,16 @@ public class GolfConfig {
      */
     public static class IllegalItems {
         public static class Survival {
-            public final String _comment_legalise = "// Whether to enable 'legalising' survival items.";
+            @SerializedName("// Whether to enable 'legalising' survival items.")
+            public final String _comment_legalise = "";
 
-            public final String _comment_legaliseWholeInventory = "// Whether to check whole inventory when connecting / changing dimensions, etc.";
+            @SerializedName("// Whether to check whole inventory when connecting / changing dimensions, etc.")
+
+            public final String _comment_legaliseWholeInventory = "";
             public boolean legaliseWholeInventory = true;
 
-            public final String _comment_bannedSurvivalItems = "// Which items should be cleared when clicked in survival inventory";
+            @SerializedName("// Which items should be cleared when clicked in survival inventory")
+            public final String _comment_bannedSurvivalItems = "";
             public ArrayList<String> bannedItems = new ArrayList<>(Arrays.asList(
                     "minecraft:barrier",
                     "minecraft:spawner",
@@ -97,24 +98,28 @@ public class GolfConfig {
             public boolean checkPotionLevels = true;
             public boolean checkItemCount = true;
         }
+
         public static class Creative {
-            public final String _comment_legaliseWholeInventory = "// Whether to check whole inventory when connecting / changing dimensions, etc.";
+            @SerializedName("// Whether to check whole inventory when connecting / changing dimensions, etc.")
+            public final String _comment_legaliseWholeInventory = "";
             public boolean legaliseWholeInventory = true;
 
-            public final String _comment_whitelistedNBT = "// Which NBT shouldn't be cleared";
-            public ArrayList<String> whitelistedNBT = new ArrayList<>(Arrays.asList(
-                "EntityTag",
-                "Enchantments",
-                "StoredEnchantments",
-                "BlockEntityTag",
-                "Damage",
-                "Potion",
-                "display"
-            ));
+            @SerializedName("// Which NBT shouldn't be cleared")
+            public final String _comment_whitelistedNBT = "";
             /**
              * Clears NBT items, but still allows block-picking.
              */
-            public final String _comment_removeCreativeNBTTags = "// Disallow all NBT tags in creative which aren't in whitelist section.";
+            @SerializedName("// Disallow all NBT tags in creative which aren't in whitelist section.")
+            public final String _comment_removeCreativeNBTTags = "";
+            public ArrayList<String> whitelistedNBT = new ArrayList<>(Arrays.asList(
+                    "EntityTag",
+                    "Enchantments",
+                    "StoredEnchantments",
+                    "BlockEntityTag",
+                    "Damage",
+                    "Potion",
+                    "display"
+            ));
             public boolean removeCreativeNBTTags = true;
             public boolean checkEnchants = true;
             public boolean checkPotionLevels = true;
@@ -129,12 +134,11 @@ public class GolfConfig {
      * Outgoing packet settings.
      */
     public static class Packet {
-        public final String _comment = "// Patches some outgoing server packets";
+
         /**
          * Whether to remove the teleport data
          * from packets when entities move out of
          * view distance.
-         *
          * Status: working
          */
         public boolean removeTeleportData = true;
@@ -147,8 +151,11 @@ public class GolfConfig {
          */
         public boolean removeHealthTags = true;
 
-        public final String _comment_allowedHealthTags_1 = "// Allows health tags for certain entities.";
-        public final String _comment_allowedHealthTags_2 = "// This maps entity ID to percentage as decimal.";
+        @SerializedName("// Allows health tags for certain entities.")
+        public final String _comment_allowedHealthTags_1 = "";
+
+        @SerializedName("// This maps entity ID to percentage as decimal.")
+        public final String _comment_allowedHealthTags_2 = "";
 
         /**
          * Entities that must have health sent to render correctly.
@@ -202,7 +209,6 @@ public class GolfConfig {
      * Movement checks settings.
      */
     public static class Movement {
-        private final String _comment = "// Movement checks settings";
         /**
          * Client can tell server its onGround status and
          * server blindly accepts it. This can allow
@@ -210,20 +216,7 @@ public class GolfConfig {
          * This setting re-enables the check server-side
          * and doesn't care about the client's onGround status.
          */
-        public boolean yesFall = true;
-    }
-
-    public static class Duplication {
-        public final String _comment = "// Duplication fixes";
-        public final String _comment_patchSaveLimit1 = "// Whether to prevent throwing an error when saving large string data.";
-        public final String _comment_patchSaveLimit2 = "// This is done by ignoring data after DataOutputStream limit.";
-        public final String _comment_patchSaveLimit3 = "// Written books can reach that point with hacked clients.";
-        public boolean patchSaveLimit = true;
-        public final String _comment_patchGravityBlock = "// Whether to disable gravity block duping.";
-        public boolean patchGravityBlock = true;
-        public final String _comment_patchDeathDuplication1 = "// Checks if player is connected before applying damage.";
-        public final String _comment_patchDeathDuplication2 = "// Prevents duplicating inventory if player dies after disconnect.";
-        public boolean patchDeathDuplication = true;
+        public boolean patchNoFall = true;
     }
 
     /**
@@ -250,6 +243,26 @@ public class GolfConfig {
     public final GolfConfig.Main main = new Main();
     public final GolfConfig.IllegalItems items = new IllegalItems();
     public final GolfConfig.Combat combat = new Combat();
+
+    public static class Duplication {
+        public final String _comment = "// Duplication fixes";
+        @SerializedName("// Whether to prevent throwing an error when saving large string data.")
+        public final String _comment_patchSaveLimit1 = "";
+        @SerializedName("// This is done by ignoring data after DataOutputStream limit.")
+        public final String _comment_patchSaveLimit2 = "";
+        @SerializedName("// Written books can reach that point with hacked clients.")
+        public final String _comment_patchSaveLimit3 = "";
+        public boolean patchSaveLimit = true;
+
+        @SerializedName("// Whether to disable gravity block duping.")
+        public final String _comment_patchGravityBlock = "";
+        public boolean patchGravityBlock = true;
+        @SerializedName("// Checks if player is connected before applying damage.")
+        public final String _comment_patchDeathDuplication1 = "";
+        @SerializedName("// Prevents duplicating inventory if player dies after disconnect.")
+        public final String _comment_patchDeathDuplication2 = "";
+        public boolean patchDeathDuplication = true;
+    }
     public final GolfConfig.Packet packet = new Packet();
     public final GolfConfig.Movement movement = new Movement();
     public final GolfConfig.Duplication duplication = new Duplication();
@@ -308,7 +321,7 @@ public class GolfConfig {
         @Override
         public void write(JsonWriter out, Set<Block> value) throws IOException {
             out.beginArray();
-            var reg = Registry.BLOCK;
+            var reg = Registries.BLOCK;
             for (var block : value) {
                 out.value(reg.getId(block).toString());
             }
@@ -318,7 +331,7 @@ public class GolfConfig {
         @Override
         public Set<Block> read(JsonReader in) throws IOException {
             in.beginArray();
-            var reg = Registry.BLOCK;
+            var reg = Registries.BLOCK;
             var set = new HashSet<Block>();
             while (in.hasNext()) {
                 set.add(reg.get(Identifier.tryParse(in.nextString())));

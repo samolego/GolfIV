@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.samo_lego.golfiv.GolfIV.golfConfig;
 
@@ -38,9 +37,9 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             )
     )
     private void checkOnGround(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        if(golfConfig.movement.yesFall && packet.isOnGround()) {
+        if (golfConfig.movement.patchNoFall && packet.isOnGround()) {
             Entity bottomEntity = player.getRootVehicle();
-            if(bottomEntity == null) {
+            if (bottomEntity == null) {
                 bottomEntity = player;
             }
             final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packet.getY(player.getY()) - player.getY() - 0.25005D, 0);
@@ -48,12 +47,11 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             Iterable<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
             boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
-            if(blockCollisions) {
+            if (blockCollisions) {
                 // Preferring block collisions over entity ones
                 ((Golfer) player).setEntityCollisions(false);
                 ((Golfer) player).setBlockCollisions(true);
-            }
-            else {
+            } else {
                 Entity finalBottomEntity = bottomEntity;
                 List<Entity> collidingEntities = player.getEntityWorld().getOtherEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
 
