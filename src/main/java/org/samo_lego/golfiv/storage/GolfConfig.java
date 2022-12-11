@@ -14,12 +14,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import org.samo_lego.golfiv.utils.GolfLogger;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static org.samo_lego.golfiv.utils.BallLogger.logError;
+import static org.samo_lego.golfiv.utils.GolfLogger.logError;
 
 public class GolfConfig {
     private static final Gson GSON = new GsonBuilder()
@@ -282,12 +283,11 @@ public class GolfConfig {
                     BufferedReader bufferedReader = new BufferedReader(inputStreamReader)
             ) {
                 golfConfig = GSON.fromJson(bufferedReader, GolfConfig.class);
+            } catch (IOException e) {
+                GolfLogger.logError("[GolfIV] Problem occurred when trying to load config: " + e.getMessage());
+                golfConfig = new GolfConfig();
             }
-            catch (IOException e) {
-                throw new RuntimeException("[GolfIV] Problem occurred when trying to load config: ", e);
-            }
-        }
-        else {
+        } else {
             golfConfig = new GolfConfig();
         }
         golfConfig.saveConfig(configFile);

@@ -3,7 +3,7 @@ package org.samo_lego.golfiv.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class BallLogger {
+public class GolfLogger {
 
     private static final Logger LOGGER = LogManager.getLogger("GolfIV");
 
