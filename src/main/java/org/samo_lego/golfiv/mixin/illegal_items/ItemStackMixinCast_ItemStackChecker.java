@@ -7,10 +7,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.potion.PotionUtil;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 import org.samo_lego.golfiv.casts.ItemStackChecker;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,6 +45,8 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
     @Shadow
     public abstract Item getItem();
 
+    @Shadow
+    private @Nullable NbtCompound nbt;
     private final ItemStack itemStack = (ItemStack) (Object) this;
 
     /**
@@ -58,35 +60,31 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.fromNbt(this.getEnchantments());
 
         // Checks item enchantments
-        if((survival && golfConfig.items.survival.checkEnchants) || (!survival && golfConfig.items.creative.checkEnchants))
-            for(Map.Entry<Enchantment, Integer> ench : enchantments.entrySet()) {
+        if ((survival && golfConfig.items.survival.checkEnchants) || (!survival && golfConfig.items.creative.checkEnchants))
+            for (Map.Entry<Enchantment, Integer> ench : enchantments.entrySet()) {
                 Enchantment enchantment = ench.getKey();
                 int level = ench.getValue();
 
                 Set<Enchantment> otherEnchants = EnchantmentHelper.get(this.itemStack).keySet();
                 otherEnchants.remove(enchantment);
 
-                if(!enchantment.isAcceptableItem(this.itemStack) || !EnchantmentHelper.isCompatible(otherEnchants, enchantment) || level > enchantment.getMaxLevel()) {
+                if (!enchantment.isAcceptableItem(this.itemStack) ||
+                        !EnchantmentHelper.isCompatible(otherEnchants, enchantment) ||
+                        level > enchantment.getMaxLevel()) {
                     this.removeSubNbt("Enchantments");
                     break;
                 }
             }
 
         // Checks potion
-        if(
-                (
-                    (survival && golfConfig.items.survival.checkPotionLevels) ||
-                    (!survival && golfConfig.items.creative.checkPotionLevels)
-                ) &&
-                (
-                    this.itemStack.getItem() == Items.POTION ||
-                    this.itemStack.getItem() == Items.SPLASH_POTION ||
-                    this.itemStack.getItem() == Items.LINGERING_POTION
-                )
-        ) {
+        if (((survival && golfConfig.items.survival.checkPotionLevels) || (!survival && golfConfig.items.creative.checkPotionLevels)) &&
+                (this.itemStack.getItem() == Items.POTION ||
+                        this.itemStack.getItem() == Items.SPLASH_POTION ||
+                        this.itemStack.getItem() == Items.LINGERING_POTION)) {
             List<StatusEffectInstance> effects = PotionUtil.getCustomPotionEffects(this.itemStack);
-            for(StatusEffectInstance effect : effects) {
-                if(effect.getAmplifier() > 1) {
+
+            for (StatusEffectInstance effect : effects) {
+                if (effect.getAmplifier() > 1) {
                     this.removeSubNbt("CustomPotionEffects");
                     this.removeSubNbt("Potion");
                     break;
@@ -94,19 +92,17 @@ public abstract class ItemStackMixinCast_ItemStackChecker implements ItemStackCh
             }
         }
 
-        Identifier id = Registries.ITEM.getId(this.itemStack.getItem());
-        if(survival && (golfConfig.items.survival.bannedItems.contains(id.toString()) || (golfConfig.items.survival.bannedItems.contains("minecraft:spawn_egg") && this.itemStack.getItem() instanceof SpawnEggItem))) {
-            this.setCount(0);
-        }
+        String nbt = golfConfig.items.survival.bannedItems.get(this.itemStack.getItem());
+        NbtCompound tag = this.itemStack.getNbt();
 
-        if(
-            (
-                (survival && golfConfig.items.survival.checkItemCount) ||
-                (!survival && golfConfig.items.creative.checkItemCount)
-            ) &&
-            this.count > this.getMaxCount()
-        ) {
-            this.count = 1;
+        if (survival && nbt != null && (nbt.isEmpty() || tag != null && tag.toString().equals(nbt)) ||
+                (golfConfig.items.survival.banSpawnEggs && this.itemStack.getItem() instanceof SpawnEggItem)) {
+            this.setCount(0);
+        } else if (((survival && golfConfig.items.survival.checkItemCount) ||
+                (!survival && golfConfig.items.creative.checkItemCount)) &&
+                this.count > this.getMaxCount()) {
+
+            this.count = this.getMaxCount();
         }
     }
 }

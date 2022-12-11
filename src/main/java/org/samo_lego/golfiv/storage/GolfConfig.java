@@ -12,6 +12,8 @@ import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.samo_lego.golfiv.utils.GolfLogger;
@@ -87,14 +89,22 @@ public class GolfConfig {
 
             @SerializedName("// Which items should be cleared when clicked in survival inventory")
             public final String _comment_bannedSurvivalItems = "";
-            public ArrayList<String> bannedItems = new ArrayList<>(Arrays.asList(
-                    "minecraft:barrier",
-                    "minecraft:spawner",
-                    "minecraft:structure_void",
-                    "minecraft:bedrock",
-                    "minecraft:command_block",
-                    "minecraft:spawn_egg"
-            ));
+            @JsonAdapter(BlockMapAdapter.class)
+            public Map<ItemConvertible, String> bannedItems = Map.ofEntries(
+                    Map.entry(Blocks.BEDROCK, ""),
+                    Map.entry(Blocks.BARRIER, ""),
+                    Map.entry(Blocks.COMMAND_BLOCK, ""),
+                    Map.entry(Blocks.CHAIN_COMMAND_BLOCK, ""),
+                    Map.entry(Blocks.REPEATING_COMMAND_BLOCK, ""),
+                    Map.entry(Blocks.STRUCTURE_BLOCK, ""),
+                    Map.entry(Blocks.STRUCTURE_VOID, ""),
+                    Map.entry(Blocks.JIGSAW, ""),
+                    Map.entry(Blocks.SPAWNER, ""),
+                    Map.entry(Blocks.NETHER_PORTAL, ""),
+                    Map.entry(Blocks.END_PORTAL, ""),
+                    Map.entry(Blocks.END_PORTAL_FRAME, ""),
+                    Map.entry(Blocks.END_GATEWAY, ""));
+            public boolean banSpawnEggs = true;
             public boolean checkEnchants = true;
             public boolean checkPotionLevels = true;
             public boolean checkItemCount = true;
@@ -338,6 +348,38 @@ public class GolfConfig {
             }
             in.endArray();
             return set;
+        }
+    }
+
+
+    /**
+     * Adapts {@link ItemConvertible} and string {@link NbtCompound} between it and the identifier.
+     */
+    private static final class BlockMapAdapter extends TypeAdapter<Map<ItemConvertible, String>> {
+
+        @Override
+        public void write(JsonWriter out, Map<ItemConvertible, String> value) throws IOException {
+            out.beginObject();
+            var reg = Registries.ITEM;
+            for (var entry : value.entrySet()) {
+                out.name(reg.getId(entry.getKey().asItem()).toString());
+                out.value(entry.getValue());
+            }
+            out.endObject();
+
+        }
+
+        @Override
+        public Map<ItemConvertible, String> read(JsonReader in) throws IOException {
+            in.beginObject();
+            var reg = Registries.ITEM;
+            var map = new HashMap<ItemConvertible, String>();
+            while (in.hasNext()) {
+                var key = reg.get(Identifier.tryParse(in.nextName()));
+                map.put(key, in.nextString());
+            }
+            in.endObject();
+            return map;
         }
     }
 
