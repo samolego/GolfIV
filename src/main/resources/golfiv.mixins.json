@@ -30,8 +30,8 @@
     "illegal_items.ServerPlayNetworkHandlerMixin_IllegalsCheckSlot",
     "movement.EntityMixin_NetherRoofDamage",
     "movement.ServerPlayNetworkHandler_OnGroundCheck",
-    "packets.EntityTrackerUpdateS2CPacketMixin_DataPatch",
     "packets.ServerPlayerEntityMixin_CreativeInventoryPatch",
+    "packets.ServerPlayNetworkHandlerMixin_EntityDataPatch",
     "packets.ServerPlayNetworkHandlerMixin_PacketEvents"
   ],
   "injectors": {

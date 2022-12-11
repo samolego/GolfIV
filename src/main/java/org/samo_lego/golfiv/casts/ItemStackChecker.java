@@ -7,8 +7,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraft.potion.PotionUtil;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -151,7 +151,7 @@ public interface ItemStackChecker {
                 if(enchant instanceof NbtCompound compound) {
                     String id = compound.getString(ID_KEY);
                     int lvl = compound.getInt(LVL_KEY);
-                    if(Registry.ENCHANTMENT.containsId(new Identifier(id))) {
+                    if (Registries.ENCHANTMENT.containsId(new Identifier(id))) {
                         NbtCompound minimalEnchant = new NbtCompound();
                         minimalEnchant.putString(ID_KEY, id);
                         minimalEnchant.putInt(LVL_KEY, lvl);
@@ -336,11 +336,10 @@ public interface ItemStackChecker {
             NbtList fakePatterns = new NbtList();
             int i = 0;
             for(NbtElement pattern : blockEntity.getList("Patterns", NbtElement.COMPOUND_TYPE)) {
-                if(!(pattern instanceof NbtCompound)) continue;
+                if(!(pattern instanceof NbtCompound oldPattern)) continue;
                 // A 12 layer cap on the rewriting is primarily to prevent
                 // the faked stack from becoming the kicking item.
                 if(i++ >= 12) break;
-                NbtCompound oldPattern = (NbtCompound) pattern;
                 if (oldPattern.contains("Color", NbtElement.INT_TYPE) &&
                         oldPattern.contains("Pattern", NbtElement.STRING_TYPE)) {
                     if(oldPattern.getSize() == 2) {
