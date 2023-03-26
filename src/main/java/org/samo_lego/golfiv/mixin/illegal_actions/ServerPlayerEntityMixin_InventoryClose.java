@@ -32,7 +32,7 @@ public class ServerPlayerEntityMixin_InventoryClose {
             method = "openHandledScreen(Lnet/minecraft/screen/NamedScreenHandlerFactory;)Ljava/util/OptionalInt;",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V"
+                    target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"
             )
     )
     private void setOpenGui(@Nullable NamedScreenHandlerFactory factory, CallbackInfoReturnable<OptionalInt> cir) {
@@ -51,8 +51,8 @@ public class ServerPlayerEntityMixin_InventoryClose {
         golfer.setOpenGui(false);
     }
 
-    @Inject(method = "closeScreenHandler()V", at = @At("TAIL"))
-    private void closeScreenHandler(CallbackInfo ci) {
+    @Inject(method = "closeHandledScreen", at = @At("TAIL"))
+    private void closeHandledScreen(CallbackInfo ci) {
         golfer.setOpenGui(false);
     }
 }
