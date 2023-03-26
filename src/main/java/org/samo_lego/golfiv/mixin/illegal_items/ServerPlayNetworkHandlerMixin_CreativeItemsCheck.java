@@ -6,7 +6,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.c2s.play.CloseHandledScreenC2SPacket;
 import net.minecraft.screen.slot.Slot;
@@ -171,7 +171,7 @@ public abstract class ServerPlayNetworkHandlerMixin_CreativeItemsCheck {
      * @see GolfConfig.Packet#patchItemKickExploit
      */
     @Inject(method = "onCloseHandledScreen", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/server/world/ServerWorld;)V",
+            target = "Lnet/minecraft/network/NetworkThreadUtils;forceMainThread(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/listener/PacketListener;Lnet/minecraft/server/world/ServerWorld;)V",
             shift = At.Shift.AFTER))
     private void onCloseScreen(CloseHandledScreenC2SPacket packet, CallbackInfo ci) {
         // Allows reuse and prevents indefinite leaking.
