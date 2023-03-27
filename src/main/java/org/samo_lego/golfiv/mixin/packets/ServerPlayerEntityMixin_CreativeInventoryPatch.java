@@ -33,7 +33,7 @@ public abstract class ServerPlayerEntityMixin_CreativeInventoryPatch extends Pla
      * @reason Ensure that Creative doesn't accidentally nuke its own inventory.
      * @author Ampflower
      */
-    @Inject(method = "changeGameMode", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/Packet;)V"))
+    @Inject(method = "changeGameMode", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V"))
     private void onChangeGameMode(GameMode gameMode, CallbackInfoReturnable<Boolean> cir) {
         if (GolfIV.golfConfig.packet.patchItemKickExploit && gameMode.isCreative()) {
             currentScreenHandler.syncState();

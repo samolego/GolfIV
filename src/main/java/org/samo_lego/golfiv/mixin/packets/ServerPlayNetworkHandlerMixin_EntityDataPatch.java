@@ -7,7 +7,7 @@ import net.minecraft.entity.Saddleable;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -43,7 +43,7 @@ public abstract class ServerPlayNetworkHandlerMixin_EntityDataPatch {
     @Shadow
     public abstract ServerPlayerEntity getPlayer();
 
-    @Inject(method = "sendPacket(Lnet/minecraft/network/Packet;Lnet/minecraft/network/PacketCallbacks;)V", at = @At("TAIL"))
+    @Inject(method = "sendPacket(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/PacketCallbacks;)V", at = @At("TAIL"))
     private void golfIV$onConstruction(Packet<?> unknownPacket, @Nullable PacketCallbacks callbacks, CallbackInfo ci) {
 
         if (unknownPacket instanceof EntityTrackerUpdateS2CPacket packet) {
