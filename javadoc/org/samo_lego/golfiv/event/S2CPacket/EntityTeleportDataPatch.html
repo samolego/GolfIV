@@ -119,7 +119,7 @@ implements <a href="S2CPacketCallback.html" title="interface in org.samo_lego.go
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#preSendPacket(net.minecraft.network.Packet,net.minecraft.server.network.ServerPlayerEntity,net.minecraft.server.MinecraftServer)" class="member-name-link">preSendPacket</a><wbr>(net.minecraft.network.Packet&lt;?&gt;&nbsp;packet,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#preSendPacket(net.minecraft.network.packet.Packet,net.minecraft.server.network.ServerPlayerEntity,net.minecraft.server.MinecraftServer)" class="member-name-link">preSendPacket</a><wbr>(net.minecraft.network.packet.Packet&lt;?&gt;&nbsp;packet,
  net.minecraft.server.network.ServerPlayerEntity&nbsp;player,
  net.minecraft.server.MinecraftServer&nbsp;server)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -158,16 +158,16 @@ implements <a href="S2CPacketCallback.html" title="interface in org.samo_lego.go
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="preSendPacket(net.minecraft.network.Packet,net.minecraft.server.network.ServerPlayerEntity,net.minecraft.server.MinecraftServer)">
+<section class="detail" id="preSendPacket(net.minecraft.network.packet.Packet,net.minecraft.server.network.ServerPlayerEntity,net.minecraft.server.MinecraftServer)">
 <h3>preSendPacket</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">preSendPacket</span><wbr><span class="parameters">(net.minecraft.network.Packet&lt;?&gt;&nbsp;packet,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">preSendPacket</span><wbr><span class="parameters">(net.minecraft.network.packet.Packet&lt;?&gt;&nbsp;packet,
  net.minecraft.server.network.ServerPlayerEntity&nbsp;player,
  net.minecraft.server.MinecraftServer&nbsp;server)</span></div>
 <div class="block">If player teleports out of render distance, we modify the coordinates of the
  packet, in order to hide player's original TP coordinates.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="S2CPacketCallback.html#preSendPacket(net.minecraft.network.Packet,net.minecraft.server.network.ServerPlayerEntity,net.minecraft.server.MinecraftServer)">preSendPacket</a></code>&nbsp;in interface&nbsp;<code><a href="S2CPacketCallback.html" title="interface in org.samo_lego.golfiv.event.S2CPacket">S2CPacketCallback</a></code></dd>
+<dd><code><a href="S2CPacketCallback.html#preSendPacket(net.minecraft.network.packet.Packet,net.minecraft.server.network.ServerPlayerEntity,net.minecraft.server.MinecraftServer)">preSendPacket</a></code>&nbsp;in interface&nbsp;<code><a href="S2CPacketCallback.html" title="interface in org.samo_lego.golfiv.event.S2CPacket">S2CPacketCallback</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>packet</code> - packet being sent</dd>
 <dd><code>player</code> - player getting the packet</dd>
