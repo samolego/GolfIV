@@ -1,6 +1,6 @@
 package org.samo_lego.golfiv.mixin.packets;
 
-import net.minecraft.network.Packet;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,7 +27,7 @@ public abstract class ServerPlayNetworkHandlerMixin_PacketEvents {
      * @param packet
      * @param ci
      */
-    @Inject(method = "sendPacket(Lnet/minecraft/network/Packet;)V",
+    @Inject(method = "sendPacket(Lnet/minecraft/network/packet/Packet;)V",
             at = @At("HEAD"))
     private void onPacket(Packet<?> packet, CallbackInfo ci) {
         S2CPacketCallback.EVENT.invoker().preSendPacket(packet, player, server);
