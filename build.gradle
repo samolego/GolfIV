@@ -1,10 +1,7 @@
-import com.modrinth.minotaur.TaskModrinthUpload
-
-
 plugins {
 	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'com.matthewprenger.cursegradle' version '1.4.0'
-	id "com.modrinth.minotaur" version "1.1.0"
+	id "com.modrinth.minotaur" version "2.+"
 	id 'maven-publish'
 	id 'java'
 }
@@ -134,20 +131,23 @@ curseforge {
 	}
 }
 
-task modrinth(type: TaskModrinthUpload, dependsOn: remapJar) {
+tasks.modrinth {
 	onlyIf {
 		ENV.MODRINTH_TOKEN
 	}
+}
 
+modrinth {
 	token = ENV.MODRINTH_TOKEN
 	projectId = "PfKYAJGk"
 	versionNumber = version
 	versionName = "[${project.minecraft_version}] GolfIV ${version}"
-	releaseType = "release"
+	versionType = "release"
 	changelog = ENV.CHANGELOG ?: "A changelog can be found at https://github.com/samolego/GolfIV/releases/tag/${version}"
 
 	uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
 
-	addGameVersion("${project.minecraft_version}")
-	addLoader('fabric')
+	gameVersions = [project.minecraft_version]
+	loaders = ['fabric', 'quilt']
 }
+
