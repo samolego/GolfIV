@@ -27,6 +27,7 @@ public class InventoryHitCheck implements UseEntityCallback, AttackEntityCallbac
      */
     @Override
     public ActionResult interact(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult hitResult) {
+        if(world.isClient())return ActionResult.PASS;
         return golfConfig.main.checkInventoryActions && ((Golfer) player).hasOpenGui() ? ActionResult.FAIL : ActionResult.PASS;
     }
 }
