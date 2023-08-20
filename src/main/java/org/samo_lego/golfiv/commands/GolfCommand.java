@@ -29,8 +29,7 @@ public class GolfCommand {
 
         if(source != null)
             source.sendFeedback(
-                    Text.literal("Reloaded the config file!")
-                        .formatted(Formatting.GREEN),
+                    () -> Text.literal("Reloaded the config file!").formatted(Formatting.GREEN),
                     false
             );
         return 1;
